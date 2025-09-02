@@ -196,7 +196,7 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                     {currentElement.effectiveness === "Effective" ? (
                       <div className="mt-3 p-3 rounded-lg bg-green-50 border border-green-200">
                         <h5 className="font-medium mb-2 text-green-800">Why This Works:</h5>
-                        <ul className="text-sm space-y-1 text-green-700">{currentElement.suggestions}
+                        <ul className="text-sm space-y-1 text-green-700">{currentElement.feedback}
                           {/* {currentElement.suggestions?.map((suggestion, i) => (
                             <li key={i} className="flex items-start gap-2">
                               <Sparkles className="h-3 w-3 mt-0.5 flex-shrink-0" />
@@ -241,7 +241,7 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                           </div>
           
                         )}
-                        {showCorrections.has(selectedElement) && currentElement.suggestions && (
+                        {showCorrections.has(selectedElement) && currentElement.reason && (
                           <div className="mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 animate-in slide-in-from-top-2 duration-200">
                             <h5 className="font-medium mb-2 text-amber-800">Reason:</h5>
                             <ul className="text-sm space-y-1 text-amber-700">

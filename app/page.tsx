@@ -10,20 +10,20 @@ import { analyzeArgumentativeStructure, analyzeLexicalFeatures } from "@/lib/ana
 import type { AnalysisResult, LexicalAnalysis, Highlight } from "@/lib/types"
 import { Sparkles, FileText, Brain, BookOpen } from "lucide-react"
 
-const SAMPLE_ESSAY = `Technology has fundamentally transformed the way we communicate, work, and live our daily lives. While some argue that this digital revolution has created more problems than solutions, I firmly believe that technology has been overwhelmingly beneficial to society and continues to drive human progress forward.
+// const SAMPLE_ESSAY = `Technology has fundamentally transformed the way we communicate, work, and live our daily lives. While some argue that this digital revolution has created more problems than solutions, I firmly believe that technology has been overwhelmingly beneficial to society and continues to drive human progress forward.
 
-The most compelling evidence for technology's positive impact lies in its ability to connect people across vast distances. Social media platforms, video conferencing, and instant messaging have eliminated geographical barriers, allowing families to stay connected, businesses to operate globally, and students to access educational resources from anywhere in the world. During the COVID-19 pandemic, these technologies proved essential for maintaining social connections and economic stability.
+// The most compelling evidence for technology's positive impact lies in its ability to connect people across vast distances. Social media platforms, video conferencing, and instant messaging have eliminated geographical barriers, allowing families to stay connected, businesses to operate globally, and students to access educational resources from anywhere in the world. During the COVID-19 pandemic, these technologies proved essential for maintaining social connections and economic stability.
 
-Furthermore, technological advances in healthcare have saved countless lives and improved quality of life for millions. Medical imaging, robotic surgery, and telemedicine have revolutionized patient care, while pharmaceutical research powered by artificial intelligence has accelerated drug discovery processes that once took decades.
+// Furthermore, technological advances in healthcare have saved countless lives and improved quality of life for millions. Medical imaging, robotic surgery, and telemedicine have revolutionized patient care, while pharmaceutical research powered by artificial intelligence has accelerated drug discovery processes that once took decades.
 
-Critics argue that technology has created social isolation and mental health issues, particularly among young people. They point to increased rates of anxiety and depression correlating with social media usage and screen time. While these concerns deserve attention, they represent challenges that can be addressed through education and responsible usage rather than fundamental flaws in technology itself.
+// Critics argue that technology has created social isolation and mental health issues, particularly among young people. They point to increased rates of anxiety and depression correlating with social media usage and screen time. While these concerns deserve attention, they represent challenges that can be addressed through education and responsible usage rather than fundamental flaws in technology itself.
 
-However, the benefits of technological connectivity far outweigh these concerns. The same platforms that critics blame for isolation also provide support networks for marginalized communities, enable social movements for positive change, and offer educational opportunities to underserved populations. The key lies not in rejecting technology but in learning to use it wisely.
+// However, the benefits of technological connectivity far outweigh these concerns. The same platforms that critics blame for isolation also provide support networks for marginalized communities, enable social movements for positive change, and offer educational opportunities to underserved populations. The key lies not in rejecting technology but in learning to use it wisely.
 
-In conclusion, technology remains one of humanity's greatest tools for progress. While we must address its challenges responsibly, the evidence clearly shows that technological advancement has improved communication, healthcare, education, and countless other aspects of human life. Rather than fearing change, we should embrace technology's potential while working to mitigate its risks.`
+// In conclusion, technology remains one of humanity's greatest tools for progress. While we must address its challenges responsibly, the evidence clearly shows that technological advancement has improved communication, healthcare, education, and countless other aspects of human life. Rather than fearing change, we should embrace technology's potential while working to mitigate its risks.`
 
 export default function ArgumentativeWritingAssistant() {
-  const [essay, setEssay] = useState(SAMPLE_ESSAY)
+  const [essay, setEssay] = useState("")
   const [isPanelOpen, setIsPanelOpen] = useState(false)
   const [panelWidth, setPanelWidth] = useState(480)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -62,7 +62,7 @@ export default function ArgumentativeWritingAssistant() {
               const start = essay.indexOf(el.text)
               if (start !== -1) {
                 newHighlights.push({
-                  // id: `${key}-${index}`,
+                  id: `${key}-${index}`,
                   elementId: key,
                   start,
                   end: start + el.text.length,
@@ -80,7 +80,7 @@ export default function ArgumentativeWritingAssistant() {
           const start = essay.indexOf(element.text)
           if (start !== -1) {
             newHighlights.push({
-              // id: key,
+              id: key,
               elementId: key,
               start,
               end: start + element.text.length,
@@ -101,7 +101,7 @@ export default function ArgumentativeWritingAssistant() {
           let match
           while ((match = regex.exec(essay)) !== null) {
             newHighlights.push({
-              // id: `awl-${index}-${match.index}`,
+              id: `awl-${index}-${match.index}`,
               elementId: "",
               start: match.index,
               end: match.index + match[0].length,
@@ -123,7 +123,7 @@ export default function ArgumentativeWritingAssistant() {
           let match
           while ((match = regex.exec(essay)) !== null) {
             newHighlights.push({
-              // id: `afl-${index}-${match.index}`,
+              id: `afl-${index}-${match.index}`,
               elementId: "",
               start: match.index,
               end: match.index + match[0].length,
@@ -146,7 +146,7 @@ export default function ArgumentativeWritingAssistant() {
           let match
           while ((match = regex.exec(essay)) !== null) {
             newHighlights.push({
-              // id: `repetitive-${index}-${match.index}`,
+              id: `repetitive-${index}-${match.index}`,
               elementId: "",
               start: match.index,
               end: match.index + match[0].length,
@@ -252,7 +252,7 @@ export default function ArgumentativeWritingAssistant() {
                 <h1 className="text-xl font-bold">Argumentative Writing Assistant</h1>
               </div>
               <Badge variant="secondary" className="text-xs">
-                AI-powered analysis with persistent highlighting and inline editing
+                AI-powered analysis with the Crossley Model
               </Badge>
             </div>
 
@@ -304,7 +304,7 @@ export default function ArgumentativeWritingAssistant() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t bg-muted/30 px-4 py-3">
+      {/* <footer className="border-t bg-muted/30 px-4 py-3">
         <div className="container mx-auto">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center gap-4">
@@ -324,10 +324,9 @@ export default function ArgumentativeWritingAssistant() {
               </div>
             </div>
 
-            <div className="text-xs">Persistent Highlighting • Built with Next.js</div>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   )
 }

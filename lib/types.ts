@@ -57,7 +57,7 @@ export interface LexicalAnalysis {
 }
 
 export interface Highlight {
-  // id: string
+  id: string
   elementId: string
   start: number
   end: number
