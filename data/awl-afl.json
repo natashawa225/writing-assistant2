@@ -1,0 +1,147 @@
+{
+  "AWL": [
+    {
+      "headword": "analyse",
+      "sublist": 1,
+      "related": [
+        "analysed",
+        "analyser",
+        "analysers",
+        "analyses",
+        "analysing",
+        "analysis",
+        "analyst",
+        "analysts",
+        "analytic",
+        "analytical",
+        "analytically",
+        "analyze",
+        "analyzed",
+        "analyzes",
+        "analyzing"
+      ]
+    },
+    {
+      "headword": "approach",
+      "sublist": 1,
+      "related": ["approachable", "approached", "approaches", "approaching", "unapproachable"]
+    },
+    {
+      "headword": "area",
+      "sublist": 1,
+      "related": ["areas"]
+    },
+    {
+      "headword": "assess",
+      "sublist": 1,
+      "related": [
+        "assessable",
+        "assessed",
+        "assesses",
+        "assessing",
+        "assessment",
+        "assessments",
+        "reassess",
+        "reassessed",
+        "reassessing",
+        "reassessment",
+        "unassessed"
+      ]
+    },
+    {
+      "headword": "assume",
+      "sublist": 1,
+      "related": ["assumed", "assumes", "assuming", "assumption", "assumptions"]
+    },
+    {
+      "headword": "authority",
+      "sublist": 1,
+      "related": ["authoritative", "authorities"]
+    },
+    {
+      "headword": "available",
+      "sublist": 1,
+      "related": ["availability", "unavailable"]
+    },
+    {
+      "headword": "benefit",
+      "sublist": 1,
+      "related": ["beneficial", "beneficiaries", "beneficiary", "benefited", "benefiting", "benefits"]
+    },
+    {
+      "headword": "concept",
+      "sublist": 1,
+      "related": [
+        "conception",
+        "concepts",
+        "conceptual",
+        "conceptualisation",
+        "conceptualise",
+        "conceptualised",
+        "conceptualises",
+        "conceptualising",
+        "conceptually"
+      ]
+    },
+    {
+      "headword": "consist",
+      "sublist": 1,
+      "related": [
+        "consisted",
+        "consistency",
+        "consistent",
+        "consistently",
+        "consisting",
+        "consists",
+        "inconsistencies",
+        "inconsistency",
+        "inconsistent"
+      ]
+    }
+  ],
+
+  "AFL": [
+    {
+      "number": 1,
+      "formula": "on the other hand",
+      "freq_speech": 40,
+      "freq_writing": 119,
+      "ftw": 2.84
+    },
+    {
+      "number": 2,
+      "formula": "due to the fact that",
+      "freq_speech": 2,
+      "freq_writing": 13,
+      "ftw": 2.64
+    },
+    {
+      "number": 3,
+      "formula": "on the other hand the",
+      "freq_speech": 3,
+      "freq_writing": 24,
+      "ftw": 2.55
+    },
+    {
+      "number": 4,
+      "formula": "it should be noted",
+      "freq_speech": 0,
+      "freq_writing": 17,
+      "ftw": 2.51
+    },
+    {
+      "number": 5,
+      "formula": "it is not possible to",
+      "freq_speech": 0,
+      "freq_writing": 15,
+      "ftw": 2.44
+    },
+    {
+      "number": 6,
+      "formula": "a wide range of",
+      "freq_speech": 4,
+      "freq_writing": 31,
+      "ftw": 2.42
+    }
+  ]
+}

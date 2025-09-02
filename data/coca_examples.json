@@ -1,0 +1,1402 @@
+{
+  "effect": [
+    "4170001 Headnote  Abstract : Prior research on corporate name changes has largely focused on publicly traded firms and generally does not identify the source of any market or performance effect .",
+    "The primary focus of this study is to examine the potential effect of a corporate name change on the firm and provide a possible explanation for the observed effect .",
+    "The first column provides the fixed-effect coefficients .",
+    "We are using the term \" return \" loosely here , as this analysis is not designed to isolate a causal effect .",
+    "The results reported in table 5 provide no evidence of this sort of effect ."
+  ],
+  "by": [
+    "In contrast , we consider whether name changes impact firm wealth by increasing revenue and if this revenue is driven by increased policies sold .",
+    "11 Addi- tionally , the nature the National Association of Insurance Commissioners ( NAIC ) differs from that reported by property-casualty insurers .",
+    "The relation between past corporate name changes and changes in revenue does not vary by business focus .",
+    "We also control for unobservable time effects by including yearly control variables ( gt ) .",
+    "Variables  Dependent Variables  We employ several dependent variables in order to evaluate : ( 1 ) whether name changes are associated with a change in revenue , and ( 2 ) whether the change in revenue is driven by increased policy sales."
+  ],
+  "in": [
+    "We examine the impact of name changes using a large sample of life insurers for which detailed financial and operational data are available , including the number of policies in force .",
+    "5 These benefits could include distancing the company from bad publicity or signaling new information to the market , such as a change in business focus .",
+    "These results suggest that firms that undergo name changes show improvements in financial performance .",
+    "The results of the study suggest that the positive market reaction to name changes that has been previously documented may not necessarily be an irrational response , but rather it is consistent with the exhibited increase in revenue .",
+    "Our study contributes to existing literature in this area in several ways ."
+  ],
+  "individual": [
+    "The results suggest that corporate name changes have positive wealth effects for insurers and that this effect is driven to some degree by increased policy counts for those insurers that primarily sell to individual consumers .",
+    "Focusing on the variable of interest , similar to the results reported in Table 2 , we find that prior-year significant name changes ( SigNameChange ) are positively and significantly associated with an increase in premium growth , but that the results are largely driven by firms with an individual focus .",
+    "We find that the number of policies in force increases following a past name change , but only for insurers focused on individual lines .",
+    "Alter- natively , the findings may indicate that the changes that take place largely impact individual consumers .",
+    "45 Finally , there is some evidence of a negative impact of diversification on policy growth and a positive impact of reinsurance on policy growth , but only for those insurers focused on individual lines ."
+  ],
+  "life": [
+    "Key words : name changes , revenue and policy growth , life insurance  ( ProQuest : .",
+    "life insurance industry .",
+    "( 2015 ) provide evidence of increased revenues for property-casualty insurers following name changes , we can not assume that such a relationship also exists for life insurers .",
+    "The life insurance industry has fundamental differ- ences from the property-casualty industry , and thus it remains an empirical question whether or not the general effect holds for life insurers.",
+    "These results are consistent with the findings of Cole positive impact of name changes is observed within both the property-casualty and life insurance industries ."
+  ],
+  "u": [
+    ")  INTRODUCTION  The name of a corporation can be a valuable asset to the firm , as it conveys important information to the firm 's consumers , investors , competitors , and other stakeholders regarding the company 's characteris- tics ( Tadelis , the essence of the firm as an entity , corporate name changes occur regularly , with one- third of U.",
+    "For example , in 2009 , AIG changed its name to Chartis in order to distance itself from its acceptance of a bailout from the U.",
+    "Most recently , in their analysis of property-casualty insurers , Cole , Fier , Carson , and Andrews ( 2015 ) examine name changes within the U.",
+    "( 2015 ) by re-examining the impact of a name change in the U.",
+    "12 Second , given that all U."
+  ],
+  "s": [
+    "S.",
+    "S.",
+    "S.",
+    "Their results indicate that firms that undergo a name change experience an and that the increase in revenue is influenced in part by the firm 's organizational form .",
+    "S."
+  ],
+  "a": [
+    "publicly traded companies undergoing a corporate name change since 1925 ( Wu , 2010 ) .",
+    "HYPOTHESES  Economic theory suggests that firms should not undertake a name change unless firm management believes that it is a profit-maximizing activity .",
+    "If insurers that primarily sell to both types of consumers experience an increase in revenue , this would suggest that any unobserved corporate change is affecting both consumer types in a similar manner.",
+    "( 2015 ) test whether stocks and mutuals in the property-casualty insurance industry experience similar increases in revenue following a corporate name change .",
+    "Stock insurers experience an increase in revenue following the occur- rence of a name change , while mutual insurers will not experience a change in revenue following a corporate name change ."
+  ],
+  "the": [
+    "Given the billions of dollars companies spend to build name recognition and the costs associated with the name change process , economic theory suggests that organizations should engage in this strategic business decision only if the name change is expected to generate some significant benefits for the firm.",
+    "and WellPoint merged , the decision was made to use the WellPoint company name .",
+    "\" In other words , while manage- ment should make the decision to change a name only if it maximizes value , such a change could actually adversely affect the firm .",
+    "Cooper , Gulen , and Rau ( 2005 ) sample of close to 300 funds , the authors find that those that alter the mutual fund names to better represent a \" current hot style \" of investments enjoyed an average cumulative abnormal flow , despite no evidence of any improvement in the performance of the fund.",
+    "( 2015 ) provide evidence of revenue growth following the occurrence of a corporate name change , they do not provide any empirical evidence regarding the source of the revenue growth ."
+  ],
+  "government": [
+    "government ( Ng , 2012 ) .",
+    "Bank managers have a vision for the short term , to achieve quick profits and excessive risk-taking at the expense of bank solvency and long-term financial strength by the government .",
+    "Conceptually , the fair-value subsidy cost is the lump-sum cash payment at origination that the government would need to make to private lenders in a well-functioning market to induce them to extend credit at the same terms to the same people as under the government program .",
+    "The model is in the spirit of Rothschild and Stiglitz ( 1976 ) and other analyses that emphasize insurance or credit market outcomes and the potential effects of government intervention.",
+    "This model can be easily extended to include government credit guarantees ."
+  ],
+  "or": [
+    "6 Additionally , in 2001 , American Heritage Life Insurance Company began to be identified as Allstate Financial Workplace Division to reflect the fact that the company had increased its focus on \" becoming the country 's dominant provider of insurance products at the workplace \" ( LifeHealthPro as part of other activities , such as mergers , or to more closely tie a company to a particular product or affiliated company .",
+    "First , we remove any firms that report negative assets , premiums , surplus , policies in force , advertising expenditures , lapses , or liabilities .",
+    "Given the potential costs of a name change ( both monetarily and with regard to potential loss of brand recognition ) , it would be anticipated that firms make the decision to change a name as part of a profit-maximizing strategy , suggesting that the decision to undergo a name change should either enhance revenue or reduce costs .",
+    "Our study helps both the real estate developer and the real estate marketer ( or broker ) .",
+    "This helps identify areas where homes with a high concentration of radon are fairly common or rare ."
+  ],
+  "when": [
+    "In 2004 , when Anthem Inc.",
+    "\"  28Surplus drain refers to a situation where expenses must be recognized immediately while premiums must be recognized only when earned .",
+    "29Also consistent with the managerial discretion hypothesis , Berry-St&ouml;lzle , Liebenberg , Ruhland , and Sommer ( 2012 ) find that mutual insurers in the property-casualty insurance industry are more likely to select related rather than unrelated lines of business when diver- sifying.",
+    "New-to-the-world attributes that can not be described to respondents also present similar difficulties when administering questionnaires .",
+    "23 Findings reported by Gokkaya , Hill , and Kelly ( , based on their reputation when underwriting SEOs ."
+  ],
+  "this": [
+    "However , with the increase in direct marketing to consumers through the health insurance exchanges mandated by the Affordable Care Act , the company made the decision in 2014 to change the name from WellPoint to Anthem in an effort to capitalize on this \" better-recognized \" brand ( Mathews , 2014 ) .",
+    "While prior literature has documented an association between a name change event and revenue growth following that event , it has yet to provide any evidence as to the cause of this increase .",
+    "While the results indicate that increase sales activity ( as proxied by growth in the number of policies in force ) is one possible explanation for the increase in revenue , additional research should be conducted that more explicitly examines the potential effects that changes in price or underwriting policy have on this relationship .",
+    "42We re-estimate Tables 3 through 6 after replacing the NameChange variable with the SigNameChange variable , and the results are qualitatively and quantitatively similar to those reported in this paper .",
+    "46We thank an anonymous reviewer for providing this insight ."
+  ],
+  "and": [
+    "8  Given the frequency with which name changes take place and the importance and significant financial value that can be placed on corporate names , a growing body of research on this subject has emerged in the marketing and finance literature .",
+    "The act as risk reducers for consumers , replacing the brand might disturb the consumers ' brand trust and affect brand relationship .",
+    ", Horsky and Swyngedouw , 1987 ; Bosch and Hirschey , 1989 ; Cooper , Dim- itrov , and Rau , 2001 ; Wu , 2010 ; Green and Jame , 2013 ) .",
+    ", Howe , 1982 ; Karpoff and Rankine , 1994 ) .",
+    "Their focus on the property-casualty insurance market allows them to directly examine the effect of a name change on changes in revenue for a large sample of both publicly traded and non-publicly traded firms ."
+  ],
+  "on": [
+    "In theory , name changes can alter con- sumers ' perceptions of companies and ultimately have an impact on firms ' financial performance .",
+    "As a preview to our results , we find that name changes have a positive impact on insurers .",
+    "Liquidity is significant and positive in Model 1 and Model 4 , providing limited evidence that liquidity has a positive impact on premium growth.",
+    "Finally , the group variable is signifi- cant and positive , but only for insurers focused on commercial business .",
+    "CONCLUSION  A growing body of literature has investigated corporate name changes studies have tested for a market response to corporate name changes , but little empirical work has focused on the relation between name changes and their impact on future revenue ."
+  ],
+  "of": [
+    "Pauwels-Delassus and Descotes ( 2013 ) discuss brand name changes and how these changes can impact the trust and loyalty of consumers .",
+    "First , a significant number of name changes have occurred in the life insurance industry , thus providing a large sample with which to examine the impact of name changes.",
+    "( 2015 ) , which only observes this positive effect for stock insurers in the property-casualty industry , we find that the positive effect is observed for all life insurers , regardless of ownership structure .",
+    "As well , the life insurance industry is characterized by the existence of multiple organizational forms .",
+    ", 2015 ) , as follows :  ( 1 ) First , we calculate revenue ( premium ) growth for each company , by line of business ."
+  ],
+  "results": [
+    "In examining the financial impact of name changes on the firm , prior studies have generally focused on stock price reaction to name changes , with studies reporting mixed results .",
+    "The next section presents the discussion the results .",
+    "( 2005 ) , which found a direct link between customer satisfaction and the improvement of financial results .",
+    "In this section we also review , we then turn to a detailed description of our empirical analysis and results .",
+    "They are useful because they offer a conceptual framework for thinking about the issue , and a useful framework to guide the empirical analysis and interpretation of results ."
+  ],
+  "e": [
+    "Some studies find evidence of a positive market reaction to the announcement of a name change ( e.",
+    "9 Alternatively , others suggest that a name change is negatively perceived by investors ( Mase , 2009 ) or has no impact on the value of the firm ( e.",
+    "This notion has motivated several studies that have examined the market response to corporate name changes , with many studies finding that name changes are viewed in a positive manner by investors ( e.",
+    "As discussed below , stock insurers generally are viewed as having a better ability to control owner-manager conflicts than mutual insurers , and this ability results in stock insurers having greater managerial discretion than mutual insurers ( e.",
+    "As noted previously , prior literature has found that the market commonly responds positively to the announcement of a name change and that firm performance can improve around the occurrence of a corporate name change ( e."
+  ],
+  "g": [
+    "g.",
+    "g.",
+    "g.",
+    "g.",
+    "g."
+  ],
+  "to": [
+    "10 Koku ( 1997 ) uses a small sample of publicly traded firms in the services industry to examine the impact of name changes on firms ' price-to-earnings ratios .",
+    "The author finds that every firm experiencing a name change also experienced an increase in its price-to-earnings ratio .",
+    "However , for both premium growth and policy growth , this result appears to be driven by insurers that sell primarily to individual consumers ( as opposed to businesses/groups ) .",
+    "23 Given that advertising has the potential to affect the consumer 's decision to purchase a product from a firm , we control for advertising intensity by including the ratio of advertising expenditures to total premiums.",
+    "We proxy for firm liquidity by including the ratio of total admitted assets to total liabilities."
+  ],
+  "al": [
+    "While Cole et al .",
+    "We extend the study of Cole et al .",
+    "While Cole et al .",
+    "However , unlike Cole et al .",
+    ", Karpoff and Rankine , 1994 ; Lee , 2001 ; Cooper et al."
+  ],
+  "with": [
+    "insurers are required to report detailed financial and organizational data to the NAIC on an annual basis , we are able to examine the impact of insurer name changes for companies with varying ownership structures .",
+    "We re-examine the potential differences across organizational form for the life insurance industry with Hypothesis 3 :  H3 .",
+    "17 After applying the screens , the final sample consists of 1,121 unique firms , with 11,396 total firm-year observations .",
+    "The change in lapse activity is calculated in a similar manner to that presented in Equation ( 7 ) , but we replace policies in force with policy lapses.",
+    "5See Koku ( 1997 ) and Cole , Fier , Carson , and Andrews ( 2015 ) for a discussion of the name change process and the costs associated with name changes ."
+  ],
+  "are": [
+    "Third , the use of insurer premium data allows us to provide evidence on whether name changes are revenue-increasing events .",
+    "While prior literature does document evidence in favor of managerial discretion in the life insurance market , mutual life insurers likely have fewer constraints than do their property-casualty counterparts as they relate to business lines , since the contracts are often long term and there are fewer lines .",
+    "In the case of products like real estate , customers ' preferences are extremely varied .",
+    "the process of choosing a property is similar to any other product , there are essential differences .",
+    "In high-value real estate , customer preferences are diverse ."
+  ],
+  "any": [
+    "Finally , the fact that life insurers are required of property-casualty insurers allows us to investigate the source of any poten- tial revenue growth .",
+    "The above posterior means can be used to calculate the preference for any residential offering .",
+    "5% of SSA 's total GDP , thus pointing to a very large economy by any measurement .",
+    "( 1994 ; Gransted ( 2000 ) ; Kaplan and Norton ( 2001 ) ; Reinartz and Kumar ( 2002 ) ; and Helgesen ( 2006 ) loyal customers are the most profitable to the company , since they do not attract any marketing costs .",
+    "The more similar the underlying populations , the lower the inequality ( by definition ) and the greater the mobility because chance will play a greater role in determining who succeeds in any given period ."
+  ],
+  "their": [
+    "Specifically , life insurers who change their name expe- rience significantly higher growth in premium income in the year follow- ing a name change when compared to insurers that did not change their name .",
+    "Beyond the need to pay life and annuity benefits , which should be relatively predictable assuming a sufficiently large pool of to take loans on their policies and withdraw funds from their policies .",
+    "We find that the coefficient on the NameChange variable is insignificant across each of the four models , suggesting that firms with a prior-year name change do not exhibit a statistically significant change in their lapse rates .",
+    "life insurers are required by the NAIC to report information regarding policy issuance and policy counts , property-casualty insurers are not required to provide this information in their annual statements .",
+    "Real estate marketers ' understanding of the preference structure helps them design and deliver appropriate offerings to their customers ."
+  ],
+  "its": [
+    "These results are consistent for all name changes as well as for \" significant \" name changes in which the firm is no longer identifiable simply by its name .",
+    "For example , a company can make a small adjustment to its name , like changing \" Life \" to \" Life and Annuity \" to better identify a refocus or expansion of its business .",
+    "35For instance , a firm may make changes to its underwriting standards , its policy language , its prices , or some other aspect of its business .",
+    "These authors posit a multi-attribute view of a product or an offering and state that the preference for the offering is a sum of preference for its attributes ( Fishben , 1963 ) .",
+    "The initial linear model of Rosen ( 1974 ) was later revised to improve its predictive ability ."
+  ],
+  "as": [
+    "Given the findings of prior research , our first hypothesis is stated as :  H1 .",
+    "14 Given these possibilities , we test for differences across customer types and offer our formal hypothesis in the null form as :  H2 .",
+    "Evidence supporting an increase in policy growth around a corporate name change would provide support for the notion that revenue growth is attributed to policy growth and not to other potential factors such as price increases .",
+    "After the weights have been applied to resulting in our final sales-weighted industry-adjusted growth measure , given as :  .",
+    "The line of business diversification variable is given as :  ."
+  ],
+  "two": [
+    "13 However , there may be differential effects across the two cus- tomer types .",
+    "Differences in risk , capital , and managerial discretion that exist across the two organizational forms .",
+    "36 billion in total assets , is relatively liquid , is diversified geographically but concentrated across product lines , and tends to have a leverage ratio near two .",
+    "( 2015 ) provide evidence that there are differences between the organizational forms as they relate to the effect of name changes on revenue growth , we contend that the insurance market ( property-casualty versus life ) could also influence this relation across the two organizational forms .",
+    "Further , we ultimately document empirically that while the general results are consistent for both life and property-casualty insurers , there are non-trivial differences across the two groups ."
+  ],
+  "important": [
+    "name change and a change in revenue was found only for those firms selling primarily to individuals , this would indicate that either the insurer made a change that had some impact on the price or product , or that no substan- tial change was made , but individuals interpreted the name change signal as important.",
+    "In real estate marketing , the differences in the slope could be very important observed heterogeneity .",
+    "Leung , Ma , and Zhang ( 2014 ) suggest that design and layout are important attributes .",
+    "What , exactly , is Accreditation , and Why is it Important ?",
+    "Our discussion in section I of relevant background facts and ideas addresses a number of important issues ."
+  ],
+  "for": [
+    "The authors report that while stock insurers exhibit an increase in revenue after a name change , there was no statistical relation between name changes and revenue growth for mutual insurers .",
+    "29 We control for organizational form by including a binary variable equal to one for stock insurers .",
+    "RESULTS  Name Changes is to examine whether prior year corporate name changes influence the premium ( revenue ) growth of life insurers , similar to what prior literature has found for property-casualty insurers .",
+    "However , the question remains as to what causes this improvement in revenue for insurance companies .",
+    "We also find that while name changes are related to an increase in revenue growth , this is the case only for insurers that primarily sell to individuals ) , our findings also suggest that both stock and mutual insurers exhibit an increase in revenue growth , with a larger increase for stock insurers ."
+  ],
+  "might": [
+    "However , there are still substantial differences across the two markets to suggest that results might differ .",
+    "' ' This means that the Italian forced sales market is almost monopolized by a few agents , which might generate collusive behavior .",
+    "9 In short , the concept of criminal conspiracy is considerably , one might say dangerously , extended .",
+    "Corporate Personhood at the Philadelphia Convention  There was less discussion of corporate personhood or corporations at the Philadelphia Convention and the state ratification debates than one might expect .",
+    "Besides , if Congress should not agree upon a report of a convention , the most fatal consequences might follow ."
+  ],
+  "be": [
+    ", 2015 ) , then one cause for this increase could be greater policy sales .",
+    "This is done so that fixed effects methodology can be utilized .",
+    "We capture both observed heterogeneity that can be attributable to demographic classes and unobserved heterogeneity , which can not be directly observed .",
+    "Our method is more flexible and informative and is able to capture heterogeneity at three levels : the first is based on some a priori criteria like demographics , the second is the heterogeneity that can not be directly observed .",
+    "Our method can be used to capture heterogeneity in preference for any multi-attribute product ( which includes all consumer durables and most fast moving consumer goods ) , provided the attributes are tangible and can be easily assessed ."
+  ],
+  "our": [
+    "We formally test this relationship and present our fourth hypothesis :  H4 .",
+    "Below we provide an overview of our data and empirical methods , and we discuss the variables used to test each of our hypotheses .",
+    "18  In order to test our hypotheses , we estimate variations of the following model using our matched sample :  .",
+    "The results of the Hausman test suggest that fixed effects are preferred over random effects ; thus , we control for time-invariant effects by including firm fixed effects(di) in each of our models .",
+    "Therefore , it is not surprising that this variable is higher in our matched sample ."
+  ],
+  "m": [
+    "M.",
+    "M.",
+    "The nz variables in the Z vector represent the demographic characteristics of the m individuals .",
+    "The relationship between corporate governance mechanisms and performance might vary due to the regulatory environment and unique features of the banking ( Ungureanu , 2008 ; M&uuml;lbert , 2010 ) .",
+    "The excess of loss reinsurance policy itself requires that the insurer pay the reinsurer a premium of b , and in the event of a hurricane h , an additional reinstatement premium to reinstate the limit M."
+  ],
+  "data": [
+    "We then apply a number of screens to the data .",
+    "While these methods are very insightful , they are dependent on the researcher 's ability to get access to this data .",
+    "0 or above and 26 items are retained under the four factors which explain 60% of the variance in the data set .",
+    "6  The goals of this paper are to investigate why the various types of data and approaches are giving different answers about top wealth and income shares , and to provide preferred estimates that reflect what can macro data .",
+    "In this paper we document that resolving these conceptual and measurement differences also resolves most of the difference in wealth and income concentration estimates from the two data sources ."
+  ],
+  "years": [
+    "Next , we remove firms that do not report to the NAIC for at least two consecutive years.",
+    "Relative to the new and most widely cited top share estimates based on administrative tax data alone , our preferred estimates for both wealth and income concentration are lower and have been rising less rapidly in recent years .",
+    "The inferences about top wealth shares using capitalized income tax data ( Saez and Zucman 2016 ) indicate much higher and more rapidly growing wealth shares at the top of the wealth distribution , which has led to a substantial widening between levels of estimated wealth concentration in recent years .",
+    "Most important , the SCF finds a higher and ( since 2001 ) , which has pushed up the ratio of SCF to FA net worth in recent years.",
+    "1 percent shares have been growing much more rapidly in recent years ."
+  ],
+  "not": [
+    "Empirical Methods  An examination of the data reveals that firms that engage in a name change during the sample period are larger and are more often not change names .",
+    "Specifically , the results in Table 5 indicate that , consistent with the results in Table 2 , life insurers that sell primarily to individuals experience an increase in policy growth following a name change , but life insurers that sell primarily to businesses/groups do not experience increased policy growth .",
+    "However , in the policy growth model , the lag of the growth measure is significant and negative , suggesting that life insurers experi- encing policy growth in the prior year are less likely to undergo name changes than those not experiencing policy growth .",
+    "in multiple businesses ( or lines of business ) where the cash flows are not perfectly correlated ( Tong , 2012 ) .",
+    "Women-especially stay-at-home-moms-are likely to emphasize a spacious kitchen while working women and men do not ."
+  ],
+  "one": [
+    "percent and 99 percent levels and all independent variables are one-year lags.",
+    "Results are similar to those presented here when this assumption is relaxed and non-treatment firms are allowed to appear in the sample multiple times in a given year if matched with more than one treat- ment firm .",
+    "27Cummins and Nini ( 2002 ) also note that consumers may prefer insurers that are diversi- fied across lines of business if they prefer \" one-stop shopping .",
+    "This resulted in 832 observations for the internal study and 1,248 observations for the external one .",
+    "Meeting this particular standard , by African business schools , would be problematic in one area ."
+  ],
+  "study": [
+    "19 Below we discuss the variables employed in this study .",
+    "Best and for the purpose of this study .",
+    "In general , results are qualitatively and quantitatively similar to those presented in this study .",
+    "Since Kennedy than 10 is cause for concern , we conclude that multicollinearity is not an issue for the models esti- mated in this study .",
+    "We asked consumers to enumerate this through a pre-study."
+  ],
+  "these": [
+    "20 Below we provide an overview of each of these dependent variables .",
+    "These additional options that exist within life policies , combined with the poten- tial for claims payments to exceed predicted amounts , require that insurers maintain a level of liquid assets that will allow the firm to meet these potentially unexpected financial obligations .",
+    "46 Given this potential , we also examine the impact of a prior year name change on policy lapse rates in an attempt to disentangle these effects47 .",
+    "To some extent , the inclusion of firm fixed effects should control for some of these unobservable factors .",
+    "In the following paragraphs , we briefly describe these methods ."
+  ],
+  "t": [
+    "21 Following Epermanis and Harrington ( 2006 ) , growth for each line of business is calculated as :  DRevenuei , ) - ln ( Premiumsi , j , t- 1 ) ( 2 )  for insurer i , in line of business j , in year t.",
+    "Similar to the firmspecific growth rate , the industry growth rate is calculated for the eleven lines of business and is given as :  DRevenuej , t= ln ( Premiumsj , t ) - ln ( Premiumsj , t- 1 ) .",
+    "( 3 )  ( 3 ) Next , we calculate the difference between each firm-specific line-ofbusiness growth rate and the industry-specific growth rate , where :  AdjustedDRevenuei , j , t= DPremiumsi , j , t- DPremiumsj , t.",
+    "22 We obtain the number of policies in force and the number of policies that were lapsed each year by extracting that information from the \" Exhibit of statements , and policy change is calculated as :  DPoliciesi , t = ln ( Policies in Forcei , t ) - ln ( Policies in Forcei , t= 1 ) ( 7 )  for insurer i in year t .",
+    "( 8 )  for insurer i , in line of business j , in a given year t ."
+  ],
+  "j": [
+    "( 4 )  ( 4 ) Once we have calculated the adjusted growth rate , we then apply a weight to each firm-line combination , where the weight is equal to the proportion of firm-specific premiums that are attributed to a particular line of business j .",
+    "When a full analysis of heterogeneity in responses was made , a variety of candidate averages emerged to describe the ' average ' person , and the long standing edifice of the James J.",
+    "* As both a historical and contextual note , AACSB had a total of 371 accredited schools in 2000 when John J.",
+    ", N , Fjt is the jth risk factor for j = 1 , .",
+    ", K , and &Aacute;j represents the price of the covariance risk of each asset with the j th risk factor ."
+  ],
+  "where": [
+    "( 5 )  where :  .",
+    "( 7 )  where hit - ( hi1t , .",
+    "( 8 )  where - ( 1 , .",
+    "where :  .",
+    "where :  ."
+  ],
+  "other": [
+    "In addition to the name change variable , we include several other control variables , discussed below .",
+    "life insurance market , we also present the number of name changes that occurred at the same time as some other corporate events.",
+    "This indicates that while other corporate events can be associated with the occurrence of a name change , name changes frequently occur in the absence of any other contemporaneous events .",
+    "Taken together , the evidence presented in Figure 1 suggests that name changes occur on a relatively frequent basis in the life insurance industry and they generally occur outside of other major corpo- rate events .",
+    "If the occurrence of other contemporane- ous corporate events is the cause of the increased revenue growth that has been observed in the previous models , then the coefficient on the NameChange variable should be statistically insignificant ( or the The results presented in the final column in Table 2 provide further evidence that prior-year name changes are associated with increases in revenue growth , even after accounting for other corporate events ."
+  ],
+  "if": [
+    "The life insurance industry is characterized by long-term contracts in which the insurer may not be required to make a claims payment until decades after the inception of the policy , if ever .",
+    "Alpha if item thirteen is deleted from factor three shows that if item thirteen ( R3.",
+    "Moreover , Alpha if item fourteen deleted from factor three shows that if item fourteen ( R3.",
+    "Furthermore , it also shows that if item nineteen ( R3.",
+    "The value in the column labelled of the items would increase the reliability if deleted ."
+  ],
+  "more": [
+    "The increased risk pool should allow the firm to more accurately predict future losses if the pool consists of relatively homoge- neous individuals , while writing across additional lines and states should allow the firm to take advantage ) is associated with a reduction in risk , then one may anticipate that consumers will prefer policies from more diversi- fied firms.",
+    "( 2015 ) argue that of stock insurer management to better utilize managerial discretion in increasing premium while mutuals are more constrained .",
+    "If the name change signals that the insurer may enter new lines or emphasize certain lines more than they had previously , it is likely that mutuals will be less constrained in taking advantage of these opportunities than would mutuals writing in the more diverse property-casualty market .",
+    "Such individuals are at a stage in their life at which their families have multiple vehicles and need more parking spaces .",
+    "even more ."
+  ],
+  "first": [
+    "We control for firm age by including the age of the firm , based on when the firm was first established .",
+    "A high correlation ( off-diagonal ) indicated the respondent has sensitivity to the second attribute because of any change in the first .",
+    "The answer is as simple as it is logical : take care of the basic needs on the continent , first .",
+    "Of the completed questionnaires , 80 were completed and collected after the first delivery .",
+    "The first factor explains 18."
+  ],
+  "group": [
+    "Group Membership .",
+    "Life insurers can either be organized as single unaffiliated firms or as members of a group .",
+    "Given the differences that exist between affiliated and unaffiliated firms , we control for group membership by including a binary variable equal to one for firms that are members of a group .",
+    "Finally , the overwhelming majority of the life insurers in the sample are of the stock organizational form while over 80 percent of the firms are members of a group .",
+    "Given that a large proportion of the sample is composed of firms that are members of groups , we take a closer look at whether name changes occur simultaneously among group members."
+  ],
+  "analysis": [
+    "30 However , it should be noted that the authors used the entire available sample in their analysis while we utilize a matched sample in our analysis .",
+    "He uses an attribute-by- attribute trade-off conjoint analysis .",
+    "Louviere ( 1979 ) uses full-profile conjoint analysis .",
+    "Molin , Oppewal , and Harry ( 2001 ) successfully capture heterogeneity in conjoint analysis methods by obtaining the estimated parameters of each family in a home-buying situation and subsequently treat them as the dependent variables in multiple regression analysis .",
+    "7 were removed from the analysis ."
+  ],
+  "has": [
+    "We also find that the average firm has approximately $6.",
+    "However be increasing when in actuality , lapses are declining , which creates the appearance that the number of policies sold has increased.",
+    "However , for the purpose of measuring top income shares , we choose to include realized gains because they do constitute a flow of current resources over which the family has control .",
+    "Although social capital and the fraction of children living with single parents are more strongly correlated with our measure of income inequality , including these variables in the model similarly has little impact .",
+    "Introduction  Stock market competition and integration have been an issue of interest in past decades that has recently intensified ."
+  ],
+  "through": [
+    "Life Insurance Industry  Prior brief overview of name change activity in the life insurance market for the period from 1996 through 2012 .",
+    "The code implements HB regression through Gibbs sampling .",
+    "Depending on the performance of the reference entity at the time of a counterparty default , the CDS contract may be more or less valuable than the original CDS and may both holders of a CDS contract face the risk of loss in two ways : ( 1 ) through the performance of the reference entity and ( 2 ) through potential counterparty default .",
+    "With our data , we were also able to capture the beginning of contract clearing through ICE .",
+    "Furthermore , underwriting practices grossly inflated actual property values through several mechanisms."
+  ],
+  "another": [
+    "32 On average year when another major corporate event takes place .",
+    "It is just the type , depth and breadth of such global footprints that may differ from one university to another .",
+    "That is , capital gains are not tied directly to current production ; nor do they constitute a transfer from one sector to another .",
+    "Rather than focus on the aggregate net exposure of each counterparty category with respect to itself , with respect to one another .",
+    "Ability , a cognitive dimension of trustworthiness ( Erdem &amp; Ozen , 2003 ) , refers to task and situation specific skills and competencies that an individual possesses ( Mayer et al ' task and situation specific skills ' since an individual may have superior skills and competencies in one domain , but not another ."
+  ],
+  "is": [
+    "The sample average is five percent .",
+    "For those insurers in which at least one group member changes its name ( other than that firm ) , the average premium growth for the other members of the group is 6.",
+    "When we examine separately firms in which only one member of the group changes its name , the premium growth rate is approximately 5.",
+    "In both the premium growth and growth in lapse rates models , neither variable is significant .",
+    "Freybote and Fruits ( 2015 ) show that consumers tend to demand discounts when there is media coverage of an environmental if it is unrelated ."
+  ],
+  "same": [
+    "We also examine the subset of firms in which all firms in the group changed names in the same year .",
+    "In addition to the statistical issues , there is also an important conceptual reason for considering both wealth and income concentration in the same paper .",
+    "In general , the tests fail to reject the null hypothesis that the means for participants and sampled nonparticipants are the same.",
+    "The importance of showing that the SCF captures families at the very top is , in one sense in another sense , it is just a corollary to the fact established later in the paper that , after being made conceptually equivalent , top wealth and income shares in the SCF and administrative tax data are effectively the same .",
+    "The quantitative effect of moving from the SCF Bulletin income measure to the more restrictive market income measure is to move the income concentration estimates further away from the preferred income measure , and for the same reasons ."
+  ],
+  "than": [
+    "5 percent , while when multiple group members engage in name changes , the premium growth rate is more than 12 percent .",
+    "38 We also find that larger firms have lower levels of premium growth than smaller firms .",
+    "If larger firms have greater market share , these firms may have fewer growth opportunities than smaller firms .",
+    "The method can capture the part-worths at an individual level too ( sampling gives more robust parameter estimates ( Arora , Allenby , and Ginter , 1998 ; Allenby and Rossi , 1999 ) than ordinary least squares estimation .",
+    "Fifteen responses that had a correlation of less than 0."
+  ],
+  "that": [
+    "( 2015 ) provide evidence that name changes in the property-casualty insurance industry are associ- ated with increased revenue growth ; however , they do not provide further evidence on the source of that revenue growth .",
+    "The Bayesian approach specifies that :  .",
+    "* Teaching and Learning Scholarship ( TLS ) : is now characterized by AACSB ( 2013 ) as the type of intellectual activity that develops and advances new understanding , insights , and teaching content and methods that impact learning behavior .",
+    "Information about the profitability of each customer makes it possible for the company to make decisions about improving , cancelling , or adding a certain activity and about the management of those activities that cause customer profitability .",
+    "The population coverage for administrative income tax data is necessarily limited to the population that files income taxes ."
+  ],
+  "model": [
+    "Additionally , the coefficient on the NameChange variable is nearly identical to the coefficient on the NameChange variable in the full-sample model .",
+    "These results are presented in Table 3 and are consistent with those discussed above for all variables included in the model .",
+    "In this model specification , the NameChange variable is significant in Model 1 and Model 4 , but not in Model 2 ( for insurers focused on individual lines ) and the adver- tising variable is significant and positive in all models but Model 3 .",
+    "We capture consumer heterogeneity using the hierarchical Bayesian regression model .",
+    "The hedonic property model was first proposed by Rosen ( 1974 ) as a regression-based model ."
+  ],
+  "an": [
+    "As premiums increase , firms experience surplus drain , which has the effect of reducing surplus while increasing premiums , both of which would result in an increased leverage ratio .",
+    "One of the primary benefits of examining this issue within the life insurance industry is that while prop- erty-casualty insurers do not report information on the number of policies in force in a given year , life insurers are required to report this information to the NAIC on an annual basis .",
+    "We study the elite Indian real estate consumers ' preferences for the internal and external features of an apartment .",
+    "The results of both methods are reported on an aggregate basis .",
+    "Rosen ( 1974 ) employs the hedonic property model to regress the price of a real estate with its attributes in order to find customers ' willingness-to-pay for an attribute ."
+  ],
+  "both": [
+    "Across both the stock and mutual models , we again find that the coefficient on the NameChange variable is positive and significant , indicat- ing that name changes are positively associated with increases in revenue for both organizational forms .",
+    "Price was kept common in both .",
+    "Both .",
+    "B , a partner of a non both services , but not many companies are clients of both .",
+    "Default rates are substantially higher given increases in the average turnover rate , the average vacancy duration , or both ."
+  ],
+  "v": [
+    "1248 v.",
+    "Our model also captures unobserved heterogeneity through the covariance matrix V.",
+    "For instance , in pathbreaking work on the measurement of mobility in the United States , Raj Chetty and others ( 2014a ) report that the strongest correlates of high mobility areas are ( i ) less residential segregation , ( ii ) less income inequality , ( iii ) better primary schools , ( iv ) greater social capital , and ( v ) greater family stability .",
+    "The present discounted value of the future utility stream is thus deterministic and is captured by V low .",
+    "V."
+  ],
+  "i": [
+    "The results in Table 5 provide the first evidence of a source of the revenue increases that are exhibited in this study and in prior literature ( i.",
+    "37While not reported , we also re-estimated the models across business focus ( i.",
+    "The Gibbs sampler can therefore be used by drawing i i2 and then i2 i .",
+    "Thus , the Gibbs sampler can be constructed by first drawing the regression parameters i , V-and then drawing the prior parameters conditional on i , i2 .",
+    "I."
+  ],
+  "which": [
+    "However , when re-estimating the models after removing observations with studentized residuals that are greater than 4 or less than -4 ( Choi and Weiss , 2005 ) , we find a positive and significant coefficient on the NameChange variable for the sample of firms with an individual focus , which lapse activity .",
+    "statements regarding the minimum standards or requirements for programs which .",
+    "3% of the total surveyed stock is residential ( 12,187,698 units ) , out of which 51.",
+    "The primary advantage of this database is its comprehensive list of originators and CMBS syndicators , which eliminates originator bias .",
+    "4 percent for the RHS , which insured $17 billion ."
+  ],
+  "new": [
+    "Similarly , in 1997 , First Transamerica Life Insurance Company became Transamerica Life Insurance Company of New York .",
+    "They have been replaced , from April 2013 going forward , by intellectual contributions terminology that was in use in the 1990s , namely :  * Basic or Discovery Scholarship ( BS ) : which AACSB ( 2013 ) says is aimed at generating and communicating new knowledge and understanding and/or development of new methods .",
+    "exchanges towards concentration is periodically reversed when new technologies arise .",
+    "5% above the average house prices in the same area by examining 5,344 transactions registered in Christchurch ( New Zealand ) .",
+    "Then , 10 days after , the court declares the winner , who pays the price and the property is delivered to the new owner ."
+  ],
+  "value": [
+    "The authors find that name changes generally increase fluency and that these increases in fluency are associ- ated with increases in firm value .",
+    "We found that respondents buying properties in apartment complexes also value parking .",
+    "pD should have a positive value .",
+    "AACSB-International : A Conceptual and Historical Note  AACSB 's mission is to advance quality management education worldwide through accreditation , thought leadership , and value-added services ( AACSB , 2013 ) .",
+    "Moreover , Brewton and Schiemann ( 2003 ) suggested that the variations between financial performance are due to the difference in mechanisms for managing customer value ."
+  ],
+  "only": [
+    "However , we eliminate any duplicate matches so that each non-treatment firm appears in the sample only once .",
+    "The hedonic regression methods and choice modeling methods described above do not allow for heterogeneity and capture only aggregate effects .",
+    "According to Fernandes ( see Hodgson and Clausen , 2012 ) , only 13 ( 3.",
+    "However , the fact that some new employee contributions ( employee-paid Social Security taxes ) to retirement plans are still counted ( in the micro data ) as part of nonretirement income means that the adjustment is only partial .",
+    "Although there are many more tax units than there are families , there are many families ( low-income and retired ) where no individual or couple is the 161 million estimated tax units in 2012 , only 145 million actually filed tax returns ."
+  ],
+  "have": [
+    "We recognize the potential for these other events to impact the results of our empirical analyses and re-estimate each of our models to account for the potential effect that contemporaneous events could have .",
+    "4170002 Headnote  Abstract Consumers have dissimilar preferences .",
+    "In our modeling , we have assumed conjugate priors .",
+    "Nine items have communality values above .",
+    "The remaining fourteen items included in the analysis have communality values above ."
+  ],
+  "health": [
+    "For those firms identi- fied as belonging to a group but in which only one life insurer appears in the sample , the other group members are property/casualty and/or health insurers .",
+    "\" The value of privacy and individual beliefs and \" customer \" preferences for privacy and modesty , therefore , may form the basis of a BFOQ , especially in the health care field .",
+    "\" In the case of pilots , Bruecker mandatory retirement age has been upheld because \" the Court recognized that a pilot 's good health is critical to the safety of the passengers and that there is no better way to ensure the health of pilots than by the use of age as a proxy for good health .",
+    "* Utilize the privacy component of customer preference to justify a gender BFOQ , especially in a health care setting .",
+    "* Underscore the therapeutic nature of the position to justify a gender BFOQ in a health care setting ."
+  ],
+  "among": [
+    "Real estate researchers have acknowledged that needs and wants differ among consumers .",
+    "Not shown in Table 2 but still equally significant is the fact that 18 of the world 's 20 poorest per capita income countries are also , in fact , in Africa ( see , among others , Holland , 2008 ) .",
+    "The goal of the SCF is to survey the entire noninstitutional population-using a standard , nationally representative , area probability sample-along with the \" list \" sample derived from administrative tax returns , designed to correct for low survey response rates among wealthy families.",
+    "We propose that one channel through which higher rates of income inequality might lead to lower rates of upward mobility is lower rates of human capital investment among low-income individuals .",
+    "Nor does the inclusion of these measures alter the conclusion that greater lower-tail income inequality leads to higher rates of high school dropout behavior among low-SES individuals ."
+  ],
+  "may": [
+    "For instance , one can expect elderly customers to prefer lower floors in an apartment while younger customers may prefer higher floors .",
+    "They may charge higher execution costs or become unwilling to liquidity may decline and the price fluctuation may increase .",
+    "This result suggests that the off-NYSE markets may provide liquidity selectively .",
+    "Green Street Advisors report that average commercial property prices fell nearly 40% between August 2007 and May 2009 .",
+    "We argue that sentiment of supply-side players , who also have knowledge and understanding of the demandside conditions , may contain significant feedback effects ."
+  ],
+  "states": [
+    "This approach has been used to identify houses with a high concentration of radon across many counties in United States ( Gelman , 2004 ) .",
+    "John Fernandes , who retired in 2015 after 15 years as President and CEO of AACSB-International , pointed out in an interview with Hodgson and Clausen ( 2012 ) that prior to 2003 , AACSB 's accreditation standards were built for the structure of business schools in the United States .",
+    "However , neither data set is able to provide a full accounting of total personal income in the United States .",
+    "\" Using data on the 50 states , we construct a Great Gatsby Curve for the United States .",
+    "Figure 3 displays this relationship across states ."
+  ],
+  "using": [
+    "Next , we explain our approach to modeling using Bayesian hierarchical regression .",
+    "In conjoint analysis , consumer rating / ranking data are gathered from consumers on a set of profiles ( each profile representing an offering-a bundle of attributes ) that are carefully designed using experimental design .",
+    "These profiles are designed using fractional factorial design .",
+    "A second area for future research could extend our current study and the research by Yourstone , Kraye , and Albaum ( 2010 ) to compare overall performance based on the unlimited versus the restricted attempts approach when using courseware assisted assessment methods .",
+    ", using Eq ."
+  ],
+  "also": [
+    "At the same time , choice-based conjoint models also evolved .",
+    "Our method not only gives robust estimates of observed heterogeneity by addressing the issue of the sparseness of data but also captures unobserved heterogeneity .",
+    "Once the respondent finished the task of arranging the 16 cards and answered the demographic questions , he or she was asked to arrange these four cards also .",
+    "In addition , how the value that a company obtains from its customers , represented in customer profitability , can be managed to improve profitability is also considered .",
+    "Although the availability of all five of these data sets provides a unique opportunity to generate a large sample of high school students and to follow them through the completion ( or not ) of their degree , their combination also presents challenges ."
+  ],
+  "from": [
+    "Another set of methods , called conjoint analysis and developed by Green and Srinivasan ( 1978 , 1990 ) , models consumer choice from survey-based data gathered from consumers .",
+    "The results are based on 1,248 observations from 78 respondents .",
+    "These are based on 832 observations from 52 respondents .",
+    "They display the lowest disutility from price .",
+    "Including such attributes may result in incorrect responses from respondents ."
+  ],
+  "different": [
+    "The rating /ranking is regressed against the attribute levels to find consumers ' preferences for different attribute levels .",
+    "Hsee and Zhang ( 2008 ) show that developers and consumers value attributes in different ways .",
+    "For instance , Reed and Mills ( 2007 ) and Wu ( 2010 ) show that consumers place importance on different features .",
+    "Exhibits 11 and 12 can be used to predict preferences for any combination of attributes and levels for different customer groups .",
+    "No obvious pattern is evident among the middle-SES boys in different inequality categories either ."
+  ],
+  "high": [
+    "Hamid , Iman , and Gan ( 2012 ) use a full-profile conjoint with 18 profiles to study the middle- to high-income residential property consumers .",
+    "A high correlation represented high validity .",
+    "This segment has lower utility for features like a utility area and high-end fittings .",
+    "66 ) is also moderately high .",
+    "This is so-AACSB ( 2013 ) argues-because the very process of accreditation requires members to focus on quality improvement , clarify their missions and strategies , and develop high-quality faculty rosters ."
+  ],
+  "it": [
+    "Hedonic regression entails a large requirement of data on price and attributes , collected from multiple sources ; however , a carefully administered conjoint analysis study on randomly selected subjects greatly reduces it .",
+    ", before they buy it .",
+    "Exhibit 13 clearly shows that while most customers prefer their property on the beach , some are averse to it .",
+    "For instance , one of our findings points out that while both men and women prefer location , women are more sensitive toward it .",
+    "Factor one related to the financial indicators of customer satisfaction , it explained 18."
+  ],
+  "each": [
+    "The parameters of this estimated utility function indicate the ( part-worth ) utility the respondent derives from each attribute characterizing potential housing .",
+    "They relate these parameters to the socioeconomic status of each family .",
+    "They first calculate the parameter values for each attribute for each family .",
+    "( 3 )  Through this equation , we specify a normal prior with mean zi for each .",
+    "Both studies had 16 cards each ."
+  ],
+  "cases": [
+    "This also helps them study extreme cases .",
+    "This makes sense because the price is lower in those cases .",
+    "To first understand how the reinsurance is used , we can compare the three cases .",
+    "001 ) , wine cases sold ( = .",
+    "Jennings , The Caroline and McLeod Cases , 32 aM ."
+  ],
+  "do": [
+    "Wu ( 2010 ) shows that women value proximity to workplace more than men do , and men value safety in a neighborhood more than women do .",
+    "It is , largely , the only thing they do .",
+    "( 5 )  The variance ratios do interaction terms .",
+    "This suggests that market conditions than do loan characteristics .",
+    "a greater value on the mortgage than do lenders ."
+  ],
+  "many": [
+    "This work is based on the hierarchical information integration shown in Louviere and Timmermans ( 1990 ) and Oppewal , Louviere , and Timmermans ( 1994 ) , which requires one to assume that individuals process information in a hierarchical manner in decision-making situations that involve many attributes .",
+    ": Given the foregoing statistics and our understanding of general socio-economic parameters , the logical question is : why would an African Business School by implication ) spend money on external global accreditation recognitions instead of on the more pressing/needed infrastructure such as renovating dilapidated student hostels and retooling libraries in many African universities ?",
+    "15 Tax units are frequently families , but tax-filing rules often split one family into many tax units .",
+    "Despite these positive signals , the country 's economy still suffers from many problems .",
+    "The problem is men hold the majority of executive positions , which influences the hiring and promotion of many females ."
+  ],
+  "those": [
+    "Their work provides a means to measure preferences among higher-level benefits and then again for the features that drive those benefits .",
+    "Higher variation between two attributes ( covariance ) indicates that survey respondents vary those attributes together .",
+    "As with incomes , however , it is important to consider what may be driving the estimates of top wealth shares before recommending policies to address those trends .",
+    "The approach for distributing future DB claims in our preferred top share estimates involves using the survey reports of wages , current DB coverage , and years in a plan for those still working , and current benefits for those already receiving benefits.",
+    "In and estimate a model that is otherwise equivalent to those estimated above ."
+  ],
+  "work": [
+    "Molin , Oppewal , and Harry ( 2001 ) utilize this premise in their work .",
+    "Jesse Bricker thanks Olympia Bover and the Bank of Spain for hospitality at the early stages of this work .",
+    "He hypothesizes that the lack of exposure to mainstream , middle-class role models plays 1991 ) provide an early example of nonexperimental empirical research , suggesting significant neighborhood peer effects for criminal behavior as well as the likelihood that youth are out of school and out of work .",
+    "We recommend that firms attempt to work toward the creation of a pluralistic and inclusive work culture .",
+    "For example , how organizations define and evaluate leadership capabilities and competence are based largely upon male-dominated traits ; moreover , societal presumptions about the role of men and women continue to persist where women are viewed as still primarily responsible for household matters and not matters of work ."
+  ],
+  "out": [
+    "They then regressed these against the socioeconomic status variables of the family to bring out heterogeneity across demographics .",
+    "We define U low to be the level achieved by a student who does drop out .",
+    "This corresponds to a leading view of dropout behavior as a process rather than a discrete event : A student begins to demonstrate the obstacles to graduation feel overwhelming and the student drops out ( Rumberger 2011 ) .",
+    "Controlling for the same set above , and controlling for a state fixed effect , the data indicate that low-SES students in the highest and middle-range inequality states are 25 to 29 percentage points less likely to cite poor grades as a reason for dropping out .",
+    "\" Other well-measured \" includes most of manufacturing ( except computers and electronics equipment ) , agriculture , mining , utilities 2002 ) also considers wholesale and retail trade as well measured , but we have broken that out separately ."
+  ],
+  "part": [
+    "Xi is the matrix of attributes and i is the matrix of parameters / part-worths .",
+    "The relatively large size of individual trades , coupled with low transaction volume , is more consistent with trading levels in fixed-income markets , which remain over the counter for the most part .",
+    ": A Translation from Zenrin Kokuho-ki , the Cambridge Manuscript , ' ' part 2 , 279 .",
+    "75 The fact that UNCLOS only provides for the title will be important in assessing the continuing relevance of these historic doctrines in Part Five .",
+    "Blum notes that international tribunals have only mentioned vital interests in conjunction with evidence of effective sovereignty based on the above four-part test."
+  ],
+  "studies": [
+    "Fractional factorial design is used to create the profiles for the two studies .",
+    "The following analyses such studies .",
+    "The following are examples of such studies .",
+    "Conversely , the current study was conducted using a questionnaire instrument to collect non-financial data and examine the relationship between such variables , which has not been addressed in previous studies .",
+    "However , the relationship between each variable and profitability are empirically examined by previous studies ."
+  ],
+  "were": [
+    "In addition to the 16 cards in the main deck , four additional \" hold-out \" cards were provided .",
+    "In 2003 , AACSB introduced a new set of accreditation standards that were operational until 2013 .",
+    "Care was taken to ensure that questions covered all theoretical constructs contained in the proposed model and that negatively worded items were avoided .",
+    "The dependent variable is categorized into the following three levels :  Slight improvement in profitability ( 5% ) = category 1  Moderate improvement in profitability 10% = category 2  High improvement in profitability 15% = category 3  In building ordinal regression models for revenue variables , the five link functions provided by the SPSS program were tried .",
+    "An older but still valid case law authority is the federal district court decision 1978 ) where the court upheld precluding a male nurse 's aide from working in a retirement home where 22 of the 30 guests were female ."
+  ],
+  "was": [
+    "The respondent profile was 66.",
+    "For the mobility measure taken from Chetty and others ( 2014b ) , year reflects birth cohort ; for the mobility measure taken from Lee and Solon ( 2009 ) , year reflects the year in which the son 's income was recorded .",
+    "The vector E captures environmental factors , including relevant public policies and labor market conditions in the state and year in which the respondent was age 16.",
+    "Still , these test scores provide information about cognitive ability at the time the examination was taken .",
+    "According to Bessembinder ( 2003 ) , in June 2000 the market share of NYSE was 84."
+  ],
+  "people": [
+    "6% married people ; 50.",
+    "033 billion people .",
+    "4 million people ) , Singapore ( 5.",
+    "7 million people ) , Spain ( 47.",
+    "033 billion people , the continent is home to some 15% of the world 's 7 billion people ."
+  ],
+  "into": [
+    "The attributes ( including price ) were dummy-coded into independent variables ( X ) .",
+    "This work also demonstrates how unobserved heterogeneity can be captured and incorporated into product design .",
+    "In addition , it helps the company to determine the best strategy for dealing with customers who cause permanent losses to the company and turning non-profitable customers into profitable ones .",
+    "Adjusting income concepts and the unit of measurement generally also brings estimated income shares in the administrative tax data ( Piketty and Saez 2003 ) and the SCF into agreement .",
+    "One aspect of the high-frequency trading that is under-reported algorithmic trading divides orders into smaller pieces ."
+  ],
+  "such": [
+    "Exhibit 5 shows an example of one such posterior .",
+    "When such research papers are ready for submission to top-tier journals that charge submission fees as high as $50 per paper , their counterparts in Western universities can easily pay such submission fees .",
+    "Secondly , determining the most appropriate approach that used in managing such driver .",
+    "Managing the Value that the Company Obtains from the Customer  It can be suggested that the value that the company obtains from customers is represented by the profits gained from dealing with such customers .",
+    "As mentioned above three items should be dropped from the analysis , in order to confirm that the analysis of reliability Alpha if items are deleted is computed for factor three which included such items ."
+  ],
+  "based": [
+    "Gelman , Meng , and Stern ( 1996 ) , Spiegelhalter , Best , Carlin , and van der Linde ( 2002 ) , Gelman ( 2003 ) , Gelman , Carlin , Stern , and Rubin ( 2003 ) , and Bayarri and Berger ( 2004 ) suggest a deviance information criteria ( DIC ) be used in the case of Bayesian-based regression methods .",
+    "For business schools throughout the world , there are a number of benefits to gaining accreditation through AACSB-International , the Tampa-based global accrediting agency .",
+    "The remaining difference in top wealth shares is more about trends than levels , given that both the top 1 percent and the gross capitalization estimates , relative to even our constrained SCF-based estimates .",
+    "That is , when ( more realistic ) alternative rates of return are used in gross capitalization , the growth at the very top looks very much like the SCF-based top wealth share growth rates shown above .",
+    "We investigate the source of divergence in top income growth rates and levels by once again constraining the SCF to conceptually match the administrative tax-based estimates ."
+  ],
+  "at": [
+    "All of the estimates were statistically significant at 95% .",
+    "A large number of Indian women do not work and are stay-at-home mothers ( Thomas , 2013 ) .",
+    "90 ( Source : World Bank at : http : / / wdi.",
+    ", the top six business schools are Harvard , Wharton at the University of Pennsylvania , Kellogg at Northwestern University , Stanford University , Booth at the University of Chicago , and Sloan at MIT .",
+    "A 2013 World Bank publication on Africa titled \" The Little Data Book on Africa , 2012/2013 \" estimated South Africa 's gross domestic product ( GDP ) at $363."
+  ],
+  "women": [
+    "Traveling from one place to another in India is difficult for women .",
+    "A real estate salesperson should highlight locational advantages when dealing with women .",
+    "* Do not exclude a person from a job based on gender-related , stereotypical assumptions about the roles of men and women .",
+    "corporations were African American women .",
+    "African American women hold 3."
+  ],
+  "would": [
+    "A large value would mean greater heterogeneity .",
+    "Why would African business schools seek AACSB accreditation ?",
+    "There is simply no way that a typical faculty member would spend 12.",
+    "Department of Housing and Urban Development-was predicated on the notion that helping lowincome families move out of high-poverty neighborhoods would yield measurable economic self-sufficiency benefits.",
+    "It is important to note that audit firm characteristics ( such as separating services by divisions , advanced technology , more expert , better management , control from headquarter ) would support auditor independence ."
+  ],
+  "even": [
+    "The variance of the feature \" proximity to the beach \" is even larger ( 14.",
+    "Institutional factors may be having an impact across factors of production generally ( capital versus labor ) and within factors ( managerial versus production labor ) , such that those with the highest incomes are able to capture even higher future shares .",
+    "Greater educational attainment is a key pathway along which an individual from a low-income background can move up in the income distribution and obtain a middle-class life , or potentially even higher .",
+    "Correlations in the 90/50 ratio are even higher .",
+    "Because the NYSE has a different market microstructure than NASDAQ , the impact of the increasing competition from the electronicbased markets on trading quality for NYSE stocks may be more pronounced and could be even negative ."
+  ],
+  "some": [
+    "Unobserved heterogeneity in the internal features study also reveals some interesting findings .",
+    "5 billion while the GDP for Sub-Saharan Africa ( SSA ) was some $1,117.",
+    "The dearth of AACSB-accredited business schools in Africa begs the obvious observation and question : for a continent with 56 countries ( as recognized by the United Nations ) , some 1.",
+    "To illustrate just how slow-some would say disappointing-Africa 's AACSB accreditation progress has been , consider the following contexts :  * The African continent has some 56 recognized countries ( including the newly independent nation of South Sudan ) with a total continental population estimated by World Population Statistics ( 2013 ) at some 1.",
+    "As the World Population Statistics ( 2013 ) points out , at some 11."
+  ],
+  "between": [
+    "We observe a high negative covariance between smaller houses and good view ( covariance is between 3.",
+    "The covariance between these plans and excellent other features is high and positive ( covariance is between 1.",
+    "There is a moderately high but negative covariance between smaller plans of 2BHK and utility area ( covariance between 1.",
+    "The total correlation for all items ranged between .",
+    "The total correlation for all items is ranged between ."
+  ],
+  "power": [
+    "While individuals buying smaller plans do not seem to care so much for the view , they do expect features like power backup , garbage disposal , piped gas , etc.",
+    "Conversion as per Purchasing Power Parity $1 Rs.",
+    "Before 1997 , although it was still subject to the competition of regional exchanges and NASDAQ , the NYSE was able to maintain the monopolistic power .",
+    "However , the challenge is the slow pace in achieving a critical mass of women in top jobs with power .",
+    "Consequently , the company 's profits will be allocated to external shareholders not holding a company 's management control power ."
+  ],
+  "them": [
+    "Utility area takes space from the other rooms , making them smaller .",
+    "After one week , companies which had not replied within the first week were phoned to remind them .",
+    "Estimates for the other two outcomes ( receiving a GED or graduating from high school ) are too imprecise to determine whether the increase in dropping out for boys came mainly from either of them .",
+    "However , these patterns do not necessarily mean that low-SES girls are not affected by the economic disadvantage or conditions around them .",
+    "Although we do not dispute this interpretation , our model would additionally suggest that an important reason why the program was successful for younger children is because it changed their perceptions of what would be possible for them ."
+  ],
+  "process": [
+    "Conjoint analysis-based models of choice capture preferences by using information from a carefully designed survey that mimics a customer 's selection process .",
+    "Second , the accreditation stamp of approval comes not from the institution itself , but is rather earned from a peer-review process .",
+    "In April 2013 , AACSB-through the AACSB Accreditation Council-adopted a new edition of standards following a two-year Blue Ribbon Committee process .",
+    "The most visible evidence , at least on paper , that a school does this is the presence of a Strategic Plan , complete with a Vision , Guiding Principles or \" values \" statements , Mission , Macro ( big picture ) Goals , Objectives that operationalize the macro goals-that is , further define or clarify the goals-Action Steps ( or Strategies for achieving each objective ) , Financial Strategies , Responsible Parties , Key Performance Indicators ( KPIs ) , as well as a plan for implementation of the entire strategic management process .",
+    "One set of costs involves the fees paid to AACSB for the pre-accreditation and initial accreditation process ."
+  ],
+  "how": [
+    "By incorporating demographics in a hierarchical fashion , we show how preferences vary .",
+    "The question is : How much larger ?",
+    "A second contribution is the development of an empirically grounded theory about how institutional arrangements affect performance .",
+    "( 2 How.",
+    "The Rise of Religious Programs in the United States Prison System , 52 How ."
+  ],
+  "can": [
+    "Capturing these individual variations and techniques like cluster analysis , can help create post-priori benefit segments .",
+    "Alternative methods such as choice-based conjoint analysis or trade-off table conjoint analysis are also limited by the number of responses they can solicit .",
+    "This enables hotels to determine the amount of profitability generated from each customer and to use the information to determine the maximum discount or service that the hotel can offer .",
+    "But they could also alter the student 's perception that going to college is the sort of activity that he or she can achieve .",
+    "To improve rates of upward mobility , economically disadvantaged youth need reasons to believe that they can achieve economic success ."
+  ],
+  "courts": [
+    "Our results , property is not good , customers start to desire recreational facilities like clubs , swimming pools , tennis courts , etc.",
+    "Along with this substantive modernization , court systems in the GCC have undergone important reforms , especially since tribunals and quasijudicial administrative bodies alongside Shari'a courts.",
+    "63 In Bahrain , Qatar , Oman , and the UAE , Shari'a courts exist .",
+    "\" 74 More promisingly still , there is some evidence that some of the decisions of the Kuwait constitutional court granting gender equality might have had a trickle-down effect on administrative courts.",
+    "\" 163 When government officials across the GCC were interviewed , their responses were that there were no legal obstacles to using UN human rights treaties in domestic courts ."
+  ],
+  "c": [
+    ", Reed and Mills , 2007 ; Koklic and Vida , 2009 ; Baranzini and Schaerer , 2011 ; Hott , 2012 ) or ; Hamid , Iman , and C.",
+    "C.",
+    "C .",
+    "C .",
+    "C."
+  ],
+  "so": [
+    "In reality , this may not be so .",
+    "African lecturers simply can not do so .",
+    "The shares of the first three are very similar , and the share of fixed-interest assets is also similar through 2001 or so .",
+    "For example , VCRs , cell phones , and other similar products were added to the consumer price index ( CPI ) a decade or so after by 80 percent or so ( Gordon 2015 ; Hausman 1999 ) .",
+    "Why are the two series so similar ?"
+  ],
+  "they": [
+    "Although , philosophically , the classical or \" frequentist \" approach to statistics may criticize the use of subjective knowledge in the model through the use of priors , Bayesian approaches are becoming popular because of the flexibility they provide .",
+    "Furthermore , because of their inefficiency , auctions are more conducive to entry , and they usually generate higher expected revenues .",
+    "5% of the workforce in Fortune 500 companies ; they hold 9.",
+    "Women must know what they want .",
+    "The losses suffered by the victims of the original defaults may be so severe as to force those victims into financial distress , which harms those who have entered into financial contracts with them-including their creditors , and the counterparties to derivatives on which they owe money ."
+  ],
+  "international": [
+    "Introduction  Any discussion linking AACSB and African business schools would be remiss if it did not articulate the concept of global accreditation with a relevant and contextual history of AACSB-International .",
+    "Trapnell is the former , long-serving , Vice President and Chief Accreditation Officer for AACSB-International .",
+    "( 4 African Business Schools in international accreditations generally , and with reference to AACSB-International specifically .",
+    "9% ) of these were accredited by AACSB-International .",
+    "All told , a school going through coveted relationship with-and accreditation by-AACSB-International ."
+  ],
+  "does": [
+    "Accreditation is not one of the things AACSB does .",
+    "The school 's mission statement is the singular most important starting point for everything the school does .",
+    "Moreover , previous research on the Israeli-Syrian negotiations has not had the opportunity to employ multiple archival sources to the extent this article does.",
+    "Connecticut 's statute is also based on UCC section 9-609 and references the use of electronic devices to disable collateral , 115 but it places more restrictions on the use of SIDs and similar devices than Colorado does .",
+    "\" 128 Such a conflation would elide an important distinction : \" A restriction on loudspeakers has no obvious relationship to the substance of what is broadcast , while a zoning regulation of businesses in adult expression just as obviously does ."
+  ],
+  "university": [
+    "The 1916 pioneering group ( see AACSB-International , 2013 ) included Columbia University , Cornell University , Dartmouth College , Harvard University , New York University , Northwestern University , Ohio State University , Tulane University , University of California at Berkeley , University of Chicago , University of Illinois , University of Nebraska , University of Pennsylvania , University of Pittsburgh , University of Texas , University of Wisconsin-Madison and Yale University .",
+    "Jackson 's ( 2007 ) research investigated the experiences and perceptions of barriers to the presidency of 43 African American female college and university presidents .",
+    "8 % ) who started college at this university ( 52.",
+    "We noted that there was no gender effect or employment-status effect on either the mathematics assessment quiz ( MAQ ) score or on overall course performance - there was no evidence of any real difference in no transfer status effect on mean performance for either the MAQ score or for overall course performance but the variability of MAQ scores among transfer students was significantly higher than that of students who began their education at the university .",
+    "Therefore , it is recommended that university administrations weigh whether the benefits of introducing a large section delivery format , especially for a course in introductory business statistics , will override the potential sacrifices in other university objectives ."
+  ],
+  "his": [
+    "Now retired from his VP position , Dr.",
+    "David Byrne noted that in addition to failing to reject the hypothesis that there is a productivity slowdown , in order to square the difference between the perspectives of Silicon Valley-that there is in fact a productivity slowdown in the technology sector-with what is actually observed , one should return to a Fortune 500 survey that discussant Martin Baily brought up during his remarks .",
+    "For example , an entrepreneur founding a new venture within the same industry in which they have work experience would copy a number of the routines and activities she/he was familiar with from her/his prior job .",
+    "As a result , the routine is different in the new venture than what was used by the entrepreneur in her/his prior workplace .",
+    "34 We will assess and consider the implications of his conclusion below ."
+  ],
+  "d": [
+    "In what Robert D.",
+    "D .",
+    "V is the present discounted sum of future period utility ; we assume that E ( V e ) &gt; E ( V d ) .",
+    "D.",
+    "D."
+  ],
+  "use": [
+    "A closer look at the 15 standards confirms a mere consolidation , in many instances , of the 21 standards in use since 2003.",
+    "( b ) \" Maintenance of Accreditation \" no more : Arguing that it reflects the changes being implemented in the processes , structure , and infrastructure of accreditation , AACSB ( 2013 ) has replaced the otherwise hitherto universally popular term \" Maintenance of Accreditation \" with \" Continuous Improvement Review , \" a throwback to the AACSB phraseology in use around 1997 .",
+    "How important is the increase in consumer welfare resulting from increased Internet use ?",
+    "The third was information use ( seven items , alpha=.",
+    "Developments in drone technology have made drones the principal means by which the United States kills suspected terrorists and have allowed a dramatic expansion of this lethal measure 's use ."
+  ],
+  "been": [
+    "Contributions to Practice ( CP ) , in use by all AACSB schools from 2003-2013 , is the equivalent of AS , and should have been left alone .",
+    "Because CDS trades are bilateral contracts that remain open until their expiration date , past transaction activity is reflected in gross notional amounts for an extended period even though the economic exposure may already have been unwound .",
+    "Thus , the non-IT manufacturing , where measurement has traditionally been considered relatively good .",
+    "However , by the mid-2000s , the low-hanging fruit of a wave of IT-based innovation ( including associated reorganizations ) had been plucked .",
+    "For example , industries along the supply chain from factory to retailing had already been substantially reorganized to reduce inventory , waste , and headcount ; and IT-supported efficiencies in middle management and administrative support had been exploited ."
+  ],
+  "world": [
+    "( 3 ) Against the backdrop of identified benefits in ( 2 ) above , the paper aims to review the progress made by African Business Schools towards attaining accreditation by and through AACSB-International , comparing their AACSB-Accreditation progress against that of schools in other continents and regions of the world .",
+    "This is according to various sources and ranking agencies , such as African Business Review ( 2013 ) , QS Intelligence Unit ( 2012 ) , Jenvey ( 2013 ) , as well as University World News ( 2013 ) .",
+    "( b ) Secondly , what is the exact AACSB-accreditation status and composition of African Business Schools when compared to other continents and regions of the world ?",
+    "7 trillion according to the World Bank ( 2013 ) .",
+    "We advance and articulate several reasons why AACSB has not been able to replicate , on the continent of Africa , the accreditation success that it has enjoyed in other regions of the world ."
+  ],
+  "about": [
+    "How about Africa ?",
+    "Similarly , Howes ( 2003 ) found that the application of a customer value management approach is expected to increase companies ' profitability at a rate of about 10% per annum .",
+    "Again , there are 30 percent more tax units than families in 2012 , and thus the top 1 percent on a tax unit basis represents about 1.",
+    "3 The bottom line is that the evidence available to date has provided documentation of a negative correlation between inequality and mobility along with a host of other things , all of which are interesting , but none of which pushes the bar in terms of what can , however , we really need to know about causal pathways.",
+    "Because the data do not offer support for any of these direct mechanisms , we are left with a residual explanation about perceptions ."
+  ],
+  "well": [
+    "Lagos Business School , in Nigeria , features prominently on many rankings as well .",
+    "The most direct measure of academic difficulty is the response \" had poor grades / not doing well .",
+    "Furthermore , we tested the relation between residential and non-residential properties and their relative discount , analyzing the predictor variable type of property to ascertain its different types of property correspond to very different supply and demand profiles , it is reasonable to expect that the discount between them differs as well .",
+    "Reinsurance Decisions  As the number of insurers in the market changes , the use of reinsur- ance changes as well .",
+    "For Case 1 , although the annual average insurance payment per insurer declines as the number of insurers in the market increases , the total liability transferred to , the loss/risk from the entire primary insurance market that is transferred to the reinsurer increases as well ."
+  ],
+  "american": [
+    "The three authors make the further case for AACSB accreditation by pointing out that Canadian business schools seek to emulate the success of their American AACSB-Accredited counterparts , thereby subscribing AACSB accreditation .",
+    "The Great American Dream , Inc.",
+    "Recall , though , that since race or color can never be a BFOQ but national origin can , but not a black African-American .",
+    "The findings showed that there were benefit in having minorities in senior level positions ; however , the findings also showed that African-American females faced serious challenges in their climb up the thirty-one percent of the surveyed executives attribute those challenges to weaker or less strategic networks available to African American females .",
+    "Although these may prove to be important , it can be argued that these characteristics are fluid and are not necessarily the solution for African American females ."
+  ],
+  "students": [
+    "The reasons and benefits include the proverbial \" cross-pollination of ideas \" that should accrue from having international students being an international education hub , as evident from the incapacity of African universities to attract global students into their degree programs beyond short term exchange programs that are the predominant form of entry into Africa for most American and European students .",
+    "a number of pathways along which income inequality could hinder the educational attainment of disadvantaged students .",
+    "In other words , discouraged students stop applying themselves early .",
+    "The remaining 11 options include stated reasons that are less directly academic : had to support family ; offered job and chose to work ; school was n't for me / did n't like it ; wanted to travel ; wanted to enter military ; friends were dropping out ; married or marriage plans ; pregnant ; illness/disability ; could n't get along with teachers ; and could n't get along with students .",
+    ", 25 to 34 students ) ."
+  ],
+  "within": [
+    "( 5 ) Talent from other African Countries : A final and perhaps most important benefit of AACSB and other global accreditations accruing to African countries and business schools is the ability to draw both student and faculty talent from other nations within Africa .",
+    "For business schools in Africa , a potential benefit to attaining AACSB accreditation is the ability to draw both student and faculty talent from other nations within Africa .",
+    "4170012 Headnote  Abstract  This article and subsequent exploratory study are designed to explore what barriers , perceived or real , prevent African American women from ascending to the C-suite within organizations .",
+    "The Federal Glass Ceiling Commission was created in 1991 to address the issue of inequity in the workplace that was adversely affecting women because an \" invisible barrier \" was limiting the access of this minority group to career opportunities and advancement within organizations .",
+    ") , we investigate the responses of price changes within respective sectors ."
+  ],
+  "time": [
+    "Business schools in South Africa have also had the best success at \" reverse brain-drain \" , defined for our purposes as the ability to attract back to Africa those intellectuals of African descent and ancestry who were trained in the United States and Europe , and have been teaching or working there for some time .",
+    "S predominance at the time .",
+    "This is further affirmed Howes ( 2003 ) in his concept of customer value management , which defined customer value management from two dimensions : the first one is the financial and non-financial value that the customer gets from the company ; the second one is the financial and non-financial value that the company gets from its customers within a limited period of time .",
+    "In this respect one can depend on the delivery performance measurements , which focus on the \" delivery cycle time \" ( Hassan , 2003 ) .",
+    "&middot; Rate of delivery time commitment ( Hassan , 2003 ) ."
+  ],
+  "united": [
+    "3 million ) and the United Arab Emirates ( population 5.",
+    "United Parcel Serv.",
+    "The Supreme Court , also in the context of sex discrimination , provided some further explanation to the BFOQ defense in the case of Int'l Union , United Auto.",
+    "Similarly , in the aforementioned Int'l Union , United Auto.",
+    "At the European level , Italy ranks as a transparent country , but lower performing than France , Germany , and the United Kingdom ( JLL , 2016 ) ."
+  ],
+  "p": [
+    "The World Bank ( 2013 , p.",
+    "Of course , the student does not perfectly observe p ( Manski 1993 ) .",
+    "Instead , the student bases the decision on his or her perception of p , in particular , on his or her perception of his or her individual-specific p .",
+    "We would expect-though it need not be the case-q to vary positively with actual returns , as captured by p .",
+    "In essence , we can think of q as a function of p and x ; q = q ( p , x ) ."
+  ],
+  "without": [
+    "This viewpoint is not without support .",
+    "The banks that belong to non-aforementioned categories are considered as banks without difficulties .",
+    "By contrast , more of the risk is retained by the primary insurer under a hard reinsurance market ( with or without capped surplus ) ( Fig.",
+    "Furthermore , government credit programs acted as automatic stabilizers because their participation rates and loan amounts could increase during the downturn without legislative action .",
+    "DO THE FIRMS WITH INSTITUTIONAL INVESTMENTS PERFORM BETTER THAN THE FIRMS WITHOUT INSTITUTIONAL INVESTMENTS ?"
+  ],
+  "will": [
+    "More importantly , the new AACSB accreditation standards since 2013 specifically hold no promise that Africa 's status quo will change .",
+    "This is further supported by the study conducted by Kaplan and Norton ( 2001 ) , which stated this will necessarily result in their loyalty to the company , and will consequently achieve profitability .",
+    "The household sector of the FA is also a residual claimant on asset holdings , so any sectoral misallocation of a given asset holding toward households will introduce bias .",
+    "On the contrary , when their market share plummets , specialists may not be able to earn enough profits to fund the liquidity they must provide when no one else will .",
+    "When competition improves market depth , there will be more large-size orders and the trading size will increase ."
+  ],
+  "information": [
+    "Therefore , the revenue model focuses on customer satisfaction , customer was tested in the Egyptian communication and information technology sector .",
+    "Although now the flow of information from one market fragment to another is fast , which consolidates a fragmented market to some degree , frequently indicates that prices do not efficiently incorporate all available information fast enough due to the time lag for transferring information .",
+    "It is likely that the benefits of high-frequency trading , regardless of the trading venue will be greater when applied to shares of firms located further from the United States , which Ferguson ( 2015 ) shows suffer from limited information transmission .",
+    "In 2003 , the NYSE was required to open its limit order book and lost some information advantage .",
+    "Benveniste , Marcus , and Wilhelm ( 1992 ) and Battalio , Ellul , and brokers and dealers can mitigate the effects of asymmetric information ."
+  ],
+  "research": [
+    "They have reached an important conclusion , which is that dealing with loyal customers is the main driver for achieving good financial results ; this informs the perspective taken in this research .",
+    "We thank Riley Wilson for research assistance .",
+    "Four major themes consistently validated through the research include :  1 .",
+    "Although the salary gap has lessened over the years decreasing from 42% in 1960 to 21% gap in 2014 , there is another 40 plus years before the pay is expected to be equal to men ( Institute of Women 's Policy Research , 2016 ) .",
+    "Livers , PhD , is the executive director of The Executive Leadership Council 's Institute for Leadership Development &amp; Research ."
+  ],
+  "legal": [
+    "There are many financial indicators that can be used to judge customer satisfaction , the most significant of which are suggested by Hassan ( 2003 ) as follows :  Repair and replacement costs during the guarantee period ;  Legal liability costs ( fines , compensations , penalties , etc.",
+    "12 From an economic point of view , this concept of wealth includes all assets over which a family has a legal future consumption .",
+    "The authors examine the pertinent statutes , administrative rules , case law , and legal commentary .",
+    "Based on the aforementioned legal and diversity analysis , we provide suitable recommendations to prevent legal liability .",
+    "Legal Implications  If an employer is accused of discrimination in hiring or other employment practices the employer may be able to interpose a BFOQ defense pursuant to Title VII to avoid legal liability ."
+  ],
+  "most": [
+    "In addition , a 5-point Likerttype scale ( from ( 1 ) not important to ( 5 ) very important for some questions and from ( 1 ) completely disagree to ( 5 ) completely agree in others ) was used in most questions .",
+    "To assure consistency between English and Arabic versions , the questionnaire was translated back into English using a \" back translation \" approach before being distributed to ensure linguistic and ( and most importantly ) conceptual equivalence .",
+    "Similar to the stock market beta and other betas , the stock market premium and the value premium tend to be higher in the most recent decade .",
+    "As the eurozone crisis extended into 2012 , CDSs written on the sovereign debt of Spain and Italy were among the most actively traded contracts .",
+    "This analysis tracks the historical accumulation of positions and can be used to determine the most active market participants ."
+  ],
+  "used": [
+    "Common Factor Analysis was used .",
+    "But the magnitude of the adjustments and range of the confidence intervals makes it clear that top wealth shares are very sensitive to the specific data and methods being used .",
+    "1 percent wealth shares when the constrained SCF is compared with gross capitalization when even a slightly more reasonable rate of return is used .",
+    "markets appears to greatly improve price discovery , regardless of the ECN used .",
+    "The p-value associated with a in the model is less than 5% when either REIT index is used ."
+  ],
+  "three": [
+    "Thus items thirteen , fourteen , and nineteen are dropped from factor three .",
+    "0 or above are extracted and twenty three items are retained under the four factors which explain 66% of the variance in the data set ( compared to 60% before dropping the three items ) .",
+    "22 The poverty segregation index captures the extent to which individuals in the bottom quartile are segregated from those in the top three quartiles .",
+    "In the long run , no market makers provide these relevance of this analysis increased dramatically on July 8 , 2015 , when the New York Stock Exchange suspended trading for over three hours .",
+    "They did not agree with the statement for the following three reasons ."
+  ],
+  "r": [
+    "Relationship between suggested revenue management technique and profitability , using ordinal regression  The main purpose of this section is to examine if the combination of the three variables \" customer satisfaction ( CS ) \" , \" customer loyalty ( CL ) \" , and \" customer value analysis ( CPA ) \" will be the best model to for all paired combinations of the three variables and finally all three together ( CS with CL , CS with CPA , CPA with CL , and CS with CL with CPA ) to find the best combination of variables , which meets the proportional odds assumption , fits data well , significantly predicts profitability , and produces the highest pseudo R-square statistics .",
+    "05 and Student 's freedom and below the statistic t0,05 ; r 5 1.",
+    "R.",
+    "Upon evaluation , the MAQ scores were significantly correlated with FNWA , the measure used in all analyses ( Pearson coefficient of correlation r = +0.",
+    "However , model 3 shows a substantial improvement in adjusted R-squared ( reaching almost 26% ) ."
+  ],
+  "political": [
+    "Understanding the determinants and effects of wealth and income inequality are mainstays of political economy .",
+    "The goal of preventing new terrorist attacks stems partly from the government 's responsibility to guarantee its population 's safety and partly from the pressure coming from the population to feel reassured , a feeling that can at least initially be fostered by violent activity culminating in the same time , governments can exploit understandable , popular anxiety to tighten their grip on power and , if their democratic vocation has always been notional , suppress criticism and political competition.",
+    "At the bottom is the vast population of mainstream Muslims , who are potential allies against radical Islamism as well as potential targets of subversion , and whose grievances can be addressed by political reform .",
+    "At the Kitayama Villa , Yoshimitsu was ' ' outside the formal boundaries of the capital ' ' and could ' ' comport himself in the manner of a retired court official with sustained political influence .",
+    "13 Domestically , the North Korean government prioritizes military defense and national security over human security and political freedoms ."
+  ],
+  "we": [
+    "We provide evidence .",
+    "By augmenting the SCF household survey along these lines , and by aligning the preferred wealth and income concepts and measurement laid out above , we derive preferred top share estimates .",
+    "This is important because it enables us to identify the incentive effect of higher returns ( as in a standard Becker model ) separately from any offsetting discouragement effect of the type we propose .",
+    "12 Limited time variability is available when we combine these data sets , but our analysis relies on long-term geographic variability , as we described above .",
+    "We sets ."
+  ],
+  "way": [
+    "11 This process ties top wealth and income share estimates together in an important way .",
+    "Any further increases in the lag length do not affect the results in any significant way .",
+    "The authors assert that in order to shatter the glass ceiling , a small wins strategy based upon incremental change at them , is the way forward .",
+    "Column 1 of table 2 then shows how results change relative to this baseline from adjusting computers , shows , these adjustments do affect labor productivity in a noticeable way .",
+    "What the literature has found-and Reis reiterated that the estimates are not very accurate-is that most multipliers are not way above 1 ."
+  ],
+  "being": [
+    "The top returns from current production suggest that something may be amiss in how factor payments are being determined .",
+    "To some extent the appropriate treatment of retirement income can not be separated from the frequency over which incomes are being measured .",
+    "The benefit of the survey component is straightforward being studied and the specific wealth and income concepts being measured .",
+    "As in the tables above , the first column is included for the purpose of comparison ; it reports the results from a model analogous to our the estimated point estimate on the interaction of primary interest being 0.",
+    "200 m2 ) , the first quartile being around 90 m2."
+  ],
+  "social": [
+    "This definition excludes some wealth under the control of a family- most notably charitable foundations-as well as expected future Social Security payments .",
+    "4170007 Headnote  ABSTRACT It is widely documented that places with higher levels of income inequality have lower rates of social mobility .",
+    ")  International comparisons show that the United States is a country that ranks high in its level of income inequality and low in its level of social mobility .",
+    "Figure 1 shows that states with greater levels of income inequality tend to have lower rates of social mobility.",
+    "We describe key reasons why the Great Gatsby Curve might not reflect a causal negative relationship between income inequality and rates of social mobility ."
+  ],
+  "b": [
+    "B.",
+    "B .",
+    "B .",
+    "ACKNOWLEDGMENTS We would like to thank our colleagues on the Survey of Consumer Finances project who made this research possible : Lisa Dettling , Sebastian Devlin-Foltz , Joanne Hsu , Kevin B.",
+    "B."
+  ],
+  "national": [
+    "The NIPA exclusion is based on fundamental national income accounting principles .",
+    "civil rights laws prohibit discrimination in employment based on the protected categories or characteristics , such as race , color , religion , sex , and national origin .",
+    "The protected characteristics are subject to the BFOQ defense are religion , gender/sex , and national origin .",
+    "\"  The Walt Disney Company has been successful in utilizing the BFOQ doctrine to ward off threatened national origin discrimination lawsuits .",
+    "* Utilize the expansive aforementioned Second Circuit four-factor test to justify a BFOQ based on national origin ."
+  ],
+  "but": [
+    "The same can be argued for unmarried partners sharing living arrangements and resources but filing taxes separately .",
+    "40 With these two adjustments , the preferred measure is conceptually equivalent to household sector net worth in the FA , but excludes nonprofit institutions.",
+    "According to Hungria-Gunellin 's findings , the average price per square meter paid by every extra bidder has an increasing but decelerating growth .",
+    "Measured labor productivity growth ( top panel ) , capital deepening ( middle panel ) , and TFP growth ( bottom panel ) sped up in the 1995-2004 period , but slowed thereafter .",
+    "Although there is no way to assign probabilities , the midpoint was chosen to represent the best estimate because 2010 was an early year in the recovery , but credit markets remained tight ."
+  ],
+  "all": [
+    "Also , SCF cases are reviewed for internal consistency ( to some extent guided by the administrative sampling data ) , but this review process may fail to capture all reporting errors .",
+    "In very general terms , the top four strata in any given year , made up of roughly 1,000 all families .",
+    "Though this evidence is not the final word on the matter , and critics have pointed out limitations , the finding that economic mobility does not appear to have fallen raises the question of whether inequality and mobility are causally linked after all .",
+    "An inclusive work culture displays the excellent ability of hiring diverse employees as well as attaining a balanced distribution of diverse staff in all departments .",
+    "Overtime , the fragmentation may increase the informed trading and add risk for all participants ."
+  ],
+  "thus": [
+    "The important question is whether the families that eventually participate in the survey , thus sampled nonparticipants.",
+    "Women , in general , experience the challenge of balancing a dual role of mother and often wife at home and an executive at work , thus balancing personal versus professional lives .",
+    "The H1 hypothesis is thus overturned .",
+    "Both rosters thus total twenty-nine successful candidates .",
+    "It also announces policy in the form of an order rather than codifying it in the Federal Register , thus decreasing accessibility ."
+  ],
+  "right": [
+    "For example , in the complete 2011 SOI data set , about 60 percent of the families with an adjusted gross income ( AGI ) greater than $500,000 realized a decline in AGI in their 2012 tax filing ( figure 6 , right bars ) .",
+    "The above statement could be right .",
+    "As a rough first pass , we assume that the two effects offset each other-leaving measured capital growth about right .",
+    "Given states ' balanced budget requirements , reductions in public university revenues could have large effects on aggregate demand , but not necessarily right away .",
+    "Karen Pence , an adviser at the Board of Governors of the Federal Reserve System , interjected enthusiastically , \" That 's not right !"
+  ],
+  "however": [
+    "43 There are notable differences in levels and trends , however .",
+    "However , Tran ( 1998 , pp.",
+    "74 Land was not forthcoming , however .",
+    "\" 190  These arguments are , however , misplaced .",
+    "326 However , doing ."
+  ],
+  "up": [
+    "45 The shift from the \" Preferred , FA concepts and values \" lines in both panels of figure 7 reflects the impact of imposing this constraint , and the lines labeled \" Preferred , FA concepts and values , tax units \" are again noticeably shifted up .",
+    "The FA asset totals include holdings by nonprofits , while the taxable income flow does not , so the gross capitalization factor is biased up .",
+    "Because these forms of income are disproportionately received by families in the bottom 99 percent by income , removing these forms shifts the concentration numbers up .",
+    "Women of color make up 11.",
+    "the best thinking often led to the conclusion that it would n't speed up ."
+  ],
+  "see": [
+    "The first adjustment , which involves moving from the \" Preferred \" line to the \" Market income , families \" line , is based on restricting the SCF income concept to match what is available in the tax data ( see table 2 ) .",
+    "The results differ from those in the covariance-based models where alphas in only the one- and two-factor models are significant ( see Exhibit 4 ) .",
+    "See 79 Fed .",
+    "See \" DTCC Derivatives Repository Ltd .",
+    "Some studies have confirmed that providing non-audit services will impair the perception of auditor independence ( see Shockley , 1981 ; Moore , 1983 ; Lindsay , 1999 ; Wines , 1994 ; ) ."
+  ],
+  "what": [
+    "Some adjustments of tax basis versus economic profit and rent have also been incorporated into the NIPA , and one would need to work through them in order to align the comprehensive estimated top shares , it is not clear in what direction .",
+    "2 However , it is very much an open question as to whether income inequality actually causes lower rates of social mobility , and if so , through what channels .",
+    "At What Price ?",
+    "Second , the automatic stabilizer effect of federal credit would be even larger than what Lucas estimates .",
+    "This culminated with the firing of highranking staff members of the Argentine government 's statistics bureau , the Instituto Nacional de Estad&iacute;stica y Censos ( INDEC ) , going back to the old tradition of shooting the messenger when the message is not what politicians want ."
+  ],
+  "system": [
+    "The analysis and conclusions set forth in this paper are those of the authors alone , and do not indicate concurrence by other members of the research staff or the Board of Governors of the Federal Reserve System .",
+    "Rawlinson ( 1977 ) , where the court upheld a BFOQ prohibiting women from certain inmate-contact positions in male maximum security prisons in Alabama due to the \" rampant violence \" in the prison system ( pp.",
+    "Dodd-Frank envisioned a set of reforms that would , among other things , \" promote the financial stability of the United States by improving accountability and transparency in the financial system .",
+    "Our findings are relevant in assessing the degree of potential contagion stability of the system .",
+    "Extensions of the current paper will explore changes in and their effect on profitability and sustainability of the insurance firms and the overall performance of the integrated modeling system ."
+  ],
+  "human": [
+    "Specifically , we posit that greater levels of income inequality could lead low-income youth to perceive a lower rate of return on investment in their own human capital .",
+    "The notion we have in mind is that a greater gap between the bottom and the middle of the income distribution might lead to a heightened sense of economic marginalization , such that an adolescent at the bottom of the income distribution does not see much value in investing in his or her human capital .",
+    "This simple model generates the possible existence of both the \" aspirational \" and \" despair \" effects of greater levels of income inequality within an otherwise-standard human capital investment framework .",
+    "Aspirations that are slightly above one 's position lead to increased human capital investment ; but if aspirations get too far from one 's current position , that could lead to frustration and lower levels of human capital investment .",
+    "It is most appropriately considered a cumulative measure of ability , reflecting innate endowments , environmental influences , and the result of formal and informal human capital investment ."
+  ],
+  "during": [
+    "Lower-tail income inequality has been fairly flat during recent decades .",
+    "Third , finding that social mobility rates do not appear to have fallen during recent decades .",
+    "In the meantime , all other exchanges , excluding Boston and Philadelphia Stock Exchanges which are bought by NASDAQ , quote best bid more often during later calendar quarters .",
+    "More recently , Hungria-Gunnelin ( 2013 ) tested the effect of the number of bidders on the sale price of condominium apartments in Stockholm , using data gathered during 2010 .",
+    "12 percentage point during 2004-14 ."
+  ],
+  "public": [
+    "The data do not offer support for a number of potential explanations for the link-including , most notably , residential segregation or eroded public school funding .",
+    "MTO was a randomized controlled trial that offered housing vouchers and mobility counseling to inner-city , low-income families living in public housing .",
+    "This legal analysis will focus mainly on private sector employment cases , as there are at times different rules for public sector employers .",
+    "Finally , real GDP did not value the replacement of the outhouse and the need to physically dispose of human waste with the silent efficiency of public sewers .",
+    "Another study ( Yang , 2006 ) found that public administrators ' propensity to trust positively influenced the administrators ' trust in the general public ."
+  ],
+  "like": [
+    "In May 2015 , the Brookings Institution , as part of its Social Mobility Memos blog series , featured a series of seven blogs about the Great Gatsby Curve in which various authors offered other correlational observations as potential explanations for what is really causing low rates of upward mobility , including single-parent households , the failure to adequately invest in early childhood education , the breakdown of civic institutions , cultural norms , and the like.",
+    "We start by looking at the aggregate relationship , just to see what that the correlational relationship looks like .",
+    "For example , students who know few others who went to college may incorrectly assume that they would not benefit from college- \" It 's not for people like me .",
+    "Differences in market structure ( such as the smaller scale of production and the market power of military and medical customers ) and the price trends of specialized inputs could cause prices for special-purpose electronics to behave differently from prices for generalpurpose electronics like computers ( Byrne 2015a ) .",
+    "For example , broadcast television services have long been counted in the national accounts as an intermediate input : Companies buy advertising , so major broadcasting networks such as ABC or NBC are like advertising agencies ."
+  ],
+  "state": [
+    "We then compare this state-level measure with the state-level \" dropout rate .",
+    "We consider four categories of these other state factors .",
+    "a state .",
+    "Boys are separated into categories according to their mother 's educational attainment to proxy for SES , along with the level of inequality that exists in their state .",
+    "We see that about 5 percent of boys from higher-SES families drop out of high school regardless of the level of income inequality in their state ."
+  ],
+  "she": [
+    "where ud is current-period utility if the student drops out , and ue is currentperiod utility if he or she remains enrolled .",
+    "Instead , the more a plaintiff asks for , the more she gets .",
+    "Her mother did n't believe in God anymore and she just laughed .",
+    "After that , he rarely came into the room , just hovered at the doorway , asking the nurse if she needed anything .",
+    "Interestingly , while Ginger 's father is engaged in a mock ceremony of the sacrament ( communion ) with a missing girl , Ginger is perhaps saving a real girl , a possible future Sandy , teaching her to take advantage of the will power she possesses ."
+  ],
+  "case": [
+    "Note that our framework does not require this to be the case , because an adolescent 's decision is determined by q ( p , x ) , not just p , but it is still an interesting and relevant question suggesting that this is indeed the case .",
+    "The regression results confirm that this is not the case .",
+    "Recall that BFOQ determinations are made on a case-by-case basis .",
+    "Nonetheless , there is some legislative history and one important case .",
+    "B )  Another reason why auditors object to the statement is because it is viewed as a general statement , and they prefer to view the situation on a case by case basis ."
+  ],
+  "own": [
+    "We empirically explore the impact of including the 90/50 ratio , as well as the 10th and 50th percentiles of the income distribution on their own.",
+    "Under the market segmentation hypothesis , expected returns on REITs are related to their own volatility .",
+    "My result contradicts that of Devaney ( 2001 ) , who finds the expected equity REIT returns to be unrelated to their own volatility .",
+    "6% or less , indicating the low predictive power of the volatility of each portfolio for its own expected return .",
+    "SOFTWARE Investment in software is deflated in the NIPA by an aggregate of three subindexes : prepackaged , custom , and own-account software ."
+  ],
+  "could": [
+    "Alternatively , if the rich were to become more fearful about the poor agitating for social change , that could increase transfers .",
+    "Remaining Potential Confounding Factors  In the last set of horserace specifications , table 7 presents the results of including one additional set of interactions with other state-specific factors that could simply represent confounding factors .",
+    "This study found that a majority of auditors ( twenty of twenty-nine ) did not agree with the proposition stating that the provision of non-audit services by audit firms to audit clients could impair auditor independence .",
+    "1 Audit Firm Size  Audit firm size is considered to be one of the issues that could affect auditor independence .",
+    "From this situation , there is a proposition that rendering non-audit services to audit clients could impair auditor independence ."
+  ],
+  "act": [
+    "Key words : Civil Rights Act , discrimination , stereotypes , BFOQ , bona fide occupational qualification , inclusive workplace , diversity .",
+    "\"  To establish an initial case of employment discrimination the aggrieved party must show that he or she is a member of the protected class and that he or she was treated differently because of his or her sex , national origin , religion , or age ( by virtue of the Age Discrimination in Employment Act ) .",
+    "Nevertheless , the BFOQ doctrine can be used as a successful defense to employment discrimination , but article the authors discuss further the implications of the BFOQ doctrine and offer some suggestions and recommendations to employers and managers in order to successfully use the defense and thus to avoid legal liability pursuant to Title VII of the Civil Rights Act .",
+    "Cavallo responded in the negative , and noted that the only time the government unrigged them was in January 2014 , when it realized that if it ever wanted to borrow again , it would need to clean up its act .",
+    "\" 6  Targeted killing is only one of the array of measures designed to interrupt as early as possible any process that may-or may not-lead to a terrorist act."
+  ],
+  "rights": [
+    "Civil Rights laws .",
+    "Time-in-default , however , is not significantly affected by concentration of the two servicing rights .",
+    "Maurice Merleau-Ponty1  AbSTRAcT  The occurrence of a terrorist act frequently prompts governments to enact a wide array of preventive measures , some of which grate against human rights norms .",
+    "INTRoDUcTIoN : ExTRAoRDINARY MEASURES AND THE LIbERAL STATE  The threat of a terrorist act inclines governments to initiate preventive measures which grate against human rights .",
+    "All are relevant because respect for international law extends both to a state 's relationship with other states ( the UN Charter ) and to a state 's relationship with not only its own nationals but with humanity as a whole , the bearer in our time of indissoluble rights ."
+  ],
+  "no": [
+    "The Court of Appeals case of Teamsters Local Union No.",
+    "' This means prison administrators ' seeking to justify a BFOQ must show a high ' Speculation about gender roles is insufficient - the evidence must demonstrate that prison administrators had a ' concrete , logical basis for concluding that gender restrictions are reasonably necessary ' and that alternatives to sex discrimination have been ' reasonably considered and refuted ' \" ( Teamsters Local Union No.",
+    ", nurses in retirement homes , as well as bathroom attendants , where \" gender based hiring may qualify as a valid BFOQ \" to protect the privacy interests of third parties and where there is no reasonable alternative .",
+    "In 2007 , two of the seven NYSE specialists firms decided to leave the markets because their business was no longer profitable .",
+    "The data is compelling and in some ways disheartening because despite legislation , diversity intervention programs and affirmative action , there has been no significant improvement ."
+  ],
+  "f": [
+    ", 517 F.",
+    "F.",
+    "f .",
+    "Persistence  Persistence is defined as completing all course requirements and earning a grade of A through F.",
+    "f ."
+  ],
+  "long": [
+    "Hasbrouck and Saar ( 2013 ) , however , find that high-frequency trading does not work to the detriment of long-term investors .",
+    "They find that high-frequency trading deceases spreads , increases the displayed depth in the limit order book , and lowers long-term volatility .",
+    "Today the Italian economy seems to be performing better as the slight return to growth and the recorded rise in inflation rates started to speed up the adjustment of public finances , whose lack had a negative relapse on the growth of the country during the long-lasting crisis .",
+    "See long long long  16 .",
+    "Purchasing a reinsurance policy with low attachment point and high limit reduces the insured losses/liabilities incurred by the primary insurer , thus reducing the risk and stabilizing profit over the long term ."
+  ],
+  "second": [
+    "Each trade and quote is time stamped to the nearest second.",
+    "The significance of MKT and especially HML in the models here are in contrast to the results of estimating pooling univariate GARCH models reported by Guo , Savickas , Wang , and Yang ( 2009 ) , partly because of the efficiency gains from using the multivariate rather than univariate GARCH models for the second moments .",
+    "212 , indicating sizable effects of past innovations on the second moments .",
+    "To ease comparison of estimates and specification tests , the specification of second moments remains unchanged .",
+    "In Panel B , the REIT volatility is the second factor ."
+  ],
+  "should": [
+    "When market quality improves , the effective spread should decrease .",
+    "Relative quoted spread and quoted depth : If the competition encourages liquidity , providers post competitive quotes , the quoted spread should drop and the quoted depth should rise .",
+    "Overall , the interconnectedness of the CDS market is largely attributable to end users that transact with a relatively small number of dealers , who then manage net exposures by trading among network that is relatively robust to the disappearance of a random node but potentially vulnerable if a few highly connected dealers should fail .",
+    "We hypothesize that a trend towards fewer differences in coverage between REITs and non-REITs should emerge .",
+    "is prepared to exercise its influence in the Security Council to the end that the Security Council should take whatever measures ."
+  ],
+  "after": [
+    "The NASD ADF , International Securities Exchange , CBOE , and BATS start to report transactions on NYSE stocks after 2006 .",
+    "A fourth , compelling reason why our create long-term exposures that will persist , even after central clearing becomes mandatory .",
+    "The average lifetime cumulative default rate is slightly more than 12% , with average default rates peaking in the third year after origination .",
+    "In the worst case , disaster events can cause insolvency , as happened , for example , to eight small Florida insurance companies after Hurricane Andrew ( Grier , 1996 ) .",
+    "Fracking , on the other side , boosts productivity growth by about 5 bp after 2004 ."
+  ],
+  "who": [
+    "The bid ( ask ) size is the sum of the quoted sizes of all liquidity providers who post best bid ( offer ) .",
+    "Second , larger audit firms normally have many divisions to provide the services needed by clients , and therefore the person who audits the client would be different from the person who provided non audit services .",
+    "E )  The second reason they argue is that there are some auditors from the big four who compromise auditor independence .",
+    "The agency problem is now part of the vocabulary used in the examination of the ownership , management and operation of an organization and the possible appropriation of resources by those who control society .",
+    "The first primary research question we address is straightforward : Who follows REITs ?"
+  ],
+  "must": [
+    "On the contrary , when the NYSE market shares plummet , the NYSE market makers may not be able to earn enough profits to fund the liquidity they must provide .",
+    "Notoriety and acquiescence are interrelated in that standards for what constitutes acquiescence can not be separated from the degree of notice that the claimant must provide .",
+    ", League of Nations , Bases of Discussion at 43 ( statement of Portugal ) ( arguing that a State must exercise \" full sovereignty .",
+    "general oversight and enforce broadly applicable consumer finance laws to which auto lenders must comply .",
+    "56  What is interesting with regard to corporate personhood about this case is where Marshall places the public purpose requirement that all corporations must ultimately serve ."
+  ],
+  "n": [
+    "In between 2005 and 2015 ( Law n.",
+    "( 12 )  as a N &times; 1 vector of excess returns ( N = 4 ) .",
+    "By construction , the index ranges from 0 to 1 / ( N-1 ) .",
+    "635 ( 2012 ) for a specified number of insurers n .",
+    "\" In Measuring Globalization : Better Trade Statistics for Better Policy 1 , edited by Susan N."
+  ],
+  "then": [
+    "The monthly data of the REIT indices and risk factors are then described .",
+    "The BEA investment price index fell 12 percent a year on average in the 1990s , but 4 percent on average since then .",
+    "The PriceStats index was not disseminated until March 2008 , but newspapers reported other unofficial estimates before then.",
+    "A flexible non-linear specification of the effect of the temporal dimension on the spatial statistics amplitude is then proposed .",
+    "579 , is then observed ."
+  ],
+  "against": [
+    "Merton ( 1973 ) shows that , in an intertemporal setting , investors need to hedge against changing investment opportunities .",
+    "During the eurozone debt of Spain , Italy , and Greece were actively traded as investors sought protection against sovereign defaults .",
+    "Given the concerns about systemic risk in the aftermath of the financial crisis , investors continued to seek protection against bank failures .",
+    "They argued that good corporate governance practices can help management to provide better financial information that will help when driving against financial distress .",
+    "57  A third area of disagreement is whether or not force can be used in self-defense against nonstate actors ."
+  ],
+  "over": [
+    "The lack of significance of risk prices suggests that the unrestricted four-factor model is likely over-parameterized.",
+    "The screening and signaling equilibriums suggest that riskier borrowers are more likely to self-select ARMs over FRMs .",
+    "In Nakamura and Soloveichik ( 2015 , table 3 ) , real advertising services have an average growth rate of 2 percent from 2004 to 2013 , while the real output of the business sector used in productivity measurement grows at just over 1.",
+    "Gordon ( 2016 ) may be correct , however , in saying that the era of 3 percent annual productivity growth over multiple decades is over .",
+    "5 deceleration of over 2 percentage points ."
+  ],
+  "amp": [
+    "Current research also supports the need for further research to understand how African-American women overcome these challenges to assist other women in succeeding ( Brown , 2004 , Duehr &amp; Bono , 2006 , Hoyt&amp; Blascovich , 2007 , Sanchez-Hucles &amp; Davis , 2010 , Harris , 2011 ) .",
+    "Further , 2013 showed a peak in EEOC claims for African-Americans and for women , in spite of the many barriers and advances made over the years to elevate women in the workplace indicates further study is essential to determine if the work completed to end discrimination has diminished or is no longer effective as it was initially ( Bailey , Wolfe &amp; Wolfe , 1996 , Hughes &amp; Dodge , 1997 , Brown , 2004 , Hoyt&amp; Blascovich , 2007 , Sanchez-Hucles &amp; Davis , 2010 , ) .",
+    "1% of executive positions across the world ( Berry &amp; Franks , 2010 ) .",
+    "Women , in general , have encountered sexism , discrimination , exclusion , and a lack of career advancement opportunities ( Baley , Wolfe &amp; Wolfe , 1996 , Hughes &amp; Dodge , 1997 , Brown , 2004 , Johnson , 2005 , Gee , 2006 , Sanchez-Hucles &amp; Davis , 2010 , Scales , 2010 ) .",
+    "Both perceived and realized challenges faced by women , specifically African American women in their ascent to executive positions may be even greater once in those positions ( Sanchez-Hucles , &amp; Davis , 2010 ) ."
+  ],
+  "under": [
+    "The manner in which African American women executives communicate , lead , make decisions , and even assert themselves in the workplace brings them under scrutiny ( Collins , 2000 ; Valentine , 2007 ) .",
+    "They use cash holding as a cushion for the need to invest when borrowing is not available and to pay back loans in markets with falling asset prices ( as funds prefer not to sell under distressed conditions ) .",
+    "But the increase in the labor productivity growth rate is most pronounced for the 1995-2004 period , at just under 0.",
+    "edu/bpea , under \" Past Editions .",
+    "The government provides credit subsidies through other programs as well , and some of these may also provide fiscal stimulus under certain market conditions ."
+  ],
+  "while": [
+    "Understandably , with the low numbers of African American women executives , there is a lack of African American women executives mentors within the same organizations thereby requiring African American women executives to both gain confidence in their abilities while networking across industries .",
+    "Special servicers must decide between foreclosing and modifying troubled loans in order to mitigate CMBS losses while maximizing profitability .",
+    "' ' The court noted further that Ch'oe Unsa had traveled to Japan in 1399 to express thanks for the Japanese government 's efforts at slowing the pirate attacks , as noted above , Ch'oe 's embassy met disaster while sailing home .",
+    "Rather than reading the subjective intent of scientists and the undermining of empiricism to necessarily obviate the objectivity of science , we can affirm the objectivity of science while acknowledging subjective intent .",
+    "Mothers who live in the community can also easily monitor their children even while working ."
+  ],
+  "you": [
+    "Payne &amp; Hyle ( 2001 ) argue that it is not who you know , it is whom and what they know based on what they tell you .",
+    "1 percent makes it hard for you to reply that it is actually 10 percent , even if this is what you really think .",
+    "\" That $175 a year , \" he joked , \" what they 'll do is they 'll take the CPI and add 8 points to it for you .",
+    "Each and every people deserves honor  That 's why we honor you .",
+    "One noted paper even concluded that \" the more you ask for , the more you get ."
+  ],
+  "had": [
+    "This point is relevant because even if mandatory central clearing were implemented immediately , dealers would continue to have significant counterparty exposure , which would persist until all existing contracts were terminated or had matured .",
+    "The top 5 counterparties had a total of 2,283 buy-side connections with distinct counterparties , whereas the top 20 counterparties had 3,923 buy-side connections .",
+    "On average , each of the top 10 dealers had 347.",
+    "Because more contracts were being centrally cleared by year-end , dealers also had reduced counterparty risk .",
+    ")  The things at which Google and its peers excel , from Internet search to mobile software , are changing how we work , play and communicate , yet have had little discernible macroeconomic impact ."
+  ],
+  "l": [
+    "L.",
+    "We define two risk regions v-one region is all properties within two miles of the coast ( high risk H ) and the second region is all properties that are more than two miles from the coast ( low risk L ) .",
+    "We then obtain the the coverage into the inverse demand functions : p*H =PH(nq*Hj) , p*L =PL(nq*Lj).",
+    ", Tc ( Q*H , Q*L ) 1 &lt; 1 , where Q*H = ( q*H1 , &frac14; , q*Hn ) , Q*L = ( q*L1 , &frac14; , q*Ln ) .",
+    "**32;2140;TOOLONG  Schultze , Charles L."
+  ],
+  "toolong": [
+    "For more information , see **26;1313;TOOLONG **27;1341;TOOLONG  18 .",
+    "**29;1370;TOOLONG  19 .",
+    "14 Source : http : **35;1723;TOOLONG snloansurvey/ .",
+    "This is according to the American Time Use Survey ( http : **25;1760;TOOLONG a1allyears.",
+    "The e-commerce shares for products that are easy to order online ( such as books ) are even larger , because some products ( such as gasoline and building supplies ) presumably involve little e-commerce ( https : **33;1787;TOOLONG **33;1822;TOOLONG ) ."
+  ],
+  "he": [
+    "The Compensation Committee  The presence of a Compensation Committee is expected to improve the efficiency of the Board in determining executive compensation and thus reducing potential agency costs ( Conyon and Peck , 1998 ; Conyon and He , 2011 ) .",
+    "The police chief of a very large department is a captive of statistical reports on activities and crime rates that he receives .",
+    "Andong Taedohobusa ) in the fifth he governed the special city as he wished.",
+    "Onjo-wang Ko-ssi ) and he requested 300 ( K.",
+    "He died before 1416."
+  ],
+  "law": [
+    ", 2008 ) highlight how the countries of common law tend to adopt very protectionist laws for the investor , as opposed to civil law countries .",
+    "law.",
+    "33 In the view of the current UN Special Rapporteur on the promotion and protection of human rights and fundamental freedoms while countering terrorism , the majority of these drone strikes have taken place in the context of armed conflicts as defined by international humanitarian law.",
+    "Sharing our concerns about the legal character of drone killing , Professors Amos Guiora and Jeffrey Brand propose the creation of a US Drone Court \" to ensure that any drone policy is conducted in accordance with the rule of law .",
+    "42  Whatever process of authorization and post facto review may evolve at both the national and international levels , even if it is no more than a stream of opinions from what the late Oscar Schachter , referring to the global community of international law scholars , judges and practitioners , called the \" invisible college , \" 43 it will be in need of a body of substantive law ."
+  ],
+  "number": [
+    "The authors wish to thank Geet Shah the CITI Collaborative Institutional Training Initiative and , acting as a \" third party , \" assisted in the data collection , entry , and file maintenance phases of this Institutional Review Board approved protocol ( IRB Number 001257 ) .",
+    "Some academic research found even larger effects-for example , Bils and Klenow ( 2001 ) -while Schultze and Mackie ( 2002 ) argued for a smaller number .",
+    "19 If comparing two negative numbers , the number that has the smaller magnitude is less pessimistic , and is hence , more optimistic relative speaking compared to the other negative number .",
+    "The number with the larger magnitude is more pessimistic ( less optimistic ) relatively speaking to the smaller magnitude number .",
+    "4170026 Headnote  Editor 's Introduction  Originally published in Volume 42 , Number 1 , Spring 1998 , pages 3-17 ."
+  ],
+  "make": [
+    ", 2002 ) , there are few models of oligopolistic insurance markets for which the insurers make positive profits .",
+    "These adjustments make labor productivity growth since 2004 look better .",
+    "This formulation illustrates the key issues , but it does make simplifications .",
+    "Notably , however , the SID is not an indicator of a subprime borrower 's financial ability to make loan payments .",
+    "Underwriting standards in the subprime market have deteriorated , while practices in the market , like interest rate markup and the sale of add-on products , can make loans unaffordable."
+  ],
+  "h": [
+    "( To avoid confusion , we refer to a single hurricane event scenario as simply a hurricane h .",
+    "For ease of notation , we refer to the case of no hurricane as h= H+ 1 .",
+    "We define qh to be the loss above A and below M for hurricane h ( Eq .",
+    "( 2013 ) and Peng ( 2013 ) , the loss model was used to compute the lossLihmcv to a building in location i of building type m and resistance level c in risk region v given hurricane h .",
+    "Nakamura , Leonard , and Rachel H."
+  ],
+  "et": [
+    "( 3 )  Suppose ai0 is element i of the vector A0 , aij is the element in row i and column j of the matrix A1 , and eit is the element i of the vector et .",
+    "Limitations and Directions For Future Research  A potential limitation involved the selection of Amit &amp; Zott 's ( 2001 ) business model framework for our research , as there were several alternatives in the literature ( Afuah , 2004 ; George and Bock , 2011 ; Morris , et .",
+    "3 ( 1998 ) : 255-274 ; Paul Chamberland , \" Deux nationalismes : Le Bon et le Mauvais , \" in L'identitaire et le litt&eacute;raire dans les Am&eacute;riques , ed .",
+    "history , vision-mission , products and services ) from their web sites , published sources , and other available studies previously undertaken about some of these social enterprises , including those by Aure , et .",
+    "In 2010 , three GK volunteers - Ron Dizon , Shanon Khadka , and Xilca Alvarez ( the Brew Crew , for short ) - stumbled upon an opportunity when Linda Manigas , one of the GK community mothers ( nanays ) , served guests and volunteers this \" tsaang bukid \" ( farm tea ) using a special recipe passed on from previous generations ( Aguilar , et ."
+  ],
+  "example": [
+    "More broadly , we identify potential biases to productivity from intangible investment , globalization , and technical innovations in the production of oil and natural gas ( for example , fracking ) .",
+    "2 For example , W.",
+    "However , technological change is not one-sided , and today 's governments enjoy far more powerful technologies to identify and track dangerous persons , to effect their capture , and , where absolutely necessary , to eliminate them , the use of drones ( UCAVS ) being a paramount example .",
+    "' ' 24  Pak Kyeyang was one such example .",
+    "Nine states could declare war and take other military actions , for example ."
+  ],
+  "did": [
+    "And third , Michael Mandel ( 2016 ) also finds little evidence of widespread rapid innovation in an analysis of labor market metrics such as occupational employment and help-wanted ads , although there are tremendous occupational changes in some narrow segments of the economy , such as  If not mismeasurement , why did productivity growth slow ?",
+    "However , rats responding under the interval schedule that more readily promotes habitual behavior in Experiment 1 did not show PIT , while the rats responding under the ratio schedule that less readily promotes habitual behavior in Experiment 3 did show PIT .",
+    "They asked Congress and all thirteen state legislatures to approve the new ratification process and they did .",
+    "164 Indeed , looking at the closing letters offered by the Commission in its data security investigations , it is apparent that the Commission is providing parties significantly less guidance under the stewardship of Chairwoman Ramirez than it did previously.",
+    "But first , why did the Court adopt the approach that it did ?"
+  ],
+  "note": [
+    "They make a good case that errors of measurement are not likely to explain much of the slowdown ; but as they note , much uncertainty remains .",
+    "See , for instance , ECHR , supra note 23 , art .",
+    "31 , supra note 62.",
+    "ECHR , supra note 23 , art .",
+    "31 , supra note 62."
+  ],
+  "federal": [
+    "government routinely provides direct loans and loan guarantees for housing , education , agriculture , small businesses , energy , trade , and other private activities via more than 150 separate programs that appear in the federal budget .",
+    "The legislatively mandated practice of discounting at Treasury rates and omitting administrative costs causes budgetary estimates of credit subsidies to understate the full economic cost to taxpayers of credit assistance ( Lucas and Phaup a more accurate cost measure that is conceptually the most comparable to the cash cost of other types of stimuli , the cost estimates used here are fair-value estimates derived from pricing models that my colleagues at the CBO and I have developed to provide fairvalue estimates for most major federal credit programs .",
+    "Section II provides a context for the analysis by giving an overview of federal credit support activities .",
+    "The model also has lessons for the efficient structuring of federal credit programs .",
+    "7 As noted by Gale ( 1991 ) , spending by users of state and local debt is also affected by the associated federal credit subsidies ."
+  ],
+  "made": [
+    "There are two distinct channels : ( i ) a traditional elasticity channel ( the intensive margin ) , whereby the demand for loans increases when the costs of borrowing fall ; and ( ii ) a creditrationing channel ( the extensive margin ) , whereby individuals who are unable to obtain the desired amount of credit at any rate from fully private lenders ( for instance , because of asymmetric information about borrower quality ) are able to borrow when a direct government loan or a government loan guarantee is made available .",
+    "However , the goals of the two analyses are different , and hence different choices are made .",
+    "By omitting the temporal made .",
+    "A simple mean comparison test is performed to compare both groups but no significant distinction can be made .",
+    "Under-Secretary for Colonies , in a response to Parliamentary questions about the juridical status of Palk Bay , provides one of the first indications of an emerging customary concern with the date at which a historic claim was first made ."
+  ],
+  "her": [
+    "She does one set of calculations for the subsidy rates for different programs , which are held fixed across the two scenarios-distressed and normal-that she considers in her simulations .",
+    "Lucas defended her choices programs .",
+    "It is very doubtful that if such a license , or what one might call \" tolerance , \" exists today in the global system of order , it extends to nominal and where operational power rests in the hands of a prime minister and her cabinet .",
+    "5-degree fever , to the emergency room because a subprime auto lender remotely deactivated her car after she fell only \" three days behind on her monthly car payment .",
+    "Marshall would also probably not be so quick to dismiss the religious character of some for-profit corporations , as Justice Ginsberg did in her Hobby Lobby dissent ."
+  ],
+  "court": [
+    "Without active help by citizens giving information and being willing to serve as witnesses in court , police are less effective in solving crimes or in building a case that can be prosecuted in court .",
+    "How would the views of human rights bodies such as the Human Rights Committee or the Committee against Torture be received in the Drone Court jurisprudence ?",
+    "His Miryang Pak descent group emerged in the midfourteenth century as an influential participant in court politics .",
+    "Supreme Court decisions .",
+    "A posteriori judicial review is exercised upon the request of the Prime Minister or the President of the Consultative Council or the President of the Council of Representatives ; or upon an ex propio motu request from any court , or upon a request of any of the parties to a case brought before any court."
+  ],
+  "there": [
+    "Is there too much assessment ?",
+    "Student teams also critique this video and provide recommendations as to the most ethical course of action in the face of the problems portrayed there .",
+    "Taizong received them there .",
+    "The Syrians refused to meet the Israelis there .",
+    "79 The majority of the population in the demilitarized sectors had been Palestinian farmers , while only a handful of Jews resided there ."
+  ],
+  "found": [
+    "No bias was found .",
+    "Our research utilized cluster analysis to evaluate the firm 's routines and activities as a bundle/structure and found significant relationships .",
+    "With US pressure on both Egypt and Israel , the temporary solution of demilitarization had been found .",
+    "Figure 8 below indicates the number of instances in which a legislative recommendation has been followed by legislative action , a negative response , a provisional step , or where no clear evidence of any response by the GCC states could be found .",
+    "\" We refer to this as \" ignoring \" the damages demand because the defendant 's attorney never said what the appropriate amount of damages should be if liability were found ."
+  ],
+  "id": [
+    "See id .",
+    "See id .",
+    "Id .",
+    "Id .",
+    "Id ."
+  ],
+  "supra": [
+    "ECHR , supra art .",
+    "Footnote  18 See Jessup supra fn.",
+    "Footnote  \" Jessup supra fn.",
+    "\" Jessup supra fn.",
+    "See supra Parts III."
+  ],
+  "history": [
+    "But whether he engaged again in diplomacy with the Japanese government after the embassy of 1397-99 is a topic of debate , and of Korean cartographic history .",
+    "Hyoung-woo Lee , ' ' Political Power Groups of the Koryo Dynasty after the Period of Y&uuml;an China 's Intervention , ' ' International Journal of Korean History 3 ( Dec.",
+    "Lee Jin-Han , ' ' The Development of Diplomatic Relations and Trade with Ming in the Last Years of the Koryo Dynasty , ' ' International Journal of Korean History 10 ( Dec.",
+    "Mackintosh , \" Economic Factors in Canadian History .",
+    "history ?"
+  ],
+  "vol": [
+    "Kyujanggak Institute of Korean Studies collection ; ' ' Pangmok , ' ' in Yi Chono , Sokt'an chip , in Hanguk munjip ch'onggan , vol.",
+    "For Pak Yunmun 's reported passing of the civil examination see Milsong Pak ssi sebo , vol.",
+    "( See Yi Saek , ' , Mogun ko , in Hanguk munjip ch'onggan , vol.",
+    "( Yi Saek , ' ' Ka Chukkye An-ssi samja tunggwa si so , ' ' in Yi Saek , Mogun ko , in Hanguk munjip ch'onggan , vol.",
+    "( Tongmunson , vol."
+  ],
+  "rather": [
+    "2064 , 2068 ( 2013 ) ( \" Only if ' the arbitrator acts outside the scope of his contractually delegated authority ' -issuing an award that ' simply reflects his own notions of economic justice ' rather determination .",
+    "These contradictious findings mostly stem from studies that relate political leanings of journalists to their motivation to work as a journalist , not to role relevant than motivations for becoming a journalist : While the former reflect for example organizational working constraints-and thus more the reality of journalism practice-the latter are rather context-independent ideals .",
+    "123  One difficulty with this reasoning is that the nineteenth-century notions of state sovereignty reflected in Day and Prigg are rather dated .",
+    "\" 69 Indeed , from a hard bargain are not flaws but rather valuable market skills.",
+    "According to the known theory of moralization introduced by psychologist Paul Rozin , individuals ' morality is not fixed but rather dynamic."
+  ],
+  "although": [
+    "32 We also find that idiosyncratic risk increases at times of market boom as well , although return .",
+    "Reformers rarely acknowledged that much economic legislation , although couched .",
+    "Left alone as abruptly as he was taken company , \" La C&ocirc;te Basque \" concludes with Jonesy 's reflection that :  Although Mrs.",
+    "Finally , six differentially expressed genes ( Adcy8 , Myef2 , Per3 , Synpo2 , Tbc1d9b , and Tsc22d3 ) have been linked to both stress and ethanol responses , although separately .",
+    "There is also no guaranteed benchmark salary , although Mr."
+  ],
+  "because": [
+    "For reasons of readability and simplicity I omit the problem Richardson faces because norms .",
+    "A third demographic characteristic incorporated into our analyses is the percentage of the state population who are college graduates because Boushey 2010 ; Kousser 2005 ; Walker 1969 ) .",
+    "I want them to be proud of who they are because St.",
+    "She knows that Rebecca drowned in a bay near Manderley because Mrs.",
+    ", The Invention of Tradition ( Cambridge : Cambridge University Press , 2013 ) , 15-42 ; and the classic Trumpener argues that Scott presents Celtic peoples as locked on the far side of a historical chasm : at once admirable and ( because distant ) politically toothless ."
+  ],
+  "whether": [
+    "How does one tell whether \" activities violate fundamental policy \" ?",
+    "' \" ( CP , \" Tuft , \" 41-42 ) 43  This scansion underlines the few digressive moments of the lines , including stress on the monosyllable \" men , \" and marks the single elision in togeth'r with brackets ( no longer elided in the more regular closing line ) , and a regular trochaic inversions at \" Whether .",
+    "We first determined whether glutamate stimulation affects overall MAP2 localization .",
+    "We next investigated whether MAP2 affected KIF5-driven cargo transport .",
+    ", 2015 ) , we next tested whether ILC3s controlled peritoneal macrophage responses via SPM production ."
+  ]
+}

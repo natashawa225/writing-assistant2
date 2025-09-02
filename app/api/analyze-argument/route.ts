@@ -23,9 +23,6 @@ const AnalysisResultSchema = z.object({
     evidence: z.array(ArgumentElementSchema),
     conclusion: ArgumentElementSchema,
   }),
-  // overallScore: z.number().min(0).max(100),
-  // strengths: z.array(z.string()),
-  // improvements: z.array(z.string()),
 })
 
 export async function POST(request: NextRequest) {

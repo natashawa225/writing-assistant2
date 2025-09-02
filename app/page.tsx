@@ -62,7 +62,7 @@ export default function ArgumentativeWritingAssistant() {
               const start = essay.indexOf(el.text)
               if (start !== -1) {
                 newHighlights.push({
-                  id: `${key}-${index}`,
+                  // id: `${key}-${index}`,
                   elementId: key,
                   start,
                   end: start + el.text.length,
@@ -80,7 +80,7 @@ export default function ArgumentativeWritingAssistant() {
           const start = essay.indexOf(element.text)
           if (start !== -1) {
             newHighlights.push({
-              id: key,
+              // id: key,
               elementId: key,
               start,
               end: start + element.text.length,
@@ -101,7 +101,7 @@ export default function ArgumentativeWritingAssistant() {
           let match
           while ((match = regex.exec(essay)) !== null) {
             newHighlights.push({
-              id: `awl-${index}-${match.index}`,
+              // id: `awl-${index}-${match.index}`,
               elementId: "",
               start: match.index,
               end: match.index + match[0].length,
@@ -123,7 +123,7 @@ export default function ArgumentativeWritingAssistant() {
           let match
           while ((match = regex.exec(essay)) !== null) {
             newHighlights.push({
-              id: `afl-${index}-${match.index}`,
+              // id: `afl-${index}-${match.index}`,
               elementId: "",
               start: match.index,
               end: match.index + match[0].length,
@@ -146,7 +146,7 @@ export default function ArgumentativeWritingAssistant() {
           let match
           while ((match = regex.exec(essay)) !== null) {
             newHighlights.push({
-              id: `repetitive-${index}-${match.index}`,
+              // id: `repetitive-${index}-${match.index}`,
               elementId: "",
               start: match.index,
               end: match.index + match[0].length,
@@ -196,7 +196,7 @@ export default function ArgumentativeWritingAssistant() {
     setCurrentHighlight({ text, effectiveness })
     setSelectedElementId(text) // optional: track selected sentence
   }
-  
+
   const handleElementSelect = (elementId: string | null) => {
     setSelectedElementId(elementId)
   }

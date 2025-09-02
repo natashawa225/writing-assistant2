@@ -212,8 +212,8 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                         onMouseEnter={() => handleCardHover(selectedElement, true)}
                         onMouseLeave={() => handleCardHover(selectedElement, false)}
                       >
-                        <p className="text-sm text-blue-700 font-medium">Suggestions for Improvement</p>
-                        <p className="text-xs text-blue-600 mt-1">{currentElement.feedback}</p>
+                        <p className="text-m text-blue-700 font-medium">Suggestions for Improvement</p>
+                        <p className="text-sm text-blue-600 mt-1">{currentElement.feedback}</p>
 
                         {expandedCard === selectedElement && (
                           <div className="mt-3 pt-3 border-t border-blue-200 animate-in slide-in-from-top-2 duration-200">
@@ -234,13 +234,18 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                         {showCorrections.has(selectedElement) && currentElement.suggestions && (
                           <div className="mt-3 p-3 rounded-lg bg-red-50 border border-red-200 animate-in slide-in-from-top-2 duration-200">
                             <h5 className="font-medium mb-2 text-red-800">Suggested Correction:</h5>
-                            <ul className="text-sm space-y-1 text-red-700">{currentElement.suggestions}
-                              {/* {currentElement.suggestions.map((suggestion, i) => (
-                                <li key={i} className="flex items-start gap-2">
-                                  <ArrowBigRight className="h-3 w-3 mt-0.5 flex-shrink-0 strokeWidth=1.25" />
-                                  {suggestion}
-                                </li>
-                              ))} */}
+                            
+                            <ul className="text-sm space-y-1 text-red-700">
+                              {currentElement.suggestions}
+                            </ul>
+                          </div>
+          
+                        )}
+                        {showCorrections.has(selectedElement) && currentElement.suggestions && (
+                          <div className="mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 animate-in slide-in-from-top-2 duration-200">
+                            <h5 className="font-medium mb-2 text-amber-800">Reason:</h5>
+                            <ul className="text-sm space-y-1 text-amber-700">
+                              {currentElement.reason}
                             </ul>
                           </div>
                         )}
