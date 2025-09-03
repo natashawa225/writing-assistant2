@@ -122,6 +122,7 @@ export async function POST(request: NextRequest) {
     - Unique words: ${uniqueWords.size}
     - Diversity level: ${diversityLevel}
     - Provide specific feedback and suggestions for improvement
+    - if MATTR value higher than 0.7, provide some encouragement, no need to provide suggestions
 
     For AWL suggestions, use categories: "Foundation words", "Expanding words", "Mastery words", "Expert words"
     For AFL suggestions, use values: "High Academic Value", "Medium Academic Value", "Low Academic Value"
@@ -136,7 +137,7 @@ export async function POST(request: NextRequest) {
     `
 
     const result = await generateObject({
-      model: openai("gpt-4o"),
+      model: openai("gpt-5-mini"),
       system: lexicalPrompt,
       prompt: `Analyze the lexical features of this essay and provide detailed feedback:\n\n${essay}`,
       schema: LexicalAnalysisSchema,
