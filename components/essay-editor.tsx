@@ -95,6 +95,7 @@ export function EssayEditor({
       let match
       while ((match = regex.exec(text)) !== null) {
         dynamicHighlights.push({
+          id: `persistent-${selectedElementId || "none"}-${match.index}-${match[0].length}`,
           start: match.index,
           end: match.index + match[0].length,
           text: match[0],
@@ -282,7 +283,7 @@ export function EssayEditor({
         </div>
 
         <div className="mt-2 text-xs text-muted-foreground flex items-center justify-between">
-          <span>{getStatusText()}</span>
+          {/* <span>{getStatusText()}</span> */}
           <span>Active: {activeTab === "argumentative" ? "Visual Feedback" : "Lexical Feedback"}</span>
         </div>
       </div>
