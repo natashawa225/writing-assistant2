@@ -27,38 +27,75 @@ const AnalysisResultSchema = z.object({
 const FeedbackResultSchema = AnalysisResultSchema
 
 // ensure every element has feedback/suggestions/reason fields
+// Updated enrichElements function to handle missing individual effectiveness ratings
 function enrichElements(raw: any): any {
   function enrich(el: any) {
     if (!el) {
       return { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" }
     }
+    
+    // Handle both string content and object with sentence/text
+    let text = "";
+    if (typeof el === "string") {
+      text = el;
+    } else {
+      text = el.text ?? el.sentence ?? "";
+    }
+    
     return {
-      text: el.text ?? el.sentence ?? "",
-      effectiveness: el.effectiveness ?? "Missing",
+      text: text,
+      effectiveness: el.effectiveness ?? "Missing", // Will be "Missing" for strings
       feedback: el.feedback ?? "",
       suggestions: el.suggestions ?? "",
       reason: el.reason ?? "",
     }
   }
 
-  const e = raw.elements ?? {}
+  // Handle both nested and flat structures
+  const data = raw.elements ?? raw;
+  
+  // Helper function to get first item from array or return the item itself
+  const getFirstOrEmpty = (item: any) => {
+    if (Array.isArray(item)) {
+      return item.length > 0 ? item[0] : null;
+    }
+    return item || null;
+  };
 
   return {
-    effectiveness: raw.effectiveness ?? "Missing",
     elements: {
-      lead: enrich(e.lead),
-      position: enrich(e.position),
-      claims: (e.claims ?? []).map(enrich),
-      counterclaim: enrich(e.counterclaim),
-      counterclaim_evidence: enrich(e.counterclaim_evidence),
-      rebuttal: enrich(e.rebuttal),
-      rebuttal_evidence: enrich(e.rebuttal_evidence),
-      evidence: (e.evidence ?? []).map(enrich),
-      conclusion: enrich(e.conclusion),
+      lead: enrich(data.lead),
+      position: enrich(data.position),
+      claims: Array.isArray(data.claims) ? data.claims.map(enrich) : [],
+      counterclaim: enrich(getFirstOrEmpty(data.counterclaims)),
+      counterclaim_evidence: enrich(getFirstOrEmpty(data.counterclaim_evidence)),
+      rebuttal: enrich(getFirstOrEmpty(data.rebuttals)),
+      rebuttal_evidence: enrich(getFirstOrEmpty(data.rebuttal_evidence)),
+      evidence: Array.isArray(data.evidence) ? data.evidence.map(enrich) : [],
+      conclusion: enrich(data.conclusion),
     },
   }
 }
 
+// Updated system prompt for the fine-tuned model
+const FINE_TUNED_SYSTEM_PROMPT = `You are an argument-mining classifier for argumentative essays. 
+
+Return JSON with this EXACT structure:
+{
+  "lead": {"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"},
+  "position": {"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"},
+  "claims": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
+  "evidence": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
+  "counterclaims": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
+  "counterclaim_evidence": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
+  "rebuttals": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
+  "rebuttal_evidence": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
+  "conclusion": {"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}
+}
+
+CRITICAL: Each element must have both "text" and "effectiveness" fields. Do not include a top-level "effectiveness" field.`;
+
+// Updated POST function
 export async function POST(request: NextRequest) {
   try {
     const { essay } = await request.json()
@@ -72,22 +109,20 @@ export async function POST(request: NextRequest) {
         messages: [
           {
             role: "system",
-            content:
-               "You are a classifier for argumentative essays. Return only valid JSON with fields: effectiveness, lead, position, claims[], evidence[], counterclaims[], counterclaim_evidence[], rebuttals[], rebuttal_evidence[], and conclusion.",
+            content: FINE_TUNED_SYSTEM_PROMPT,
           },
           { role: "user", content: essay },
         ],
         response_format: { type: "json_object" },
       })
     } catch (err: any) {
-      console.warn("⚠️ FT model unavailable, falling back to gpt-4.1-mini:", err.message)
+      console.warn("⚠️ FT model unavailable, falling back to gpt-5-mini:", err.message)
       completion = await openai.chat.completions.create({
-        model: "gpt-4.1-mini",
+        model: "gpt-5-mini",
         messages: [
           {
             role: "system",
-            content:
-              "You are an argument-mining tagger. Return JSON only with fields: effectiveness, lead, position, claims[], evidence[], counterclaims[], counterclaim_evidence[], rebuttals[], rebuttal_evidence[], and conclusion. Each element must include its sentence and its discourse effectiveness.",
+            content: FINE_TUNED_SYSTEM_PROMPT,
           },
           { role: "user", content: essay },
         ],
@@ -100,10 +135,60 @@ export async function POST(request: NextRequest) {
 
     console.log("🔍 Raw FT analysis:", JSON.stringify(analysis, null, 2))
 
+    // Check if we got the old format and need to assign default effectiveness
+    if ('effectiveness' in analysis && typeof analysis.effectiveness === 'string') {
+      console.warn("⚠️ Model returned old format with top-level effectiveness. Assigning 'Adequate' to all elements.");
+      
+      // Convert old format to new format with default effectiveness
+      const convertElement = (text: any) => {
+        if (typeof text === 'string') {
+          return { text, effectiveness: text ? 'Adequate' : 'Missing' };
+        }
+        return text;
+      };
+
+      analysis.lead = convertElement(analysis.lead);
+      analysis.position = convertElement(analysis.position);
+      analysis.claims = (analysis.claims || []).map(convertElement);
+      analysis.evidence = (analysis.evidence || []).map(convertElement);
+      analysis.counterclaims = (analysis.counterclaims || []).map(convertElement);
+      analysis.counterclaim_evidence = (analysis.counterclaim_evidence || []).map(convertElement);
+      analysis.rebuttals = (analysis.rebuttals || []).map(convertElement);
+      analysis.rebuttal_evidence = (analysis.rebuttal_evidence || []).map(convertElement);
+      analysis.conclusion = convertElement(analysis.conclusion);
+      
+      // Remove the top-level effectiveness
+      delete analysis.effectiveness;
+    }
+
+    function lockEffectiveness(
+      original: Record<string, any>,
+      updated: Record<string, any>
+    ): Record<string, any> {
+      const lock = (o: Record<string, any>, u: Record<string, any>) => {
+        if (!o || !u) return u;
+        u.effectiveness = o.effectiveness;
+        for (const key of Object.keys(o)) {
+          if (Array.isArray(o[key]) && Array.isArray(u[key])) {
+            for (let i = 0; i < o[key].length; i++) lock(o[key][i], u[key][i]);
+          } else if (
+            typeof o[key] === "object" &&
+            o[key] !== null &&
+            typeof u[key] === "object" &&
+            u[key] !== null
+          ) {
+            lock(o[key], u[key]);
+          }
+        }
+      };
+      lock(original, updated);
+      return updated;
+    }
+    
     // STEP 2 → Enrich with empty feedback/suggestions/reason
     const enriched = enrichElements(analysis)
 
-    // STEP 3 → Feedback generation
+    // STEP 3 → Feedback generation (rest of your code remains the same)
     const feedbackCompletion = await openai.chat.completions.create({
       model: "gpt-5-mini",
       response_format: { type: "json_object" },
@@ -124,9 +209,7 @@ export async function POST(request: NextRequest) {
               • Add a "suggestions" field: one suggested improved sentence.
               • Add a "reason" field: 2–4 sentences explaining why the suggestion improves clarity or argumentation.
     
-          Return the same structure back, strictly matching ArgumentElementSchema.
-    
-          Also provide a top-level "`
+          Return the same structure back, strictly matching ArgumentElementSchema.`
         },
         {
           role: "user",
@@ -135,9 +218,12 @@ export async function POST(request: NextRequest) {
       ],
     })
 
-    const feedback = JSON.parse(feedbackCompletion.choices[0].message?.content ?? "{}")
+    const feedbackJSON = JSON.parse(feedbackCompletion.choices[0].message?.content ?? "{}")
 
-    const parsed = FeedbackResultSchema.safeParse(feedback)
+    // STEP 4 → Lock element-level effectiveness
+    const finalFeedback = lockEffectiveness(enriched, feedbackJSON)
+
+    const parsed = FeedbackResultSchema.safeParse(finalFeedback)
     if (!parsed.success) {
       console.error("❌ Zod validation failed", parsed.error.format())
       return NextResponse.json(
@@ -146,7 +232,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    return NextResponse.json(parsed.data)
+    return NextResponse.json(finalFeedback)
   } catch (error) {
     console.error("Error analyzing argumentative structure:", error)
     return NextResponse.json({ error: "Failed to analyze essay" }, { status: 500 })

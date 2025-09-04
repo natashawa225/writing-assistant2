@@ -209,7 +209,7 @@ export function LexicalFeedback({
                             {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                             <span className="font-medium text-red-600">"{suggestion.original}"</span>
                           </div>
-                          <Badge className={getCategoryColor(suggestion.category)}>Sublist {suggestion.sublist}</Badge>
+                          <Badge className={getCategoryColor(suggestion.category)}>{suggestion.sublist}</Badge>
                         </div>
 
                         {isExpanded && (

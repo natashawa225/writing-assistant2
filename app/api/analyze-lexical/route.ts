@@ -27,7 +27,7 @@ const LexicalAnalysisSchema = z.object({
         original: z.string(),
         reason: z.string(),
         suggestion: z.string(),
-        sublist: z.number(),
+        sublist: z.string(),
         category: z.string(),
         explanation: z.string(),
         example: z.string(),
@@ -206,10 +206,10 @@ export async function POST(request: NextRequest) {
       * suggestion.explanation: explain why the suggested phrase is stronger in academic contexts.
       * suggestion.example: generate an example sentence using the suggested phrase. Example sentences must come from the COCA dataset when possible.
       * suggestion.value: classify based on phrase frequency (FTW score) using these thresholds:
-        - 0.75–1.00 → Essential 🟢 Green: "Very common in academic writing — this is a strong, natural choice."
-        - 0.50–0.74 → Useful 🟡 Yellow: "Good phrase, but less frequent. You can use it, but there may be stronger alternatives."
-        - 0.25–0.49 → Advanced 🟠 Orange: "Less common in student writing. Use sparingly — may sound formal or discipline-specific."
-        - 0.00–0.24 → Rare 🔴 Red: "Rare phrase — may sound unusual or overly formal. Consider a more common academic phrase."
+        - 0.75–1.00 → Essential: "Very common in academic writing — this is a strong, natural choice."
+        - 0.50–0.74 → Useful: "Good phrase, but less frequent. You can use it, but there may be stronger alternatives."
+        - 0.25–0.49 → Advanced: "Less common in student writing. Use sparingly — may sound formal or discipline-specific."
+        - 0.00–0.24 → Rare: "Rare phrase — may sound unusual or overly formal. Consider a more common academic phrase."
     - Calculate coverage score (0–100).
 
     3. LEXICAL DIVERSITY:

@@ -282,9 +282,8 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               style={{ top: "530px", left: "570px" }}
             />
 
-            {/* Concluding Summary - Bottom level */}
             <DiagramElement
-              id="concluding"
+              id="conclusion"
               label="Concluding Summary"
               element={analysis.elements.conclusion}
               style={{ top: "560px", left: "300px", minWidth: "140px" }}
