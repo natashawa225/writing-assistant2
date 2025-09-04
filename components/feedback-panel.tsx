@@ -21,7 +21,7 @@ interface FeedbackPanelProps {
   lexicalAnalysis: LexicalAnalysis | null
   essay: string
   isAnalyzing: boolean
-  onHighlightText?: (text: string) => void
+  onHighlightText: (text: string, effectiveness?: string) => void
   onElementSelect?: (elementId: string | null) => void
   onTabChange?: (tab: string) => void
   onSubTabChange?: (subTab: string) => void

@@ -222,6 +222,7 @@ export function LexicalFeedback({
                                     <div>
                                       <h5 className="font-medium text-blue-800 mb-1">Reflection</h5>
                                       <p className="text-sm text-blue-700">{suggestion.reason}</p>
+                                      <p className="text-sm text-blue-700">If you are stuck, click the button to see a suggested correction.</p>
                                       <Button
                                         size="sm"
                                         className="mt-2 bg-blue-500 hover:bg-blue-700"
@@ -302,6 +303,7 @@ export function LexicalFeedback({
                                     <div>
                                       <h5 className="font-medium text-green-800 mb-1">Reflection</h5>
                                       <p className="text-sm text-green-700">{suggestion.reason}</p>
+                                      <p className="text-sm text-green-700">If you are stuck, click the button to see a suggested correction.</p>
                                       <Button
                                         size="sm"
                                         className="mt-2 bg-green-500 hover:bg-green-700"
@@ -487,6 +489,7 @@ export function LexicalFeedback({
                                                   frequency). Consider if this repetition adds emphasis or if you could
                                                   use synonyms to create more varied and engaging prose.
                                                 </p>
+                                                <p className="text-sm text-orange-800">If you are stuck, click the button to see a suggested correction.</p>
                                                 <Button
                                                   size="sm"
                                                   className="mt-2 bg-orange-500 hover:bg-orange-700"

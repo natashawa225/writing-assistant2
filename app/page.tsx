@@ -192,8 +192,8 @@ export default function ArgumentativeWritingAssistant() {
   // const handleHighlightText = (text: string) => {
   //   console.log("Highlighting text in essay:", text)
   // }
-  const handleHighlightText = (text: string, effectiveness: string) => {
-    setCurrentHighlight({ text, effectiveness })
+  const handleHighlightText = (text: string, effectiveness?: string) => {
+    setCurrentHighlight({ text, effectiveness: effectiveness ?? "" })
     setSelectedElementId(text) // optional: track selected sentence
   }
 

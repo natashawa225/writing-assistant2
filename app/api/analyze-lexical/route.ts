@@ -191,7 +191,7 @@ export async function POST(request: NextRequest) {
     1. AWL COVERAGE:
     - Identify words from the Academic Word List (AWL).
     - For each AWL word:
-      * suggestion.reason: write 2–3 sentences that guide students to reflect indirectly on how their vocabulary choice impacts clarity, precision, or persuasiveness. Do not give the corrected answer here.
+      * suggestion.reason: write 2–3 sentences that guide students to reflect indirectly on how their vocabulary choice impacts clarity, precision, or persuasiveness. give a clue to guide the student. For example: For the word "approach", say: "Think of a word starting with 'app___' that is more precise for academic writing. Do not give the corrected answer here. 
       * suggestion.suggestion: provide the corrected academic alternative word.
       * suggestion.explanation: explain why the suggested academic word is stronger than the original.
       * suggestion.example: generate an example sentence using the suggested word. Example sentences must come from the COCA dataset provided: ${JSON.stringify(awlFeedbackData)}.
@@ -201,7 +201,7 @@ export async function POST(request: NextRequest) {
     2. AFL COVERAGE:
     - Identify phrases from the Academic Formula List (AFL): ${JSON.stringify(aflMatches)}.
     - For each AFL phrase:
-      * suggestion.reason: write 2–3 sentences that encourage reflection on whether the phrase fits an academic tone, without giving the corrected phrase.
+      * suggestion.reason: write 2–3 sentences that encourage reflection on whether the phrase fits an academic tone, Give a subtle clue instead of the exact replacement. Example: "Consider a more formal phrase starting with 'as a r___' to improve academic tone. without giving the corrected phrase.
       * suggestion.suggestion: provide the more formal/precise academic phrase.
       * suggestion.explanation: explain why the suggested phrase is stronger in academic contexts.
       * suggestion.example: generate an example sentence using the suggested phrase. Example sentences must come from the COCA dataset when possible.

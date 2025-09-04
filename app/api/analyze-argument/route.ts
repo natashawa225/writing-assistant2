@@ -196,20 +196,22 @@ export async function POST(request: NextRequest) {
         {
           role: "system",
           content: `You are an expert essay coach giving structured, detailed, and insightful feedback on argumentative essays.
-    
+
           You will receive JSON where each element already has two fields: "text" and "effectiveness".
           Do not change or remove these fields. Keep their values exactly as provided.
-    
+
           For each element:
           - If "effectiveness" is "Effective":
               • Add a "feedback" field with 2–3 sentences explaining why it is effective.
               • Leave "suggestions" and "reason" as empty strings.
           - If "effectiveness" is "Adequate", "Ineffective", or "Missing":
-              • Add a "feedback" field with 3–5 sentences of reflective guidance.
-              • Add a "suggestions" field: one suggested improved sentence.
-              • Add a "reason" field: 2–4 sentences explaining why the suggestion improves clarity or argumentation.
-    
+              • Add a "feedback" field with 3–5 sentences of reflective guidance, encouraging the student to start revising.
+              • Include a sentence like "Once you finish revising, you can click the button to regenerate visual feedback to see if your revision works."
+              • Add a "suggestions" field with one improved sentence.
+              • Add a "reason" field with 2–4 sentences explaining why the suggestion improves clarity or argumentation.
+
           Return the same structure back, strictly matching ArgumentElementSchema.`
+
         },
         {
           role: "user",

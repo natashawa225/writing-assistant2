@@ -16,6 +16,7 @@ interface ArgumentativeFeedbackProps {
   essay: string
   isAnalyzing: boolean
   onHighlightText?: (text: string, effectiveness: string) => void
+  onElementSelect?: (elementId: string | null) => void
 }
 
 export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighlightText }: ArgumentativeFeedbackProps) {
