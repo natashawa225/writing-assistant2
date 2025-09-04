@@ -1,26 +1,25 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { generateObject } from "ai"
 import { z } from "zod"
 import { openai } from "@/lib/openai"
 
 const ArgumentElementSchema = z.object({
-  text: z.string(),
-  effectiveness: z.enum(["Effective", "Adequate", "Ineffective", "Missing"]),
-  feedback: z.string(),
-  suggestions: z.string(),
-  reason: z.string(),
+  text: z.string().default(""),
+  effectiveness: z.enum(["Effective", "Adequate", "Ineffective", "Missing"]).default("Missing"),
+  feedback: z.string().default(""),
+  suggestions: z.string().default(""),
+  reason: z.string().default(""),
 })
 
 const AnalysisResultSchema = z.object({
   elements: z.object({
     lead: ArgumentElementSchema,
     position: ArgumentElementSchema,
-    claims: z.array(ArgumentElementSchema),
+    claims: z.array(ArgumentElementSchema).default([]),
     counterclaim: ArgumentElementSchema,
     counterclaim_evidence: ArgumentElementSchema,
     rebuttal: ArgumentElementSchema,
     rebuttal_evidence: ArgumentElementSchema,
-    evidence: z.array(ArgumentElementSchema),
+    evidence: z.array(ArgumentElementSchema).default([]),
     conclusion: ArgumentElementSchema,
   }),
 })
@@ -42,40 +41,28 @@ function mapElement(element: any) {
 
 // helper: normalize arrays from FT model → match fixed schema
 function normalizeAnalysis(raw: any) {
-  const e = raw.elements ?? {};
+  const e = raw ?? {}; // ✅ don’t assume nested .elements
 
   // --- Claims ---
   const allClaims = [...(e.claims ?? []), ...(e.counterclaims ?? [])];
-  const claims = allClaims.map(mapElement); // all claims in order
-  const counterclaim = claims.find((_, idx) => (e.counterclaims ?? []).length > 0 && idx >= (e.claims ?? []).length)
-    ?? { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
+  const claims = allClaims.map(mapElement);
+  const counterclaim =
+    (e.counterclaims ?? [])[0] 
+      ? mapElement((e.counterclaims ?? [])[0]) 
+      : { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
 
   // --- Evidence ---
-  const allEvidence = [
-    ...(e.evidence ?? []),
-    ...(e.counterclaim_evidence ?? []),
-    ...(e.rebuttal_evidence ?? [])
-  ];
   const evidence = (e.evidence ?? []).map(mapElement);
-  const counterclaim_evidence = (e.counterclaim_evidence ?? []).map(mapElement)[0] ?? { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
-  const rebuttal_evidence = (e.rebuttal_evidence ?? []).map(mapElement)[0] ?? { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
+  const counterclaim_evidence = (e.counterclaim_evidence ?? [])[0]
+    ? mapElement(e.counterclaim_evidence[0])
+    : { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
+  const rebuttal_evidence = (e.rebuttal_evidence ?? [])[0]
+    ? mapElement(e.rebuttal_evidence[0])
+    : { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
 
   // --- Rebuttals ---
   const rebuttalsArray = Array.isArray(e.rebuttals) ? e.rebuttals : e.rebuttal ? [e.rebuttal] : [];
-  const rebuttal = rebuttalsArray.map(mapElement)[0] ?? { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
-
-  const claimsArray = (e.claims ?? []).map(mapElement);
-  const counterclaimsArray = (e.counterclaims ?? []).map(mapElement);
-
-  // For your diagram:
-  const claimsForDiagram = claimsArray.slice(0, 3); // max 3 claims
-  const counterclaimForDiagram = counterclaimsArray[0] ?? { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
-
-  // Optional: if you want to fill the diagram fully with claims + counterclaim
-  while (claimsForDiagram.length < 3) {
-    if (counterclaimsArray.length > 0) claimsForDiagram.push(counterclaimsArray.shift()!);
-    else claimsForDiagram.push({ text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" });
-  }
+  const rebuttal = rebuttalsArray[0] ? mapElement(rebuttalsArray[0]) : { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" };
 
   return {
     elements: {
@@ -95,52 +82,93 @@ function normalizeAnalysis(raw: any) {
 export async function POST(request: NextRequest) {
   try {
     const { essay } = await request.json()
-    const FT_MODEL = process.env.FT_MODEL ?? "gpt-4.1-mini"
+    const FT_MODEL = process.env.FT_MODEL
 
-    // STEP 1 → Classify structure
-    const completion = await openai.chat.completions.create({
-      model: FT_MODEL,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a classifier for argumentative essays. Return only valid JSON with fields: lead, position, claims[], evidence[], counterclaims[], counterclaim_evidence[], rebuttals[], rebuttal_evidence[], and conclusion.",
-        },
-        {
-          role: "user",
-          content: essay,
-        },
-      ],
-      response_format: { type: "json_object" },
-    })
+    let completion
+    try {
+      // STEP 1 → Try fine-tuned model
+      completion = await openai.chat.completions.create({
+        model: FT_MODEL ?? "gpt-5-mini",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a classifier for argumentative essays. Return only valid JSON with fields: lead, position, claims[], evidence[], counterclaims[], counterclaim_evidence[], rebuttals[], rebuttal_evidence[], and conclusion.",
+          },
+          { role: "user", content: essay },
+        ],
+        response_format: { type: "json_object" },
+      })
+    } catch (err: any) {
+      // If the fine-tuned model doesn’t exist → fallback
+      console.warn("⚠️ FT model unavailable, falling back to gpt-4.1-mini:", err.message)
+      completion = await openai.chat.completions.create({
+        model: "gpt-4.1-mini",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a classifier for argumentative essays. Return only valid JSON with fields: lead, position, claims[], evidence[], counterclaims[], counterclaim_evidence[], rebuttals[], rebuttal_evidence[], and conclusion.",
+          },
+          { role: "user", content: essay },
+        ],
+        response_format: { type: "json_object" },
+      })
+    }
 
     const analysis = JSON.parse(completion.choices[0].message?.content ?? "{}")
+
+    console.log("🔍 Raw analysis:", JSON.stringify(analysis, null, 2));
 
     // STEP 2 → Normalize
     const normalized = normalizeAnalysis(analysis)
 
-    const feedback = await generateObject({
-      model: "gpt-5-mini",   // ✅ correct: pass a string, not the client
-      system: `You are an expert essay coach giving structured, detailed, and insightful feedback on argumentative essays.
-        For each element in the analysis:
-        - If "Effective": give 2-3 sentences explaining why it is effective. Leave suggestions and reason empty.
-        - If "Adequate", "Ineffective", or "Missing":
-            • Feedback: 3-5 sentences of reflective guidance.
-            • Suggestions: a suggested sentences to replace the user's current one.
-            • Reason: 2-4 sentences explaining why suggestions strengthen clarity or argumentation.
-        Output must strictly follow ArgumentElementSchema (text, effectiveness, feedback, suggestions, reason).
-      `,
-      prompt: `Here is the normalized analysis:\n\n${JSON.stringify(normalized, null, 2)}`,
-      schema: FeedbackResultSchema,
-    })
-    
+    // STEP 3 → Feedback
+    const feedbackCompletion = await openai.chat.completions.create({
+      model: "gpt-5-mini",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `You are an expert essay coach giving structured, detailed, and insightful feedback on argumentative essays. 
+      
+          You will receive JSON where each element already has a field "effectiveness" (Effective, Adequate, Ineffective, or Missing). 
+          DO NOT change the effectiveness value. 
 
-    return NextResponse.json(feedback.object)
+          For each element:
+          - If "Effective": write 2–3 sentences explaining why it is effective. Leave "suggestions" and "reason" empty.
+          - If "Adequate", "Ineffective", or "Missing":
+              • "feedback": 3–5 sentences of reflective guidance.
+              • "suggestions": a suggested sentence to replace the user's current one.
+              • "reason": 2–4 sentences explaining why suggestions strengthen clarity or argumentation.
+
+          Return the same structure back, strictly matching ArgumentElementSchema (text, effectiveness, feedback, suggestions, reason).`
+        },
+        {
+          role: "user",
+          content: JSON.stringify(normalized) // 👈 pass in normalized elements
+        }
+      ]
+    })
+
+    
+    const feedback = JSON.parse(feedbackCompletion.choices[0].message?.content ?? "{}")
+
+    // Optional schema validation
+    const parsed = FeedbackResultSchema.safeParse(feedback)
+
+    if (!parsed.success) {
+      console.error("❌ Zod validation failed", parsed.error.format())
+      return NextResponse.json({ error: "Schema validation failed", issues: parsed.error.format() }, { status: 400 })
+    }
+
+    return NextResponse.json(parsed.data)
   } catch (error) {
     console.error("Error analyzing argumentative structure:", error)
     return NextResponse.json({ error: "Failed to analyze essay" }, { status: 500 })
   }
 }
+
 
 
 // export async function POST(request: NextRequest) {

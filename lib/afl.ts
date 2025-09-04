@@ -6,6 +6,7 @@ export interface AFLMatch {
   match: string
   index: number
   feedback: string
+  
 }  
 
 export function detectAFLphrase(text: string): AFLMatch[] {
