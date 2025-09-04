@@ -300,8 +300,7 @@ export function EssayEditor({
         <div className="mb-4">
           <h2 className="text-xl font-semibold">Essay Editor</h2>
           <p className="text-sm text-muted-foreground">
-            Edit your essay with selective highlighting. Select elements in the diagram to highlight associated
-            sentences. Highlights disappear when you edit the sentence.
+            Edit your essay and receive feedback .
           </p>
         </div>
 

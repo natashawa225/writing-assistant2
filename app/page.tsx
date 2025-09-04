@@ -302,31 +302,6 @@ export default function ArgumentativeWritingAssistant() {
           onSubTabChange={handleSubTabChange}
         />
       </div>
-
-      {/* Footer */}
-      {/* <footer className="border-t bg-muted/30 px-4 py-3">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <FileText className="h-4 w-4" />
-                <span>Words: {essay.trim().split(/\s+/).length}</span>
-              </div>
-              <Separator orientation="vertical" className="h-4" />
-              <div className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                <span>Characters: {essay.length}</span>
-              </div>
-              <Separator orientation="vertical" className="h-4" />
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4" />
-                <span>Highlights: {highlights.length}</span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </footer> */}
     </div>
   )
 }
