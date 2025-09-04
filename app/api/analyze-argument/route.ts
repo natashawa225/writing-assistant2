@@ -205,7 +205,7 @@ export async function POST(request: NextRequest) {
                 • Add a "feedback" field with 2–3 sentences explaining why it is effective.
                 • Leave "suggestions" and "reason" as empty strings.
             - If "effectiveness" is "Adequate", "Ineffective", or "Missing":
-                • Add a "feedback" field with 3–5 sentences of reflective guidance, encouraging the student to start revising.
+                • Add a "feedback" field with 3–5 sentences of reflective guidance, encouraging the student to start revising. INCLUDE encouragement messages 
                 • Include a sentence like "Once you finish revising, you can click the button to regenerate visual feedback to see if your revision works."
                 • Add a "suggestions" field with one improved sentence.
                 • Add a "reason" field with 2–4 sentences explaining why the suggestion improves clarity or argumentation.
