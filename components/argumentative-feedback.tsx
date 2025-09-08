@@ -10,6 +10,8 @@ import { Eye, Lightbulb, Sparkles, Target, TrendingUp, AlertTriangle, CheckCircl
 import { ArgumentDiagram } from "./argument-diagram"
 import type { AnalysisResult, ArgumentElement } from "@/lib/types"
 import { SetupGuide } from "@/components/setup-guide"
+import ReactMarkdown from "react-markdown"
+import rehypeRaw from 'rehype-raw';
 
 interface ArgumentativeFeedbackProps {
   analysis: AnalysisResult | null
@@ -190,11 +192,23 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                         <h5 className="font-medium mb-2 text-green-800">Why This Works:</h5>
 
                         {Array.isArray(currentElement.feedback) ? (
-                          <ul className="list-disc pl-5 text-sm text-green-700 space-y-1">
-                            {currentElement.feedback.map((item: string, i: number) => (
-                              <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
-                            ))}
-                          </ul>
+                          <ul className="list-disc pl-5 text-sm text-gray-700 mt-1 space-y-1">
+                          {currentElement.feedback.map((item: string, i: number) => (
+                            <li key={i}>
+                              <ReactMarkdown
+                                rehypePlugins={[rehypeRaw]} // ← This allows HTML parsing
+                                components={{
+                                  strong: ({ node, ...props }) => (
+                                    <strong className="font-semibold text-gray-900" {...props} />
+                                  ),
+                                }}
+                              >
+                                {item}
+                              </ReactMarkdown>
+                            </li>
+                          ))}
+                        </ul>
+                        
                         ) : (
                           <p
                             className="text-sm text-green-700"

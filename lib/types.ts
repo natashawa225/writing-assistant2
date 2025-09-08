@@ -33,6 +33,8 @@ export interface LexicalAnalysis {
       explanation: string
       example: string
       exampleEssay:string
+      exampleMasked:string
+
     }>
   }
   aflCoverage: {
@@ -45,6 +47,7 @@ export interface LexicalAnalysis {
       explanation: string
       example: string
       exampleEssay:string
+      exampleMasked:string
     }>
   }
 

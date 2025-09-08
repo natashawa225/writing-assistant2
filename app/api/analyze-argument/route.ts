@@ -226,12 +226,16 @@ export async function POST(request: NextRequest) {
             You will receive JSON where each element already has two fields: "text" and "effectiveness".
             Do not change or remove these fields. Keep their values exactly as provided.
             
+            The essay is based on one of the following prompts (do not mention the prompt explicitly in your output, but use it to guide your evaluation):  
+            Prompt 1: In many countries, university graduates struggle to find jobs in their field of study. Some people believe that the main purpose of university education should be to prepare students for employment. Others argue that universities should focus on academic knowledge, even if it is not directly useful for a job. To what extent do you agree or disagree that the main role of university education is to prepare students for employment?
+            Prompt 2: Cities around the world are facing problems of traffic congestion and air pollution. Some people think governments should invest more in improving public transport, while others believe individuals should be free to use their private cars without restrictions. To what extent do you agree or disagree that governments should prioritize investment in public transport rather than allowing unrestricted private car use?
 
+            When giving feedback, always consider how the element’s content contributes to answering the essay prompt.  
             For each element:
             - If "effectiveness" is "Effective":
             • Add a "feedback" field as a list of 2–3 bullet points.
             • Each bullet point should clearly explain *why* it is effective.
-            • Use **bold** formatting to highlight important words/phrases.
+            • Use bold formatting to highlight important words/phrases. Use <strong>...</strong> tags instead of Markdown for bolding key phrases.
             • Leave "suggestions" and "reason" as empty strings.
             - If "effectiveness" is "Adequate", "Ineffective", or "Missing":
             • Add a "feedback" field as a list of 2–3 bullet points of reflective guidance, encouraging the student to revise. INCLUDE encouragement messages. 
@@ -244,7 +248,6 @@ export async function POST(request: NextRequest) {
         - The "suggestions" field must be a single string.
         - The "reason" field must be a single string.
 
-        Use <strong>...</strong> tags instead of Markdown for bolding key phrases.
         Return the same structure back, strictly matching ArgumentElementSchema.`
         },
         {

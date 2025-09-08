@@ -324,42 +324,26 @@ export function LexicalFeedback({
                                       <p className="text-sm text-foreground/80 mb-3">{suggestion.reason}</p>
                                       <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
                                         <p className="text-sm font-medium text-primary mb-1">
-                                        For example, you might see it used like this: "{suggestion.example}"
+                                        In a sentence: "{suggestion.example}"
                                         </p>
                                       </div>
                                     </div>
+
+                    
                                   </div>
-                                  {/* <div className="flex items-start gap-2">
-                                    <HelpCircle className="h-4 w-4 text-green-600 mt-0.5" />
-                                    <div>
-                                      <h5 className="font-medium text-green-800 mb-1">Hints to replace "{suggestion.original}":</h5>
-                                      <p className="text-sm text-green-700">{suggestion.reason}</p>
-                                      <p className="text-sm text-green-700">If you are stuck, click the button to see a suggested correction.</p>
-                                      <Button
-                                        size="sm"
-                                        className="mt-2 bg-green-500 hover:bg-green-700"
-                                        onClick={() => advanceFeedbackLevel(cardId)}
-                                      >
-                                        Show Alternative
-                                      </Button>
-                                    </div>
-                                  </div> */}
+                                  
                                 </CardContent>
                               </Card>
-                              <Card className="bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
-                                <CardContent className="p-4">
-                                  <div className="flex justify-between items-center gap-3">
-                                    
-                                    <Button
-                                      size="sm"
-                                      className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-sm"
-                                      onClick={() => advanceFeedbackLevel(cardId)}
-                                    >
-                                      Show Solution
-                                    </Button>
-                                  </div>
-                                </CardContent>
-                              </Card>
+                              <div className="flex justify-end mt-2">
+                              <Button
+                                size="sm"
+                                className="bg-white shadow-sm text-primary font-medium hover:bg-white hover:shadow-md hover:text-primary"
+                                onClick={() => advanceFeedbackLevel(cardId)}
+                              >
+                                Show Solution
+                              </Button>
+                              </div>
+                              
                               </div>
 
                             )}
@@ -536,7 +520,6 @@ export function LexicalFeedback({
                                                   frequency). Consider if this repetition adds emphasis or if you could
                                                   use synonyms to create more varied and engaging prose.
                                                 </p>
-                                                <p className="text-sm text-orange-800">If you are stuck, click the button to see a suggested correction.</p>
                                                 <Button
                                                   size="sm"
                                                   className="mt-2 bg-orange-500 hover:bg-orange-700"

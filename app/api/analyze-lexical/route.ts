@@ -69,10 +69,6 @@ export interface AFLMatch {
   feedback: string
   reason: string
 }
-function maskWord(word: string): string {
-  if (!word || word.length === 0) return ""
-  return word[0] + "_".repeat(word.length - 1)
-}
 
 
 function getFeedback(listIndex: number, phrase: string): { feedback: string; reason: string } {
@@ -151,18 +147,10 @@ export async function POST(request: NextRequest) {
     // Detect AWL words for this essay
     const awlWords = detectAWLWordsBySublist(essay)
 
-    // Map each word to COCA examples + masked version
+    // Map each word to COCA examples
     const awlFeedbackData = awlWords.map(({ word, sublist }) => {
       const examples = getCOCAExamples(word, 2) // limit to 2 examples per word
-      const masked = maskWord(word)
-
-      const maskedExamples = examples.length > 0
-        ? examples.map(e =>
-            e.replace(new RegExp(`\\b${word}\\b`, "gi"), masked),
-          )
-        : [`The study measured students' ${masked} to apply mathematical reasoning.`]
-
-      return { word, sublist, examples: maskedExamples }
+      return { word, sublist, examples }
     })
     
     const aflMatches = detectAFLphrase(essay)
@@ -170,34 +158,23 @@ export async function POST(request: NextRequest) {
     // Pre-process AFL suggestions with score mapping and COCA examples
     const aflSuggestions = aflMatches.map(m => {
       const cocaExamples = getCOCAExamples(m.match, 2)
-      const masked = maskWord(m.match)
-
-      const maskedExamples = cocaExamples.length > 0
-        ? cocaExamples.map(e =>
-            e.replace(new RegExp(`\\b${m.match}\\b`, "gi"), masked),
-          )
-        : [`Instead of "${masked}", try a more precise construction.`]
-
-      
-      // You can update this later when you have actual FTW score data
-      let defaultFTWScore = 0.5 // Default to "Useful"
-      if (m.listIndex === 0) defaultFTWScore = 0.2 // Academic filler = "Rare"
-      if (m.listIndex === 1) defaultFTWScore = 0.3 // Informal = "Advanced" 
-      if (m.listIndex === 2) defaultFTWScore = 0.4 // Verbose = "Advanced"
-      
+    
+      let defaultFTWScore = 0.5
+      if (m.listIndex === 0) defaultFTWScore = 0.2
+      if (m.listIndex === 1) defaultFTWScore = 0.3
+      if (m.listIndex === 2) defaultFTWScore = 0.4
+    
       const scoreValue = mapFTWScoreToValue(defaultFTWScore)
     
       return {
         original: m.match,
-        suggestion: "rewrite with more concise/formal academic phrasing", // GPT will overwrite
-        value: scoreValue, // Pre-calculated instead of letting GPT do it
-        explanation: m.feedback, // Use the feedback from your AFL detection
-        example: cocaExamples.length > 0 
-          ? cocaExamples.join(" | ") 
-          : `Instead of "${m.match}", try a more precise construction.`,
-        reason: getAFLFeedbackReason(m.listIndex),
+        value: scoreValue, // fixed
+        cocaExamples,      // NEW: pass these along
+        // leave reason/suggestion/explanation/example/exampleEssay EMPTY,
+        // GPT will fill them in based on cocaExamples + original.
       }
     })
+    
 
     // Calculate MATTR locally
     const words = essay.toLowerCase().match(/\b\w+\b/g) || []
@@ -239,7 +216,7 @@ export async function POST(request: NextRequest) {
       * suggestion.reason: write a reflective prompt to guide students to revise, for example: "Think of a more formal verb often used in academic writing that means to obtain or to receive."
       * suggestion.suggestion: provide the corrected academic alternative word.
       * suggestion.explanation: explain why the suggested academic word is stronger than the original.
-      * suggestion.example: MUST use example sentences from the provided COCA data. If no COCA examples exist for a word, create a simple academic sentence.
+      * suggestion.example: MUST use example sentences from the provided COCA data that has the suggested word. the suggested word needs to be hidden in the sentence. for instance: assess becomes a_____ (number of underlined represents the letters) If no COCA examples exist for a word, create a simple academic sentence. 
       * suggestion.exampleEssay: Rephrase the student's original sentence, integrating the suggested word. Show them how it would look in their own work.
     - Classify suggestions into categories: "Foundation words", "Expanding words", "Mastery words", "Expert words".
     - Calculate coverage score (0–100).
@@ -250,7 +227,7 @@ export async function POST(request: NextRequest) {
       * suggestion.reason: write 2–3 sentences that encourage reflection on whether the phrase fits an academic tone. Give a subtle clue instead of the exact replacement.
       * suggestion.suggestion: provide the more formal/precise academic phrase.
       * suggestion.explanation: explain why the suggested phrase is stronger in academic contexts.
-      * suggestion.example: MUST use example sentences from COCA data when available, otherwise create a clear academic example.
+      * suggestion.example: MUST use example sentences from the provided COCA data that has the suggested phrase. the suggested word needs to be hidden in the sentence. for instance: assess becomes a_____ (number of underlined represents the letters) If no COCA examples exist for a word, create a simple academic sentence. 
       * suggestion.exampleEssay: Rephrase the student's original sentence, integrating the suggested phrase. Show them how it would look in their own work.
       * suggestion.value: USE THE PRE-CALCULATED VALUE - do not change this field.
     - Calculate coverage score (0–100).
@@ -259,13 +236,12 @@ export async function POST(request: NextRequest) {
     - Use the calculated MATTR score: ${mattrScore.toFixed(3)}.
     - Total words: ${words.length}, Unique words: ${uniqueWords.size}.
     - Assign diversity level: ${diversityLevel}.
-    - Provide specific feedback and improvement suggestions unless MATTR > 0.7, in which case only encouragement is needed. when giving feedback on lexical diversity exclude determiners, propositions, etc in the most frequent word computation
+    - Provide specific feedback and improvement suggestions unless MATTR > 0.7, in which case only encouragement is needed.
 
     IMPORTANT: Always use COCA examples from the provided data when available. If no COCA examples exist, create simple, clear academic sentences.
 
     Output must match the provided schema exactly.
     `
-    
     const result = await generateObject({
       model: openai("gpt-5-mini"),
       system: lexicalPrompt,
@@ -289,6 +265,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Failed to analyze lexical features" }, { status: 500 })
   }
 }
+
 // function getFeedback(listIndex: number, phrase: string): { feedback: string; reason: string } {
 //   switch (listIndex) {
 //     case 0:
