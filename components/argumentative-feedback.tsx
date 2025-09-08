@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
-import { Eye, Lightbulb, Sparkles, Target, TrendingUp, AlertTriangle, CheckCircle, ArrowBigRight } from "lucide-react"
+import { Eye, Lightbulb, Sparkles, Target, TrendingUp, AlertTriangle, CheckCircle, ArrowBigRight, Info, HelpCircle } from "lucide-react"
 import { ArgumentDiagram } from "./argument-diagram"
 import type { AnalysisResult, ArgumentElement } from "@/lib/types"
 import { SetupGuide } from "@/components/setup-guide"
@@ -167,93 +167,118 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
             <ArgumentDiagram analysis={analysis} essay={essay} onElementClick={handleElementClick} />
             
             {selectedElement && currentElement && (
-              <Card className="border-primary/20 bg-primary/5">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    <Lightbulb className="h-4 w-4" />
-                    {elementKey && elementKey.charAt(0).toUpperCase() + elementKey.slice(1)}
-                    {index !== undefined && ` ${index + 1}`} Feedback
-                  </CardTitle>
-                </CardHeader>
-
-                <CardContent>
-                  <div className="space-y-3">
+              <Card className="border-primary/20">
+                <CardHeader>
+                <CardTitle className="flex items-center justify-between text-base">
                     <div className="flex items-center gap-2">
-                      <Badge className={getEffectivenessColor(currentElement.effectiveness)}>
-                        {currentElement.effectiveness}
-                      </Badge>
-                    </div>
-
-                    {currentElement.text && (
-                      <div
-                        className="p-3 bg-muted rounded text-sm cursor-pointer hover:bg-muted/80"
-                        onClick={() => onHighlightText?.(currentElement.text, currentElement.effectiveness)}
-                      >
-                        "{currentElement.text}"
-                      </div>
-                    )}
-
+                    <Lightbulb className="h-4 w-4" />
+                    <span>
+                      {elementKey && elementKey.charAt(0).toUpperCase() + elementKey.slice(1)}
+                      {index !== undefined && ` ${index + 1}`} Feedback
+                    </span>
+                  </div>
+                  <Badge className={getEffectivenessColor(currentElement.effectiveness)}>
+                    {currentElement.effectiveness}
+                  </Badge>
+                </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div>
                     {/* ✅ If Effective → show Why This Works immediately */}
                     {currentElement.effectiveness === "Effective" ? (
                       <div className="mt-3 p-3 rounded-lg bg-green-50 border border-green-200">
                         <h5 className="font-medium mb-2 text-green-800">Why This Works:</h5>
-                        <ul className="text-sm space-y-1 text-green-700">{currentElement.feedback}
-                          {/* {currentElement.suggestions?.map((suggestion, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <Sparkles className="h-3 w-3 mt-0.5 flex-shrink-0" />
-                              {suggestion}
-                            </li>
-                          ))} */}
-                        </ul>
+
+                        {Array.isArray(currentElement.feedback) ? (
+                          <ul className="list-disc pl-5 text-sm text-green-700 space-y-1">
+                            {currentElement.feedback.map((item: string, i: number) => (
+                              <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+                            ))}
+                          </ul>
+                        ) : (
+                          <p
+                            className="text-sm text-green-700"
+                            dangerouslySetInnerHTML={{ __html: currentElement.feedback }}
+                          />
+                        )}
                       </div>
                     ) : (
-                      /* ❌ For Adequate/Ineffective → keep Suggestions + toggle */
-                      <div
-                        className="p-3 bg-blue-50 rounded-lg border border-blue-200 cursor-pointer hover:bg-blue-100 transition-all duration-200"
-                        onMouseEnter={() => handleCardHover(selectedElement, true)}
-                        onMouseLeave={() => handleCardHover(selectedElement, false)}
-                      >
-                        <p className="text-m text-blue-700 font-medium">Suggestions for Improvement</p>
-                        <p className="text-sm text-blue-600 mt-1">{currentElement.feedback}</p>
+                      <div className="space-y-3">
+                        <Card className="bg-blue-50 border-blue-300">
+                          <CardContent className="p-4">
+                            <div className="flex items-start gap-3">
+                              <div className="p-1.5 bg-primary/10 rounded-full">
+                                <HelpCircle className="h-4 w-4 text-primary" />
+                              </div>
+                              <div className="flex-1">
+                                <h5 className="font-semibold text-primary mb-2">
+                                  To revise the{" "}
+                                  <span className="font-bold">
+                                    {elementKey &&
+                                      elementKey.charAt(0).toUpperCase() + elementKey.slice(1)}
+                                    {index !== undefined && ` ${index + 1}`}
+                                  </span>{" "}
+                                  we suggest:
+                                </h5>
+                                <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
+                                {Array.isArray(currentElement.feedback) ? (
+                                  <ul className="list-disc pl-5 text-sm text-gray-700 mt-1 space-y-1">
+                                    {currentElement.feedback.map((item: string, i: number) => (
+                                      <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <p
+                                    className="text-sm text-gray-700 mt-1"
+                                    dangerouslySetInnerHTML={{ __html: currentElement.feedback }}
+                                  />
+                                )}
+                                </div>
 
-                        {expandedCard === selectedElement && (
-                          <div className="mt-3 pt-3 border-t border-blue-200 animate-in slide-in-from-top-2 duration-200">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                toggleCorrection(selectedElement)
-                              }}
-                              className="text-xs"
-                            >
-                              {showCorrections.has(selectedElement) ? "Hide Correction" : "Show Correction"}
-                            </Button>
-                          </div>
-                        )}
-
-                        {showCorrections.has(selectedElement) && currentElement.suggestions && (
-                          <div className="mt-3 p-3 rounded-lg bg-red-50 border border-red-200 animate-in slide-in-from-top-2 duration-200">
-                            <h5 className="font-medium mb-2 text-red-800">Suggested Correction:</h5>
                             
-                            <ul className="text-sm space-y-1 text-red-700">
-                              {currentElement.suggestions}
-                            </ul>
-                          </div>
-          
-                        )}
+
+            
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+
+                        {/* 🔹 Button separated below */}
+                        <div className="flex justify-end mt-2">
+                          <Button
+                            size="sm"
+                            className="bg-white shadow-sm text-primary font-medium hover:bg-white hover:shadow-md hover:text-primary"
+                            onClick={() => toggleCorrection(selectedElement)}
+                          >
+                            {showCorrections.has(selectedElement)
+                              ? "Hide Correction"
+                              : "Show Correction"}
+                          </Button>
+                        </div>
+
+                        {showCorrections.has(selectedElement) &&
+                          currentElement.suggestions && (
+                            <div className="mt-3 p-3 rounded-lg bg-red-50 border border-red-200 animate-in slide-in-from-top-2 duration-200">
+                              <h5 className="font-medium mb-2 text-red-800">
+                                Suggested Correction:
+                              </h5>
+                              <p className="text-sm text-red-700">
+                                {currentElement.suggestions}
+                              </p>
+                            </div>
+                          )}
+
                         {showCorrections.has(selectedElement) && currentElement.reason && (
                           <div className="mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 animate-in slide-in-from-top-2 duration-200">
                             <h5 className="font-medium mb-2 text-amber-800">Reason:</h5>
-                            <ul className="text-sm space-y-1 text-amber-700">
-                              {currentElement.reason}
-                            </ul>
+                            <p className="text-sm text-amber-700">{currentElement.reason}</p>
                           </div>
                         )}
                       </div>
                     )}
                   </div>
                 </CardContent>
+
               </Card>
             )}
           </div>
@@ -261,6 +286,139 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
     </div>
   )
 }
+
+
+// <CardContent>
+//                   <div>
+//                     {/* ✅ If Effective → show Why This Works immediately */}
+//                     {currentElement.effectiveness === "Effective" ? (
+//                       <div className="mt-3 p-3 rounded-lg bg-green-50 border border-green-200">
+//                       <h5 className="font-medium mb-2 text-green-800">Why This Works:</h5>
+                  
+//                       {Array.isArray(currentElement.feedback) ? (
+//                         <ul className="list-disc pl-5 text-sm text-green-700 space-y-1">
+//                           {currentElement.feedback.map((item: string, i: number) => (
+//                             <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+//                           ))}
+//                         </ul>
+//                       ) : (
+//                         <p
+//                           className="text-sm text-green-700"
+//                           dangerouslySetInnerHTML={{ __html: currentElement.feedback }}
+//                         />
+//                       )}
+//                     </div>
+//                     ) : (
+                      
+//                       /* ❌ For Adequate/Ineffective → keep Suggestions + toggle */
+//                       <div className="p-3 rounded-lg border border-black cursor-pointer transition-all duration-200"
+//                         onMouseEnter={() => handleCardHover(selectedElement, true)}
+//                         onMouseLeave={() => handleCardHover(selectedElement, false)}
+//                       >
+//                         <p className="text-m text-black-700 font-medium">
+//                           To revise the{" "}
+//                           <span className="font-bold">
+//                             {elementKey && elementKey.charAt(0).toUpperCase() + elementKey.slice(1)}
+//                             {index !== undefined && ` ${index + 1}`}
+//                           </span>{" "}
+//                           we suggest:
+//                         </p>
+
+//                         {Array.isArray(currentElement.feedback) ? (
+//                           <ul className="list-disc pl-5 text-sm text-black-600 mt-1 space-y-1">
+//                             {currentElement.feedback.map((item: string, i: number) => (
+//                               <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+//                             ))}
+//                           </ul>
+//                         ) : (
+//                           <p
+//                             className="text-sm text-black-600 mt-1"
+//                             dangerouslySetInnerHTML={{ __html: currentElement.feedback }}
+//                           />
+//                         )}
+                    
+//                         <div className="flex justify-end mt-2">
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             onClick={() => toggleCorrection(selectedElement)}
+//                             className="text-sm"
+//                           >
+//                             {showCorrections.has(selectedElement) ? "Hide Correction" : "Show Correction"}
+//                           </Button>
+//                         </div>
+//                           <div className="space-y-3">
+//                             <Card className="bg-blue-50 border-blue-300">
+//                               <CardContent className="p-4">
+//                                 <div className="flex items-start gap-3">
+//                                   <div className="p-1.5 bg-primary/10 rounded-full">
+//                                     <HelpCircle className="h-4 w-4 text-primary" />
+//                                   </div>
+//                                   <div className="flex-1">
+//                                     <h5 className="font-semibold text-primary mb-2">
+//                                     To revise the{" "}
+//                                     <span className="font-bold">
+//                                       {elementKey && elementKey.charAt(0).toUpperCase() + elementKey.slice(1)}
+//                                       {index !== undefined && ` ${index + 1}`}
+//                                     </span>{" "}
+//                                     we suggest:
+//                                     </h5>
+//                                     <p className="text-sm text-foreground/80 mb-3">
+//                                     {Array.isArray(currentElement.feedback) ? (
+//                                       <ul className="list-disc pl-5 text-sm text-black-600 mt-1 space-y-1">
+//                                         {currentElement.feedback.map((item: string, i: number) => (
+//                                           <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+//                                         ))}
+//                                       </ul>
+//                                     ) : (
+//                                       <p
+//                                         className="text-sm text-black-600 mt-1"
+//                                         dangerouslySetInnerHTML={{ __html: currentElement.feedback }}
+//                                       />
+//                                     )}
+//                                     </p>
+                                  
+//                                   </div>
+//                                 </div>
+                                  
+                                  
+//                               </CardContent>
+//                             </Card>
+//                             <div className="flex justify-end mt-2">
+//                             <Button
+//                               size="sm"
+//                               className="bg-white shadow-sm text-primary font-medium hover:bg-white hover:shadow-md hover:text-primary"
+//                               onClick={() => toggleCorrection(selectedElement)}
+//                               >
+//                               {showCorrections.has(selectedElement) ? "Hide Correction" : "Show Correction"}
+//                             </Button>
+//                           </div>
+                              
+//                         </div>
+
+
+//                         {showCorrections.has(selectedElement) && currentElement.suggestions && (
+//                           <div className="mt-3 p-3 rounded-lg bg-red-50 border border-red-200 animate-in slide-in-from-top-2 duration-200">
+//                             <h5 className="font-medium mb-2 text-red-800">Suggested Correction:</h5>
+                            
+//                             <ul className="text-sm space-y-1 text-red-700">
+//                               {currentElement.suggestions}
+//                             </ul>
+//                           </div>
+          
+//                         )}
+//                         {showCorrections.has(selectedElement) && currentElement.reason && (
+//                           <div className="mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 animate-in slide-in-from-top-2 duration-200">
+//                             <h5 className="font-medium mb-2 text-amber-800">Reason:</h5>
+//                             <ul className="text-sm space-y-1 text-amber-700">
+//                               {currentElement.reason}
+//                             </ul>
+//                           </div>
+//                         )}
+//                       </div>
+//                     )}
+//                   </div>
+//                 </CardContent>
 // "use client"
 // import { useState } from "react"
 // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

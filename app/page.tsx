@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { getDeviceId } from "@/lib/deviceId"
 import { Separator } from "@/components/ui/separator"
 import { EssayEditor } from "@/components/essay-editor"
 import { FeedbackPanel } from "@/components/feedback-panel"
@@ -37,6 +38,35 @@ export default function ArgumentativeWritingAssistant() {
     text: string
     effectiveness: string
   } | null>(null)
+  const [deviceId, setDeviceId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const id = getDeviceId()
+    setDeviceId(id)
+  }, [])
+
+  const handleSave = async () => {
+    if (!essay.trim()) return
+    if (!deviceId) return // deviceId not ready yet
+  
+    try {
+      const res = await fetch("/api/saveEssay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ studentId: deviceId, essay }), 
+      })
+  
+      if (res.ok) {
+        alert("✅ Essay saved successfully!")
+      } else {
+        alert("❌ Failed to save essay")
+      }
+    } catch (err) {
+      console.error(err)
+      alert("⚠️ Error saving essay")
+    }
+  }  
+  const wordCount = essay.trim().split(/\s+/).filter(Boolean).length
 
   
 
@@ -249,21 +279,28 @@ export default function ArgumentativeWritingAssistant() {
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <Brain className="h-6 w-6 text-primary" />
-                <h1 className="text-xl font-bold">Argumentative Writing Assistant</h1>
+                <h1 className="text-xl font-bold">ReflectNote Writing Assistant</h1>
               </div>
-              <Badge variant="secondary" className="text-xs">
-                AI-powered analysis with the Crossley Model
-              </Badge>
+
             </div>
 
             <div className="flex items-center gap-3">
               <Button
                 onClick={handleAnalyze}
-                disabled={isAnalyzing || !essay.trim()}
+                disabled={isAnalyzing || wordCount < 200}
                 className="flex items-center gap-2"
               >
                 <Sparkles className="h-4 w-4" />
                 {isAnalyzing ? "Analyzing..." : "Analyze Essay"}
+              </Button>
+              <Button
+                onClick={handleSave}
+                disabled={!essay.trim()}
+                variant="secondary"
+                className="flex items-center gap-2"
+              >
+                <FileText className="h-4 w-4" />
+                Save Essay
               </Button>
             </div>
           </div>

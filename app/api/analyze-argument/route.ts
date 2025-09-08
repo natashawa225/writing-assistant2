@@ -5,7 +5,7 @@ import { openai } from "@/lib/openai"
 const ArgumentElementSchema = z.object({
   text: z.string().default(""),
   effectiveness: z.enum(["Effective", "Adequate", "Ineffective", "Missing"]).default("Missing"),
-  feedback: z.string().default(""),
+  feedback: z.union([z.string(), z.array(z.string())]).default(""),
   suggestions: z.string().default(""),
   reason: z.string().default(""),
 })
@@ -26,6 +26,32 @@ const AnalysisResultSchema = z.object({
 
 const FeedbackResultSchema = AnalysisResultSchema
 
+function normalizeFeedback(data: any): any {
+  function walk(obj: any): any {
+    if (Array.isArray(obj)) {
+      return obj.map(walk)
+    }
+    if (obj && typeof obj === "object") {
+      const out: any = {}
+      for (const k of Object.keys(obj)) {
+        if (k === "feedback") {
+          out[k] = Array.isArray(obj[k])
+            ? obj[k]
+            : obj[k]
+            ? [obj[k]]
+            : []
+        } else {
+          out[k] = walk(obj[k])
+        }
+      }
+      return out
+    }
+    return obj
+  }
+
+  return walk(data)
+}
+
 // ensure every element has feedback/suggestions/reason fields
 // Updated enrichElements function to handle missing individual effectiveness ratings
 function enrichElements(raw: any): any {
@@ -45,7 +71,7 @@ function enrichElements(raw: any): any {
     return {
       text: text,
       effectiveness: el.effectiveness ?? "Missing", // Will be "Missing" for strings
-      feedback: el.feedback ?? "",
+      feedback: Array.isArray(el.feedback) ? el.feedback : (el.feedback ? [el.feedback] : []),
       suggestions: el.suggestions ?? "",
       reason: el.reason ?? "",
     }
@@ -105,7 +131,7 @@ export async function POST(request: NextRequest) {
     try {
       // STEP 1 → Fine-tuned model gives structure + effectiveness
       completion = await openai.chat.completions.create({
-        model: FT_MODEL ?? "gpt-5-mini",
+        model: FT_MODEL ?? "gpt-4o",
         messages: [
           {
             role: "system",
@@ -116,9 +142,9 @@ export async function POST(request: NextRequest) {
         response_format: { type: "json_object" },
       })
     } catch (err: any) {
-      console.warn("⚠️ FT model unavailable, falling back to gpt-5-mini:", err.message)
+      console.warn("⚠️ FT model unavailable, falling back to gpt-4o:", err.message)
       completion = await openai.chat.completions.create({
-        model: "gpt-5-mini",
+        model: "gpt-40",
         messages: [
           {
             role: "system",
@@ -190,7 +216,7 @@ export async function POST(request: NextRequest) {
 
     // STEP 3 → Feedback generation (rest of your code remains the same)
     const feedbackCompletion = await openai.chat.completions.create({
-      model: "gpt-5-mini",
+      model: "gpt-4o",
       response_format: { type: "json_object" },
       messages: [
         {
@@ -199,18 +225,27 @@ export async function POST(request: NextRequest) {
 
             You will receive JSON where each element already has two fields: "text" and "effectiveness".
             Do not change or remove these fields. Keep their values exactly as provided.
+            
 
             For each element:
             - If "effectiveness" is "Effective":
-                • Add a "feedback" field with 2–3 sentences explaining why it is effective.
-                • Leave "suggestions" and "reason" as empty strings.
+            • Add a "feedback" field as a list of 2–3 bullet points.
+            • Each bullet point should clearly explain *why* it is effective.
+            • Use **bold** formatting to highlight important words/phrases.
+            • Leave "suggestions" and "reason" as empty strings.
             - If "effectiveness" is "Adequate", "Ineffective", or "Missing":
-                • Add a "feedback" field with 3–5 sentences of reflective guidance, encouraging the student to start revising. INCLUDE encouragement messages 
-                • Include a sentence like "Once you finish revising, you can click the button to regenerate visual feedback to see if your revision works."
-                • Add a "suggestions" field with one improved sentence.
-                • Add a "reason" field with 2–4 sentences explaining why the suggestion improves clarity or argumentation.
+            • Add a "feedback" field as a list of 2–3 bullet points of reflective guidance, encouraging the student to revise. INCLUDE encouragement messages. 
+            • Use **bold** formatting to highlight the important improvement advice.
+            • Add a "suggestions" field with one improved sentence.
+            • Add a "reason" field with 2–4 sentences explaining why the suggestion improves clarity or argumentation.
+        
+        For each element: 
+        - The "feedback" field must be an array of strings (["...", "..."]). Never a single string.
+        - The "suggestions" field must be a single string.
+        - The "reason" field must be a single string.
 
-            Return the same structure back, strictly matching ArgumentElementSchema.`
+        Use <strong>...</strong> tags instead of Markdown for bolding key phrases.
+        Return the same structure back, strictly matching ArgumentElementSchema.`
         },
         {
           role: "user",
@@ -221,10 +256,17 @@ export async function POST(request: NextRequest) {
 
     const feedbackJSON = JSON.parse(feedbackCompletion.choices[0].message?.content ?? "{}")
 
+
+
+    // STEP 4 → Lock element-level effectiveness
     // STEP 4 → Lock element-level effectiveness
     const finalFeedback = lockEffectiveness(enriched, feedbackJSON)
 
-    const parsed = FeedbackResultSchema.safeParse(finalFeedback)
+    // STEP 5 → Normalize feedback field into array form
+    const normalized = normalizeFeedback(finalFeedback)
+
+    // STEP 6 → Validate with Zod
+    const parsed = FeedbackResultSchema.safeParse(normalized)
     if (!parsed.success) {
       console.error("❌ Zod validation failed", parsed.error.format())
       return NextResponse.json(
@@ -233,7 +275,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    return NextResponse.json(finalFeedback)
+    // STEP 7 → Return normalized version
+    return NextResponse.json(normalized)
   } catch (error) {
     console.error("Error analyzing argumentative structure:", error)
     return NextResponse.json({ error: "Failed to analyze essay" }, { status: 500 })

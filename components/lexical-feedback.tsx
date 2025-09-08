@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BookOpen, BarChart3, Zap, Eye, EyeOff, ChevronDown, HelpCircle, ChevronRight } from "lucide-react"
+import { BookOpen, BarChart3, Zap, Eye, EyeOff, ChevronDown, HelpCircle, ChevronRight, Info } from "lucide-react"
 import type { LexicalAnalysis } from "@/lib/types"
 
 interface LexicalFeedbackProps {
@@ -81,13 +81,13 @@ export function LexicalFeedback({
   const getCategoryColor = (category: string) => {
     switch (category) {
       case "Foundation words":
-        return "bg-green-100 text-green-800 border-green-300"
+        return "bg-gray-100 text-green-800 border-green-300"
       case "Expanding words":
-        return "bg-blue-100 text-blue-800 border-blue-300"
+        return "bg-gray-100 text-blue-800 border-blue-300"
       case "Mastery words":
-        return "bg-purple-100 text-purple-800 border-purple-300"
+        return "bg-gray-100 text-purple-800 border-purple-300"
       case "Expert words":
-        return "bg-red-100 text-red-800 border-red-300"
+        return "bg-gray-100 text-red-800 border-red-300"
       default:
         return "bg-gray-100 text-gray-800 border-gray-300"
     }
@@ -215,25 +215,39 @@ export function LexicalFeedback({
                         {isExpanded && (
                           <div className="mt-4 space-y-3 pl-7">
                             {currentLevel === 0 && (
+                              <div className="space-y-3">
                               <Card className="bg-blue-50 border-blue-300">
-                                <CardContent className="p-3">
-                                  <div className="flex items-start gap-2">
-                                    <HelpCircle className="h-4 w-4 text-blue-600 mt-0.5" />
-                                    <div>
-                                      <h5 className="font-medium text-blue-800 mb-1">Reflection</h5>
-                                      <p className="text-sm text-blue-700">{suggestion.reason}</p>
-                                      <p className="text-sm text-blue-700">If you are stuck, click the button to see a suggested correction.</p>
-                                      <Button
-                                        size="sm"
-                                        className="mt-2 bg-blue-500 hover:bg-blue-700"
-                                        onClick={() => advanceFeedbackLevel(cardId)}
-                                      >
-                                        Show Correction
-                                      </Button>
+                                <CardContent className="p-4">
+                                  <div className="flex items-start gap-3">
+                                    <div className="p-1.5 bg-primary/10 rounded-full">
+                                      <HelpCircle className="h-4 w-4 text-primary" />
+                                    </div>
+                                    <div className="flex-1">
+                                      <h5 className="font-semibold text-primary mb-2">Hints to replace "{suggestion.original}":</h5>
+                                      <p className="text-sm text-foreground/80 mb-3">{suggestion.reason}</p>
+                                      <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
+                                        <p className="text-sm font-medium text-primary mb-1">
+                                        In a sentence: "{suggestion.example}"
+                                        </p>
+                                      </div>
                                     </div>
                                   </div>
+                                  
+                                  
                                 </CardContent>
                               </Card>
+                              {/* 🔹 Button separated below */}
+                              <div className="flex justify-end mt-2">
+                              <Button
+                                size="sm"
+                                className="bg-white shadow-sm text-primary font-medium hover:bg-white hover:shadow-md hover:text-primary"
+                                onClick={() => advanceFeedbackLevel(cardId)}
+                              >
+                                Show Solution
+                              </Button>
+                              </div>
+                              
+                            </div>
                             )}
 
                             {currentLevel >= 1 && (
@@ -243,15 +257,16 @@ export function LexicalFeedback({
                                   <span className="text-gray-400">→</span>
                                   <span className="font-medium text-green-600">"{suggestion.suggestion}"</span>
                                 </div>
+                                
+                                <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-300">
+                                  <p className="text-sm font-medium text-blue-800 mb-1">
+                                    How to use in "{suggestion.suggestion}" in your essay?
+                                  </p>
+                                  <p className="text-sm text-blue-700 italic">"{suggestion.exampleEssay}"</p>
+                                </div>
                                 <div className="bg-gray-100 p-3 rounded-lg border-l-2 border-gray-300">
                                   <p className="text-sm font-medium text-gray-800 mb-1">Why better:</p>
                                   <p className="text-sm text-gray-700">{suggestion.explanation}</p>
-                                </div>
-                                <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-300">
-                                  <p className="text-sm font-medium text-blue-800 mb-1">
-                                    How to use "{suggestion.suggestion}"?
-                                  </p>
-                                  <p className="text-sm text-blue-700 italic">"{suggestion.example}"</p>
                                 </div>
                               </div>
                             )}
@@ -296,12 +311,28 @@ export function LexicalFeedback({
                         {isExpanded && (
                           <div className="mt-4 space-y-3 pl-7">
                             {currentLevel === 0 && (
+                              <div className="space-y-3">
+
                               <Card className="bg-green-50 border-green-300">
                                 <CardContent className="p-3">
-                                  <div className="flex items-start gap-2">
+                                  <div className="flex items-start gap-3">
+                                    <div className="p-1.5 bg-primary/10 rounded-full">
+                                      <HelpCircle className="h-4 w-4 text-primary" />
+                                    </div>
+                                    <div className="flex-1">
+                                      <h5 className="font-semibold text-primary mb-2">Hints to replace "{suggestion.original}":</h5>
+                                      <p className="text-sm text-foreground/80 mb-3">{suggestion.reason}</p>
+                                      <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
+                                        <p className="text-sm font-medium text-primary mb-1">
+                                        For example, you might see it used like this: "{suggestion.example}"
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* <div className="flex items-start gap-2">
                                     <HelpCircle className="h-4 w-4 text-green-600 mt-0.5" />
                                     <div>
-                                      <h5 className="font-medium text-green-800 mb-1">Reflection</h5>
+                                      <h5 className="font-medium text-green-800 mb-1">Hints to replace "{suggestion.original}":</h5>
                                       <p className="text-sm text-green-700">{suggestion.reason}</p>
                                       <p className="text-sm text-green-700">If you are stuck, click the button to see a suggested correction.</p>
                                       <Button
@@ -312,9 +343,25 @@ export function LexicalFeedback({
                                         Show Alternative
                                       </Button>
                                     </div>
+                                  </div> */}
+                                </CardContent>
+                              </Card>
+                              <Card className="bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
+                                <CardContent className="p-4">
+                                  <div className="flex justify-between items-center gap-3">
+                                    
+                                    <Button
+                                      size="sm"
+                                      className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-sm"
+                                      onClick={() => advanceFeedbackLevel(cardId)}
+                                    >
+                                      Show Solution
+                                    </Button>
                                   </div>
                                 </CardContent>
                               </Card>
+                              </div>
+
                             )}
 
                             {currentLevel >= 1 && (
@@ -324,15 +371,15 @@ export function LexicalFeedback({
                                   <span className="text-gray-400">→</span>
                                   <span className="font-medium text-green-600">"{suggestion.suggestion}"</span>
                                 </div>
+                            
 
+                                <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-300">
+                                  <p className="text-sm font-medium text-green-800 mb-1">How to use "{suggestion.original}" in your essay?</p>
+                                  <p className="text-sm text-green-700 italic">"{suggestion.exampleEssay}"</p>
+                                </div>
                                 <div className="bg-gray-100 p-3 rounded-lg border-l-2 border-gray-300">
                                   <p className="text-sm font-medium text-gray-800 mb-1">Why better:</p>
                                   <p className="text-sm text-gray-700">{suggestion.explanation}</p>
-                                </div>
-
-                                <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-300">
-                                  <p className="text-sm font-medium text-green-800 mb-1">Better alternative:</p>
-                                  <p className="text-sm text-green-700 italic">"{suggestion.example}"</p>
                                 </div>
                               </div>
                             )}

@@ -32,6 +32,7 @@ export interface LexicalAnalysis {
       category: string
       explanation: string
       example: string
+      exampleEssay:string
     }>
   }
   aflCoverage: {
@@ -43,6 +44,7 @@ export interface LexicalAnalysis {
       value: string
       explanation: string
       example: string
+      exampleEssay:string
     }>
   }
 
