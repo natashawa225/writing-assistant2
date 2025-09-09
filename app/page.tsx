@@ -315,8 +315,8 @@ export default function ArgumentativeWritingAssistant() {
       <div className="flex h-[calc(100vh-73px)]">
         {/* Left Panel - Essay Editor */}
         <div 
-  className="flex-1 h-full flex flex-col p-4 space-y-4"
-  style={{ width: isPanelOpen ? `calc(100% - ${panelWidth}px)` : "100%" }}        >
+        className="flex-1 p-4 space-y-4" style={{ width: isPanelOpen ? `calc(100% - ${panelWidth}px)` : "100%" }}
+        >
           {/* Prompt Selection */}
                 <Card>
                   <CardHeader>

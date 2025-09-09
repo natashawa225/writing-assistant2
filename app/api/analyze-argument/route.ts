@@ -237,13 +237,13 @@ export async function POST(request: NextRequest) {
             When giving feedback, always consider how the element’s content contributes to answering the essay prompt.  
             For each element:
             - If "effectiveness" is "Effective":
-            • Add a "feedback" field as a list of 2–3 bullet points.
+            • Add a "feedback" field as a list of 3–4 bullet points.
             • Each bullet point should clearly explain *why* it is effective.
-            • Use bold formatting to highlight important words/phrases. Use <strong>...</strong> tags instead of Markdown for bolding key phrases.
+            • Use bold formatting to highlight important words/phrases to improve readability. Use <strong>...</strong> tags instead of Markdown for bolding key phrases.
             • Leave "suggestions" and "reason" as empty strings.
             - If "effectiveness" is "Adequate", "Ineffective", or "Missing":
-            • Add a "feedback" field as a list of 2–3 bullet points of reflective guidance, encouraging the student to revise. INCLUDE encouragement messages. 
-            • Use bold formatting to highlight important words/phrases. Use <strong>...</strong> tags instead of Markdown for bolding key phrases.
+            • Add a "feedback" field as a list of 3–4 bullet points of reflective guidance, encouraging the student to revise. INCLUDE encouragement messages. 
+            • Use bold formatting to highlight important words/phrases to improve readability. Use <strong>...</strong> tags instead of Markdown for bolding key phrases.
             • Add a "suggestions" field with one improved sentence.
             • Add a "reason" field with 2–4 sentences explaining why the suggestion improves clarity or argumentation.
         
