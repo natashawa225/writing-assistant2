@@ -121,7 +121,11 @@ export function FeedbackPanel({
             exit={{ width: 0, opacity: 0 }}
             transition={isResizing ? { duration: 0 } : { duration: 0.3, ease: "easeInOut" }}
             className="h-full bg-background border-l border-border relative"
-            style={{ width: panelWidth }}
+            style={{ 
+              width: panelWidth ,
+              maxWidth: `calc(100vw - 320px)`,
+
+            }}
           >
             <div
               ref={resizeRef}
