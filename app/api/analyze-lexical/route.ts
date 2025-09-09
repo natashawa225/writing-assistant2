@@ -212,7 +212,7 @@ export async function POST(request: NextRequest) {
     - For AWL words found in the essay, use this data: ${JSON.stringify(awlFeedbackData)}.
     - For each AWL word:
       * suggestion.reason: write a reflective prompt to guide students to revise, GIVE A REFLECTIVE PROMPT, DONT GIVE THE ANSWER. for example: "Think of a more formal verb often used in academic writing that means to obtain or to receive.". DONT GIVE SUGGESTED WORDS OR EXAMPLE, ONLY INDIRECT REFLECTIVE FEEDBACK.
-      * suggestion.suggestion: provide the corrected academic alternative word.
+      * suggestion.suggestion: provide the corrected academic alternative word. dont return the original word.
       * suggestion.explanation: explain why the suggested academic word is stronger than the original.
       * suggestion.example: MUST use example sentences from the provided COCA data that has the suggested word. the suggested word needs to be hidden in the sentence. for instance: assess becomes a_____ (number of underlined represents the letters) If no COCA examples exist for a word, create a simple academic sentence. 
       * suggestion.exampleEssay: Rephrase the student's original sentence, integrating the suggested word. Show them how it would look in their own work.
@@ -223,7 +223,7 @@ export async function POST(request: NextRequest) {
     - For AFL phrases, the value field is already calculated. DO NOT recalculate the value field.
     - For each AFL phrase in: ${JSON.stringify(aflSuggestions)}:
       * suggestion.reason: write a reflective prompt to guide students to revise. GIVE A REFLECTIVE PROMPT, DONT GIVE THE ANSWER. DONT GIVE SUGGESTED WORDS OR EXAMPLE, ONLY INDIRECT REFLECTIVE FEEDBACK.
-      * suggestion.suggestion: provide the more formal/precise academic phrase.
+      * suggestion.suggestion: provide the more formal/precise academic phrase.dont return the original word.
       * suggestion.explanation: explain why the suggested phrase is stronger in academic contexts.
       * suggestion.example: MUST use example sentences from the provided COCA data that has the suggested phrase. the suggested word needs to be hidden in the sentence. for instance: assess becomes a_____ (number of underlined represents the letters) If no COCA examples exist for a word, create a simple academic sentence. 
       * suggestion.exampleEssay: Rephrase the student's original sentence, integrating the suggested phrase. Show them how it would look in their own work.
