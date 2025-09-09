@@ -358,7 +358,7 @@ export function LexicalFeedback({
                             
 
                                 <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-300">
-                                  <p className="text-sm font-medium text-green-800 mb-1">How to use "{suggestion.original}" in your essay?</p>
+                                  <p className="text-sm font-medium text-green-800 mb-1">How to use "{suggestion.suggestion}" in your essay?</p>
                                   <p className="text-sm text-green-700 italic">"{suggestion.exampleEssay}"</p>
                                 </div>
                                 <div className="bg-gray-100 p-3 rounded-lg border-l-2 border-gray-300">
