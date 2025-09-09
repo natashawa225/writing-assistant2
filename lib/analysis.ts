@@ -1,13 +1,13 @@
 import type { AnalysisResult, LexicalAnalysis } from "./types"
 
-export async function analyzeArgumentativeStructure(essay: string): Promise<AnalysisResult> {
+export async function analyzeArgumentativeStructure(essay: string, prompt: string):  Promise<AnalysisResult> {
   try {
     const response = await fetch("/api/analyze-argument", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ essay }),
+      body: JSON.stringify({ essay, prompt }),
     })
 
     if (!response.ok) {

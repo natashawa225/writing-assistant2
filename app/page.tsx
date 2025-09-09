@@ -1,8 +1,9 @@
 "use client"
-
+import { PromptSelector } from "@/components/prompt-selector"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { getDeviceId } from "@/lib/deviceId"
 import { Separator } from "@/components/ui/separator"
 import { EssayEditor } from "@/components/essay-editor"
@@ -40,6 +41,9 @@ export default function ArgumentativeWritingAssistant() {
   } | null>(null)
   const [deviceId, setDeviceId] = useState<string | null>(null)
 
+  const [selectedPrompt, setSelectedPrompt] = useState<string>("")
+
+
   useEffect(() => {
     const id = getDeviceId()
     setDeviceId(id)
@@ -76,7 +80,7 @@ export default function ArgumentativeWritingAssistant() {
 
     try {
       const [argResult, lexResult] = await Promise.all([
-        analyzeArgumentativeStructure(essay),
+        analyzeArgumentativeStructure(essay, selectedPrompt), // 👈 pass prompt
         analyzeLexicalFeatures(essay),
       ])
 
@@ -310,7 +314,22 @@ export default function ArgumentativeWritingAssistant() {
       {/* Main Content */}
       <div className="flex h-[calc(100vh-73px)]">
         {/* Left Panel - Essay Editor */}
-        <div className="flex-1 p-4" style={{ width: isPanelOpen ? `calc(100% - ${panelWidth}px)` : "100%" }}>
+        <div 
+  className="flex-1 h-full flex flex-col p-4 space-y-4"
+  style={{ width: isPanelOpen ? `calc(100% - ${panelWidth}px)` : "100%" }}        >
+          {/* Prompt Selection */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BookOpen className="h-5 w-5" />
+                      Select Essay Prompt
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <PromptSelector onPromptSelect={setSelectedPrompt} selectedPrompt={selectedPrompt} />
+                  </CardContent>
+                </Card>
+
           <EssayEditor
             essay={essay}
             onEssayChange={setEssay}

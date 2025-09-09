@@ -29,7 +29,7 @@ const LexicalAnalysisSchema = z.object({
         reason: z.string(),
         suggestion: z.string(),
         sublist: z.string(),
-        category: z.string().optional(),
+        category: z.string(),
         explanation: z.string(),
         example: z.string(),
         exampleEssay: z.string(),
@@ -157,7 +157,6 @@ export async function POST(request: NextRequest) {
 
     // Pre-process AFL suggestions with score mapping and COCA examples
     const aflSuggestions = aflMatches.map(m => {
-      const cocaExamples = getCOCAExamples(m.match, 2)
     
       let defaultFTWScore = 0.5
       if (m.listIndex === 0) defaultFTWScore = 0.2
@@ -169,7 +168,6 @@ export async function POST(request: NextRequest) {
       return {
         original: m.match,
         value: scoreValue, // fixed
-        cocaExamples,      // NEW: pass these along
         // leave reason/suggestion/explanation/example/exampleEssay EMPTY,
         // GPT will fill them in based on cocaExamples + original.
       }

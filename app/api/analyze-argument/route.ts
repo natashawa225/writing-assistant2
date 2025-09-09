@@ -53,55 +53,61 @@ function normalizeFeedback(data: any): any {
 }
 
 // ensure every element has feedback/suggestions/reason fields
-// Updated enrichElements function to handle missing individual effectiveness ratings
+// Updated enrichElements function
 function enrichElements(raw: any): any {
   function enrich(el: any) {
     if (!el) {
-      return { text: "", effectiveness: "Missing", feedback: "", suggestions: "", reason: "" }
+      return { text: "", effectiveness: "Missing", feedback: [], suggestions: "", reason: "" }
     }
-    
-    // Handle both string content and object with sentence/text
-    let text = "";
+
+    let text = ""
     if (typeof el === "string") {
-      text = el;
+      text = el
     } else {
-      text = el.text ?? el.sentence ?? "";
+      text = el.text ?? el.sentence ?? ""
     }
-    
+
     return {
-      text: text,
-      effectiveness: el.effectiveness ?? "Missing", // Will be "Missing" for strings
+      text,
+      effectiveness: el.effectiveness ?? "Missing",
       feedback: Array.isArray(el.feedback) ? el.feedback : (el.feedback ? [el.feedback] : []),
       suggestions: el.suggestions ?? "",
       reason: el.reason ?? "",
     }
   }
 
-  // Handle both nested and flat structures
-  const data = raw.elements ?? raw;
-  
-  // Helper function to get first item from array or return the item itself
+  const data = raw.elements ?? raw
   const getFirstOrEmpty = (item: any) => {
-    if (Array.isArray(item)) {
-      return item.length > 0 ? item[0] : null;
+    if (Array.isArray(item)) return item.length > 0 ? item[0] : null
+    return item || null
+  }
+
+  // --- helper for padding arrays ---
+  function padArray(arr: any[], targetLength: number) {
+    const result = [...arr]
+    while (result.length < targetLength) {
+      result.push(enrich(null)) // push Missing element
     }
-    return item || null;
-  };
+    return result
+  }
 
   return {
     elements: {
       lead: enrich(data.lead),
       position: enrich(data.position),
-      claims: Array.isArray(data.claims) ? data.claims.map(enrich) : [],
+      // ✅ enforce 2 claims
+      claims: padArray(Array.isArray(data.claims) ? data.claims.map(enrich) : [], 2),
       counterclaim: enrich(getFirstOrEmpty(data.counterclaims)),
       counterclaim_evidence: enrich(getFirstOrEmpty(data.counterclaim_evidence)),
       rebuttal: enrich(getFirstOrEmpty(data.rebuttals)),
       rebuttal_evidence: enrich(getFirstOrEmpty(data.rebuttal_evidence)),
-      evidence: Array.isArray(data.evidence) ? data.evidence.map(enrich) : [],
+      // ✅ enforce 3 evidence
+      evidence: padArray(Array.isArray(data.evidence) ? data.evidence.map(enrich) : [], 3),
       conclusion: enrich(data.conclusion),
     },
   }
 }
+
 
 // Updated system prompt for the fine-tuned model
 const FINE_TUNED_SYSTEM_PROMPT = `You are an argument-mining classifier for argumentative essays. 
@@ -124,14 +130,14 @@ CRITICAL: Each element must have both "text" and "effectiveness" fields. Do not 
 // Updated POST function
 export async function POST(request: NextRequest) {
   try {
-    const { essay } = await request.json()
+    const { essay, prompt } = await request.json() // 👈 also grab prompt
     const FT_MODEL = process.env.FT_MODEL
 
     let completion
     try {
       // STEP 1 → Fine-tuned model gives structure + effectiveness
       completion = await openai.chat.completions.create({
-        model: FT_MODEL ?? "gpt-4o",
+        model: FT_MODEL ?? "gpt-5-mini",
         messages: [
           {
             role: "system",
@@ -144,7 +150,7 @@ export async function POST(request: NextRequest) {
     } catch (err: any) {
       console.warn("⚠️ FT model unavailable, falling back to gpt-4o:", err.message)
       completion = await openai.chat.completions.create({
-        model: "gpt-40",
+        model: "gpt-5-mini",
         messages: [
           {
             role: "system",
@@ -226,9 +232,7 @@ export async function POST(request: NextRequest) {
             You will receive JSON where each element already has two fields: "text" and "effectiveness".
             Do not change or remove these fields. Keep their values exactly as provided.
             
-            The essay is based on one of the following prompts (do not mention the prompt explicitly in your output, but use it to guide your evaluation):  
-            Prompt 1: In many countries, university graduates struggle to find jobs in their field of study. Some people believe that the main purpose of university education should be to prepare students for employment. Others argue that universities should focus on academic knowledge, even if it is not directly useful for a job. To what extent do you agree or disagree that the main role of university education is to prepare students for employment?
-            Prompt 2: Cities around the world are facing problems of traffic congestion and air pollution. Some people think governments should invest more in improving public transport, while others believe individuals should be free to use their private cars without restrictions. To what extent do you agree or disagree that governments should prioritize investment in public transport rather than allowing unrestricted private car use?
+            The essay is based on this prompt:  """${prompt}""" 
 
             When giving feedback, always consider how the element’s content contributes to answering the essay prompt.  
             For each element:
@@ -239,7 +243,7 @@ export async function POST(request: NextRequest) {
             • Leave "suggestions" and "reason" as empty strings.
             - If "effectiveness" is "Adequate", "Ineffective", or "Missing":
             • Add a "feedback" field as a list of 2–3 bullet points of reflective guidance, encouraging the student to revise. INCLUDE encouragement messages. 
-            • Use **bold** formatting to highlight the important improvement advice.
+            • Use bold formatting to highlight important words/phrases. Use <strong>...</strong> tags instead of Markdown for bolding key phrases.
             • Add a "suggestions" field with one improved sentence.
             • Add a "reason" field with 2–4 sentences explaining why the suggestion improves clarity or argumentation.
         
