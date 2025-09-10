@@ -266,7 +266,7 @@ export async function POST(request: NextRequest) {
   • count
   • frequency (percentage of total words, one decimal place)
   • answer: a clear, student-friendly suggestion with example synonyms or alternatives.
-  • reason: a short explanation why this word’s repetition is problematic for academic style.
+  • reason: an explanation why this word’s repetition is problematic for academic style.
 
   `,
       schema: LexicalAnalysisSchema,
