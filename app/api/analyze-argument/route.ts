@@ -220,7 +220,7 @@ export async function POST(request: NextRequest) {
     // STEP 2 → Enrich with empty feedback/suggestions/reason
     const enriched = enrichElements(analysis)
 
-    // STEP 3 → Feedback generation (rest of your code remains the same)
+    // STEP 3 → Feedback generation
     const feedbackCompletion = await openai.chat.completions.create({
       model: "gpt-4o",
       response_format: { type: "json_object" },
@@ -263,9 +263,6 @@ export async function POST(request: NextRequest) {
 
     const feedbackJSON = JSON.parse(feedbackCompletion.choices[0].message?.content ?? "{}")
 
-
-
-    // STEP 4 → Lock element-level effectiveness
     // STEP 4 → Lock element-level effectiveness
     const finalFeedback = lockEffectiveness(enriched, feedbackJSON)
 

@@ -94,16 +94,11 @@ export function LexicalFeedback({
   }
 
   const getValueColor = (value: string) => {
-    switch (value) {
-      case "High Academic Value":
-        return "bg-gray-100 text-green-600"
-      case "Medium Academic Value":
-        return "bg-gray-100 text-blue-600"
-      case "Low Academic Value":
-        return "bg-gray-100 text-orange-600"
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-300"
-    }
+    if (value.startsWith("Essential")) return "bg-gray-100 text-green-600"
+    if (value.startsWith("Useful")) return "bg-gray-100 text-blue-600"
+    if (value.startsWith("Advanced")) return "bg-gray-100 text-orange-600"
+    if (value.startsWith("Rare")) return "bg-gray-100 text-red-600"
+    return "bg-gray-100 text-gray-800 border-gray-300"
   }
 
   const toggleAnswers = (section: keyof typeof showAnswers) => {
@@ -115,47 +110,17 @@ export function LexicalFeedback({
 
     if (!onHighlightText) return
 
-    // Normalize spaces & lowercase so "in addition" matches even if essay has line breaks or different spacing
     const normalizedEssay = essay.replace(/\s+/g, " ").toLowerCase()
     const normalizedPhrase = suggestion.original.replace(/\s+/g, " ").toLowerCase()
 
     const start = normalizedEssay.indexOf(normalizedPhrase)
 
     if (start !== -1) {
-      // Found a match → send the *exact substring* from the essay, not the normalized one
       const matchText = essay.substr(start, suggestion.original.length)
       onHighlightText(matchText)
     } else {
       console.warn("Phrase not found in essay:", suggestion.original)
     }
-  }
-
-  // Function to find repetitive words in the essay
-  const findRepetitiveWords = () => {
-    const words = essay.toLowerCase().match(/\b\w+\b/g) || []
-    const wordCounts: { [key: string]: number } = {}
-
-    // Count word frequencies
-    words.forEach((word) => {
-      if (word.length > 3) {
-        // Only consider words longer than 3 characters
-        wordCounts[word] = (wordCounts[word] || 0) + 1
-      }
-    })
-
-    // Find words that appear more than expected frequency based on essay length
-    const totalWords = words.length
-    const expectedFrequency = Math.max(2, Math.floor(totalWords / 100)) // At least 2, or 1% of total words
-
-    return Object.entries(wordCounts)
-      .filter(([word, count]) => count > expectedFrequency)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10) // Top 10 most repetitive words
-      .map(([word, count]) => ({
-        word,
-        count,
-        frequency: ((count / totalWords) * 100).toFixed(1),
-      }))
   }
 
   const handleRepetitiveWordClick = (word: string) => {
@@ -164,7 +129,39 @@ export function LexicalFeedback({
     }
   }
 
-  const repetitiveWords = analysis.lexicalDiversity.mattr < 0.7 ? findRepetitiveWords() : []
+  // Use repetitive words from API response if available, otherwise fall back to local calculation
+  const getRepetitiveWords = () => {
+    if (analysis.lexicalDiversity.repetitiveWords && analysis.lexicalDiversity.repetitiveWords.length > 0) {
+      return analysis.lexicalDiversity.repetitiveWords
+    }
+    
+    // Fallback to local calculation if not provided by API
+    const words = essay.toLowerCase().match(/\b\w+\b/g) || []
+    const wordCounts: { [key: string]: number } = {}
+
+    words.forEach((word) => {
+      if (word.length > 3) {
+        wordCounts[word] = (wordCounts[word] || 0) + 1
+      }
+    })
+
+    const totalWords = words.length
+    const expectedFrequency = Math.max(2, Math.floor(totalWords / 100))
+
+    return Object.entries(wordCounts)
+      .filter(([word, count]) => count > expectedFrequency)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([word, count]) => ({
+        word,
+        count,
+        frequency: ((count / totalWords) * 100).toFixed(1),
+        answer: `Consider using synonyms or related terms for "${word}" to add variety to your writing.`,
+        reason: `This word appears frequently and may make your writing repetitive.`
+      }))
+  }
+
+  const repetitiveWords = getRepetitiveWords()
   const shouldShowRepetitiveWords = analysis.lexicalDiversity.mattr < 0.7 && repetitiveWords.length > 0
 
   return (
@@ -182,11 +179,15 @@ export function LexicalFeedback({
 
           {/* Academic Word Coverage */}
           <TabsContent value="academic-coverage" className="space-y-4">
+            {/* AWL Section */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                   <BookOpen className="h-4 w-4" />
                   Academic Word List
+                  <Badge variant="outline" className="ml-auto">
+                    Score: {analysis.awlCoverage.score.toFixed(0)}/100
+                  </Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -216,51 +217,47 @@ export function LexicalFeedback({
                           <div className="mt-4 space-y-3 pl-7">
                             {currentLevel === 0 && (
                               <div className="space-y-3">
-                              <Card className="bg-blue-50 border-blue-300">
-                                <CardContent className="p-4">
-                                  <div className="flex items-start gap-3">
-                                    <div className="p-1.5 bg-primary/10 rounded-full">
-                                      <HelpCircle className="h-4 w-4 text-primary" />
-                                    </div>
-                                    <div className="flex-1">
-                                      <h5 className="font-semibold text-primary mb-2">Hints to replace "{suggestion.original}":</h5>
-                                      <p className="text-sm text-foreground/80 mb-3">{suggestion.reason}</p>
-                                      <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
-                                        <p className="text-sm font-medium text-primary mb-1">
-                                        In a sentence: "{suggestion.example}"
-                                        </p>
+                                <Card className="bg-blue-50 border-blue-300">
+                                  <CardContent className="p-4">
+                                    <div className="flex items-start gap-3">
+                                      <div className="p-1.5 bg-primary/10 rounded-full">
+                                        <HelpCircle className="h-4 w-4 text-primary" />
+                                      </div>
+                                      <div className="flex-1">
+                                        <h5 className="font-semibold text-primary mb-2">Hints to replace "{suggestion.original}":</h5>
+                                        <p className="text-sm text-foreground/80 mb-3">{suggestion.reason}</p>
+                                        <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
+                                          <p className="text-sm font-medium text-primary mb-1">
+                                            In a sentence: "{suggestion.example}"
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  
-                                  
-                                </CardContent>
-                              </Card>
-                              {/* 🔹 Button separated below */}
-                              <div className="flex justify-end mt-2">
-                              <Button
-                                size="sm"
-                                className="bg-white shadow-sm text-primary font-medium hover:bg-white hover:shadow-md hover:text-primary"
-                                onClick={() => advanceFeedbackLevel(cardId)}
-                              >
-                                Show Solution
-                              </Button>
+                                  </CardContent>
+                                </Card>
+                                <div className="flex justify-end mt-2">
+                                  <Button
+                                    size="sm"
+                                    className="bg-white shadow-sm text-primary font-medium hover:bg-white hover:shadow-md hover:text-primary"
+                                    onClick={() => advanceFeedbackLevel(cardId)}
+                                  >
+                                    Show Solution
+                                  </Button>
+                                </div>
                               </div>
-                              
-                            </div>
                             )}
 
                             {currentLevel >= 1 && (
                               <div className="space-y-3">
                                 <div className="p-3 rounded-lg">
                                   <span className="font-medium text-red-600">"{suggestion.original}"</span>
-                                  <span className="text-gray-400">→</span>
+                                  <span className="text-gray-400"> → </span>
                                   <span className="font-medium text-green-600">"{suggestion.suggestion}"</span>
                                 </div>
                                 
                                 <div className="bg-blue-50 p-3 rounded-lg border-l-2 border-blue-300">
                                   <p className="text-sm font-medium text-blue-800 mb-1">
-                                    How to use in "{suggestion.suggestion}" in your essay?
+                                    How to use "{suggestion.suggestion}" in your essay?
                                   </p>
                                   <p className="text-sm text-blue-700 italic">"{suggestion.exampleEssay}"</p>
                                 </div>
@@ -278,11 +275,16 @@ export function LexicalFeedback({
                 })}
               </CardContent>
             </Card>
+
+            {/* AFL Section */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                   <BookOpen className="h-4 w-4" />
                   Academic Formula List
+                  <Badge variant="outline" className="ml-auto">
+                    Score: {analysis.aflCoverage.score.toFixed(0)}/100
+                  </Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -305,57 +307,50 @@ export function LexicalFeedback({
                             {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                             <span className="font-medium text-red-600">"{suggestion.original}"</span>
                           </div>
-                          <Badge className={getValueColor(suggestion.value)}>{suggestion.value}</Badge>
+                          <Badge className={getValueColor(suggestion.value || "")}>{suggestion.value}</Badge>
                         </div>
 
                         {isExpanded && (
                           <div className="mt-4 space-y-3 pl-7">
                             {currentLevel === 0 && (
                               <div className="space-y-3">
-
-                              <Card className="bg-green-50 border-green-300">
-                                <CardContent className="p-3">
-                                  <div className="flex items-start gap-3">
-                                    <div className="p-1.5 bg-primary/10 rounded-full">
-                                      <HelpCircle className="h-4 w-4 text-primary" />
-                                    </div>
-                                    <div className="flex-1">
-                                      <h5 className="font-semibold text-primary mb-2">Hints to replace "{suggestion.original}":</h5>
-                                      <p className="text-sm text-foreground/80 mb-3">{suggestion.reason}</p>
-                                      <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
-                                        <p className="text-sm font-medium text-primary mb-1">
-                                        In a sentence: "{suggestion.example}"
-                                        </p>
+                                <Card className="bg-green-50 border-green-300">
+                                  <CardContent className="p-3">
+                                    <div className="flex items-start gap-3">
+                                      <div className="p-1.5 bg-primary/10 rounded-full">
+                                        <HelpCircle className="h-4 w-4 text-primary" />
+                                      </div>
+                                      <div className="flex-1">
+                                        <h5 className="font-semibold text-primary mb-2">Hints to replace "{suggestion.original}":</h5>
+                                        <p className="text-sm text-foreground/80 mb-3">{suggestion.reason}</p>
+                                        <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
+                                          <p className="text-sm font-medium text-primary mb-1">
+                                            In a sentence: "{suggestion.example}"
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
-
-                    
-                                  </div>
-                                  
-                                </CardContent>
-                              </Card>
-                              <div className="flex justify-end mt-2">
-                              <Button
-                                size="sm"
-                                className="bg-white shadow-sm text-primary font-medium hover:bg-white hover:shadow-md hover:text-primary"
-                                onClick={() => advanceFeedbackLevel(cardId)}
-                              >
-                                Show Solution
-                              </Button>
+                                  </CardContent>
+                                </Card>
+                                <div className="flex justify-end mt-2">
+                                  <Button
+                                    size="sm"
+                                    className="bg-white shadow-sm text-primary font-medium hover:bg-white hover:shadow-md hover:text-primary"
+                                    onClick={() => advanceFeedbackLevel(cardId)}
+                                  >
+                                    Show Solution
+                                  </Button>
+                                </div>
                               </div>
-                              
-                              </div>
-
                             )}
 
                             {currentLevel >= 1 && (
                               <div className="space-y-3">
                                 <div className="p-3 rounded-lg">
                                   <span className="font-medium text-red-600">"{suggestion.original}"</span>
-                                  <span className="text-gray-400">→</span>
+                                  <span className="text-gray-400"> → </span>
                                   <span className="font-medium text-green-600">"{suggestion.suggestion}"</span>
                                 </div>
-                            
 
                                 <div className="bg-green-50 p-3 rounded-lg border-l-2 border-green-300">
                                   <p className="text-sm font-medium text-green-800 mb-1">How to use "{suggestion.suggestion}" in your essay?</p>
@@ -442,6 +437,7 @@ export function LexicalFeedback({
                           usage.
                         </p>
                       </div>
+
                       <div className="space-y-4">
                         <Card className="bg-gray-50">
                           <CardContent className="p-4">
@@ -462,7 +458,8 @@ export function LexicalFeedback({
                       </div>
                     </div>
                   )}
-                  {/* Show repetitive words when MATTR < 0.70 */}
+
+                  {/* Repetitive Words Section - Enhanced to use API data */}
                   {shouldShowRepetitiveWords && (
                     <div className="space-y-4">
                       <Card>
@@ -537,23 +534,19 @@ export function LexicalFeedback({
                                         <div className="space-y-3">
                                           <div className="bg-gray-100 p-3 rounded-lg border-l-2 border-gray-300">
                                             <p className="text-sm font-medium text-gray-800 mb-1">
-                                              Impact on your writing:
+                                              Suggested Alternatives:
                                             </p>
                                             <p className="text-sm text-gray-700">
-                                              Overusing "{item.word}" may make your writing sound repetitive and less
-                                              sophisticated. Academic writing benefits from lexical variety to maintain
-                                              reader engagement and demonstrate vocabulary range.
+                                              {item.answer}
                                             </p>
                                           </div>
 
                                           <div className="bg-orange-50 p-3 rounded-lg border-l-2 border-orange-300">
                                             <p className="text-sm font-medium text-orange-800 mb-1">
-                                              Improvement strategy:
+                                              Why Better:
                                             </p>
                                             <p className="text-sm text-orange-700">
-                                              Try using synonyms, rephrasing sentences, or varying your sentence
-                                              structures. Consider whether each use of "{item.word}" is necessary or if
-                                              you could express the same idea differently.
+                                              {item.reason}
                                             </p>
                                           </div>
                                         </div>

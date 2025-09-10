@@ -58,7 +58,16 @@ const LexicalAnalysisSchema = z.object({
     mattr: z.number(),
     feedback: z.string(),
     suggestions: z.array(z.string()),
-  }),
+    repetitiveWords: z.array(
+      z.object({
+        word: z.string(),
+        count: z.number(),
+        frequency: z.string(),
+        answer: z.string(),
+        reason: z.string(),
+      })
+    ).optional(),
+  }),  
   feedback: z.array(FeedbackSchema).optional(),
 })
 
@@ -239,6 +248,8 @@ export async function POST(request: NextRequest) {
     - Total words: ${words.length}, Unique words: ${uniqueWords.size}.
     - Assign diversity level: ${diversityLevel}.
     - Provide specific feedback and improvement suggestions unless MATTR > 0.7, in which case only encouragement is needed.
+    - answer: suggest academic alternative words to replace the most repetitive word(s). DO NOT return the original word.
+    - reason: explain why the suggested alternatives are better than the original (e.g., more formal, more precise, more varied).
 
     IMPORTANT: Always use COCA examples from the provided data when available. If no COCA examples exist, create simple, clear academic sentences.
 
@@ -247,12 +258,23 @@ export async function POST(request: NextRequest) {
     const result = await generateObject({
       model: openai("gpt-4o"),
       system: lexicalPrompt,
-      prompt: `Analyze the lexical features of this essay and provide detailed feedback:\n\n${essay}`,
+      prompt: `Analyze the lexical features of this essay and provide detailed feedback:\n\n${essay}
+      For repetitive words:
+- Identify words that are overused.
+- For each, return:
+  • word
+  • count
+  • frequency (percentage of total words, one decimal place)
+  • answer: a clear, student-friendly suggestion with example synonyms or alternatives.
+  • reason: a short explanation why this word’s repetition is problematic for academic style.
+
+  `,
       schema: LexicalAnalysisSchema,
     })
 
-    // Override lexical diversity with calculated values
+    // ✅ Override lexical diversity
     result.object.lexicalDiversity = {
+      ...result.object.lexicalDiversity,   // keep GPT’s answer + reason
       mattr: mattrScore,
       uniqueWords: uniqueWords.size,
       totalWords: words.length,
@@ -260,6 +282,7 @@ export async function POST(request: NextRequest) {
       feedback: lexicalFeedback,
       suggestions: lexicalSuggestions,
     }
+    
 
     // ✅ Fix AWL suggestions: always enforce sublist + category
     result.object.awlCoverage.suggestions = result.object.awlCoverage.suggestions.map((s, i) => ({

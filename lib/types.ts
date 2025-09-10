@@ -19,6 +19,23 @@ export interface AnalysisResult {
     conclusion: ArgumentElement
   }
 }
+export interface LexicalDiversity {
+  uniqueWords: number
+  totalWords: number
+  diversityLevel: "Low" | "Medium" | "High"
+  mattr: number
+  feedback: string
+  suggestions: string[]
+  answer: string
+  reason: string
+  repetitiveWords?: {
+    word: string
+    count: number
+    frequency: number | string
+    answer: string
+    reason: string
+  }[]
+}
 
 export interface LexicalAnalysis {
 
@@ -51,14 +68,7 @@ export interface LexicalAnalysis {
     }>
   }
 
-  lexicalDiversity: {
-    uniqueWords: number
-    totalWords: number
-    diversityLevel: "Low" | "Medium" | "High"
-    mattr: number
-    feedback: string
-    suggestions: string[]
-  }
+  lexicalDiversity: LexicalDiversity
 }
 
 export interface Highlight {
