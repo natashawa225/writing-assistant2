@@ -43,13 +43,14 @@ const LexicalAnalysisSchema = z.object({
         original: z.string(),
         reason: z.string(),
         suggestion: z.string(),
-        value: z.string(),
+        value: z.string().optional(),   // 👈 make it optional here
         explanation: z.string(),
         example: z.string(),
         exampleEssay: z.string(),
       }),
     ),
   }),
+  
   lexicalDiversity: z.object({
     uniqueWords: z.number(),
     totalWords: z.number(),
@@ -211,6 +212,9 @@ export async function POST(request: NextRequest) {
     1. AWL COVERAGE:
     - For AWL words found in the essay, use this data: ${JSON.stringify(awlFeedbackData)}.
     - For each AWL word:
+    // Inside AWL COVERAGE instructions
+      * suggestion.sublist: RETURN the sublist number (as string) for the word (use provided AWL data).
+      * suggestion.category: Classify the word as "Foundation words", "Expanding words", "Mastery words", or "Expert words".
       * suggestion.reason: write a reflective prompt to guide students to revise, GIVE A REFLECTIVE PROMPT, DONT GIVE THE ANSWER. for example: "Think of a more formal verb often used in academic writing that means to obtain or to receive.". DONT GIVE SUGGESTED WORDS OR EXAMPLE, ONLY INDIRECT REFLECTIVE FEEDBACK.
       * suggestion.suggestion: provide the corrected academic alternative word. dont return the original word.
       * suggestion.explanation: explain why the suggested academic word is stronger than the original.
@@ -221,13 +225,13 @@ export async function POST(request: NextRequest) {
 
     2. AFL COVERAGE:
     - For AFL phrases, the value field is already calculated. DO NOT recalculate the value field.
-    - For each AFL phrase in: ${JSON.stringify(aflSuggestions)}:
+    - For each AFL phrase (with value already included) in: ${JSON.stringify(aflSuggestions)}:
       * suggestion.reason: write a reflective prompt to guide students to revise. GIVE A REFLECTIVE PROMPT, DONT GIVE THE ANSWER. DONT GIVE SUGGESTED WORDS OR EXAMPLE, ONLY INDIRECT REFLECTIVE FEEDBACK.
       * suggestion.suggestion: provide the more formal/precise academic phrase.dont return the original word.
       * suggestion.explanation: explain why the suggested phrase is stronger in academic contexts.
       * suggestion.example: MUST use example sentences from the provided COCA data that has the suggested phrase. the suggested word needs to be hidden in the sentence. for instance: assess becomes a_____ (number of underlined represents the letters) If no COCA examples exist for a word, create a simple academic sentence. 
       * suggestion.exampleEssay: Rephrase the student's original sentence, integrating the suggested phrase. Show them how it would look in their own work.
-      * suggestion.value: USE THE PRE-CALCULATED VALUE - do not change this field.
+      * suggestion.value: USE THE PRE-CALCULATED VALUE from ${JSON.stringify(aflSuggestions)}. Do not omit this field.
     - Calculate coverage score (0–100).
 
     3. LEXICAL DIVERSITY:
@@ -241,7 +245,7 @@ export async function POST(request: NextRequest) {
     Output must match the provided schema exactly.
     `
     const result = await generateObject({
-      model: openai("gpt-5-mini"),
+      model: openai("gpt-4o"),
       system: lexicalPrompt,
       prompt: `Analyze the lexical features of this essay and provide detailed feedback:\n\n${essay}`,
       schema: LexicalAnalysisSchema,
@@ -256,6 +260,20 @@ export async function POST(request: NextRequest) {
       feedback: lexicalFeedback,
       suggestions: lexicalSuggestions,
     }
+
+    // ✅ Fix AWL suggestions: always enforce sublist + category
+    result.object.awlCoverage.suggestions = result.object.awlCoverage.suggestions.map((s, i) => ({
+      ...s,
+      sublist: awlWords[i]?.sublist?.toString() ?? "unknown",
+      category: s.category ?? "Foundation words",
+    }))
+
+    // ✅ Fix AFL suggestions: always enforce pre-calculated `value`
+    result.object.aflCoverage.suggestions = result.object.aflCoverage.suggestions.map((s, i) => ({
+      ...s,
+      value: s.value ?? aflSuggestions[i]?.value ?? "Rare: Consider a more common academic phrase.",
+    }))    
+
     
     return NextResponse.json(result.object)
   } catch (error) {
