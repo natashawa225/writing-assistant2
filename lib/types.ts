@@ -2,7 +2,7 @@ export interface ArgumentElement {
   text: string
   effectiveness: "Effective" | "Adequate" | "Ineffective" | "Missing"
   feedback: string
-  suggestions?: string
+  suggestion?: string
   reason?: string
 }
 

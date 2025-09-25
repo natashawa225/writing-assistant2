@@ -199,7 +199,9 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                                 rehypePlugins={[rehypeRaw]} // ← This allows HTML parsing
                                 components={{
                                   strong: ({ node, ...props }) => (
-                                    <strong className="font-semibold text-gray-900" {...props} />
+                                    <strong 
+                                    className="font-semibold text-gray-900" 
+                                    {...props} />
                                   ),
                                 }}
                               >
@@ -271,13 +273,13 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                         </div>
 
                         {showCorrections.has(selectedElement) &&
-                          currentElement.suggestions && (
+                          currentElement.suggestion && (
                             <div className="mt-3 p-3 rounded-lg bg-red-50 border border-red-200 animate-in slide-in-from-top-2 duration-200">
                               <h5 className="font-medium mb-2 text-red-800">
                                 Suggested Correction:
                               </h5>
                               <p className="text-sm text-red-700">
-                                {currentElement.suggestions}
+                                {currentElement.suggestion}
                               </p>
                             </div>
                           )}
