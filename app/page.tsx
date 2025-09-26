@@ -9,8 +9,10 @@ import { Separator } from "@/components/ui/separator"
 import { EssayEditor } from "@/components/essay-editor"
 import { FeedbackPanel } from "@/components/feedback-panel"
 import { analyzeArgumentativeStructure, analyzeLexicalFeatures } from "@/lib/analysis"
+import { EssayStorage, type SavedEssay } from "@/lib/storage"
+import { EssayListModal } from "@/components/essay-list-modal"
 import type { AnalysisResult, LexicalAnalysis, Highlight } from "@/lib/types"
-import { Sparkles, FileText, Brain, BookOpen } from "lucide-react"
+import { Sparkles, Save, Brain, BookOpen, FolderOpen } from "lucide-react"
 
 // const SAMPLE_ESSAY = `Technology has fundamentally transformed the way we communicate, work, and live our daily lives. While some argue that this digital revolution has created more problems than solutions, I firmly believe that technology has been overwhelmingly beneficial to society and continues to drive human progress forward.
 
@@ -35,6 +37,8 @@ export default function ArgumentativeWritingAssistant() {
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState("argumentative")
   const [activeSubTab, setActiveSubTab] = useState<string>("")
+  const [showEssayList, setShowEssayList] = useState(false)
+  const [currentEssayId, setCurrentEssayId] = useState<string | null>(null)
   const [currentHighlight, setCurrentHighlight] = useState<{
     text: string
     effectiveness: string
@@ -49,27 +53,41 @@ export default function ArgumentativeWritingAssistant() {
     setDeviceId(id)
   }, [])
 
+  const handleSelectEssay = (savedEssay: SavedEssay) => {
+    setEssay(savedEssay.content)
+    setSelectedPrompt(savedEssay.prompt)
+    setCurrentEssayId(savedEssay.id)
+  }
+
   const handleSave = async () => {
     if (!essay.trim()) return
-    if (!deviceId) return // deviceId not ready yet
-  
+
     try {
-      const res = await fetch("/api/saveEssay", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ studentId: deviceId, essay }), 
-      })
-  
-      if (res.ok) {
-        alert("✅ Essay saved successfully!")
+      const title = essay.split("\n")[0].substring(0, 50) || "Untitled Essay"
+
+      if (currentEssayId) {
+        // Update existing essay
+        EssayStorage.updateEssay(currentEssayId, {
+          title,
+          content: essay,
+          prompt: selectedPrompt,
+        })
       } else {
-        alert("❌ Failed to save essay")
+        // Save new essay
+        const savedEssay = EssayStorage.saveEssay({
+          title,
+          content: essay,
+          prompt: selectedPrompt,
+        })
+        setCurrentEssayId(savedEssay.id)
       }
+
+      alert("✅ Essay saved successfully!")
     } catch (err) {
       console.error(err)
       alert("⚠️ Error saving essay")
     }
-  }  
+  }
   const wordCount = essay.trim().split(/\s+/).filter(Boolean).length
 
   
@@ -290,6 +308,26 @@ export default function ArgumentativeWritingAssistant() {
 
             <div className="flex items-center gap-3">
               <Button
+                onClick={() => setShowEssayList(true)}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 hover:bg-slate-50"
+              >
+                <FolderOpen className="h-4 w-4" />
+                Essays
+              </Button>
+              <Button
+                onClick={handleSave}
+                disabled={!essay.trim()}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2 hover:bg-slate-50 bg-transparent"
+              >
+                <Save className="h-4 w-4" />
+                Save
+              </Button>
+
+              <Button
                 onClick={handleAnalyze}
                 disabled={isAnalyzing || wordCount < 200}
                 className="flex items-center gap-2"
@@ -297,15 +335,8 @@ export default function ArgumentativeWritingAssistant() {
                 <Sparkles className="h-4 w-4" />
                 {isAnalyzing ? "Analyzing..." : "Analyze Essay"}
               </Button>
-              <Button
-                onClick={handleSave}
-                disabled={!essay.trim()}
-                variant="secondary"
-                className="flex items-center gap-2"
-              >
-                <FileText className="h-4 w-4" />
-                Save Essay
-              </Button>
+            
+
             </div>
           </div>
         </div>
@@ -315,7 +346,8 @@ export default function ArgumentativeWritingAssistant() {
       <div className="flex h-[calc(100vh-73px)]">
         {/* Left Panel - Essay Editor */}
         <div 
-        className="flex-1 p-4 space-y-4" style={{ width: isPanelOpen ? `calc(100% - ${panelWidth}px)` : "100%" }}
+          className="flex-1 flex flex-col h-full p-4 space-y-4" 
+          style={{ width: isPanelOpen ? `calc(100% - ${panelWidth}px)` : "100%" }}
         >
           {/* Prompt Selection */}
                 <Card>
@@ -358,6 +390,11 @@ export default function ArgumentativeWritingAssistant() {
           onSubTabChange={handleSubTabChange}
         />
       </div>
+      <EssayListModal
+        isOpen={showEssayList}
+        onClose={() => setShowEssayList(false)}
+        onSelectEssay={handleSelectEssay}
+      />
     </div>
   )
 }

@@ -67,7 +67,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
 
     return (
       <div
-        className={`absolute border-2 rounded-lg p-3 min-w-[120px] text-center cursor-pointer transition-all hover:shadow-xl hover:scale-105 ${getElementStyle(
+        className={`absolute border-2 rounded-lg p-3 min-w-[100px] text-center cursor-pointer transition-all hover:shadow-xl hover:scale-105 ${getElementStyle(
           element.effectiveness,
           found,
         )} ${isSelected ? "ring-2 ring-purple-500 ring-offset-2" : ""} ${className}`}
@@ -120,7 +120,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
                 <polygon points="0 0, 6 3, 0 6" fill="#6b7280" />
               </marker>
-              <marker id="arrowhead-bidirectional" markerWidth="7" markerHeight="7" refX="7" refY="3" orient="auto">
+              <marker id="arrowhead-bidirectional" markerWidth="6" markerHeight="6" refX="7" refY="3" orient="auto">
                 <polygon points="7 0, 0 3, 7 7" fill="#6b7280" />
               </marker>
             </defs>
@@ -129,27 +129,27 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
             <line x1="460" y1="150" x2="460" y2="85" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
 
             {/* Claims/Counterclaim to Position */}
-            <line x1="210" y1="260" x2="210" y2="210" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
-            <line x1="460" y1="260" x2="460" y2="210" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
-            <line x1="710" y1="260" x2="710" y2="210" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="175" y1="260" x2="175" y2="216" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="410" y1="260" x2="410" y2="216" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="680" y1="260" x2="680" y2="216" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
 
             {/* Claims to Evidence */}
-            <line x1="150" y1="390" x2="150" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
-            <line x1="280" y1="390" x2="280" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
-            <line x1="460" y1="390" x2="460" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="95" y1="390" x2="95" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="230" y1="390" x2="230" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="400" y1="390" x2="400" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
 
             {/* Counterclaim to Rebuttal/Evidence */}
-            <line x1="650" y1="390" x2="650" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
-            <line x1="790" y1="390" x2="790" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="610" y1="390" x2="610" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="750" y1="390" x2="750" y2="345" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
 
             {/* Rebuttal to Evidence */}
-            <line x1="630" y1="600" x2="630" y2="480" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="600" y1="600" x2="600" y2="480" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
 
             {/* Parallel connections (bidirectional) */}
             <line
-              x1="322"
+              x1="280"
               y1="300"
-              x2="348"
+              x2="320"
               y2="300"
               stroke="#6b7280"
               strokeWidth="2"
@@ -157,9 +157,9 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               markerStart="url(#arrowhead-bidirectional)"
             />
             <line
-              x1="560"
+              x1="535"
               y1="300"
-              x2="620"
+              x2="580"
               y2="300"
               stroke="#6b7280"
               strokeWidth="2"
@@ -167,9 +167,9 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               markerStart="url(#arrowhead-bidirectional)"
             />
             <line
-              x1="208"
+              x1="160"
               y1="420"
-              x2="239"
+              x2="190"
               y2="420"
               stroke="#6b7280"
               strokeWidth="2"
@@ -178,7 +178,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
             />
 
             {/* All elements to conclusion */}
-            <line x1="390" y1="575" x2="390" y2="210" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="340" y1="575" x2="340" y2="216" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
           </svg>
 
           {/* Diagram Elements - positioned exactly like the Crossley model */}
@@ -188,7 +188,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               id="lead"
               label="Lead"
               element={analysis.elements.lead}
-              style={{ top: "10px", left: "168px", minWidth: "600px" }}
+              style={{ top: "10px", left: "120px", minWidth: "600px" }}
             />
 
             {/* Position - Second level */}
@@ -196,7 +196,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               id="position"
               label="Position"
               element={analysis.elements.position}
-              style={{ top: "130px", left: "168px", minWidth: "600px" }}
+              style={{ top: "130px", left: "120px", minWidth: "600px" }}
             />
 
             {/* Claims and Counterclaim - Third level */}
@@ -214,7 +214,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               id="counterclaim"
               label="Counterclaim"
               element={analysis.elements.counterclaim}
-              style={{ top: "260px", left: "620px", minWidth: "200px" }}
+              style={{ top: "260px", left: "580px", minWidth: "200px" }}
             />
 
             {/* Evidence blocks - Fourth level */}
@@ -239,7 +239,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
                   element={claim}
                   style={{
                     top: "260px",
-                    left: `${110 + index * 235}px`,
+                    left: `${65 + index * 255}px`,
                     minWidth: "200px",
                   }}
                 />
@@ -256,7 +256,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
                   element={evidence}
                   style={{
                     top: "390px",
-                    left: `${65 + index * 175}px`,
+                    left: `${20 + index * 170}px`,
                   }}
                 />
               )
@@ -266,27 +266,27 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               id="rebuttal"
               label="Rebuttal"
               element={analysis.elements.rebuttal}
-              style={{ top: "390px", left: "570px" }}
+              style={{ top: "390px", left: "540px" }}
             />
             <DiagramElement
               id="counterclaim_evidence"
               label="Evidence 4"
               element={analysis.elements.counterclaim_evidence}
-              style={{ top: "390px", left: "750px" }}
+              style={{ top: "390px", left: "690px" }}
             />
 
             <DiagramElement
               id="rebuttal_evidence"
               label="Rebuttal Evidence"
               element={analysis.elements.rebuttal_evidence}
-              style={{ top: "530px", left: "570px" }}
+              style={{ top: "530px", left: "530px" }}
             />
 
             <DiagramElement
               id="conclusion"
               label="Concluding Summary"
               element={analysis.elements.conclusion}
-              style={{ top: "560px", left: "300px", minWidth: "140px" }}
+              style={{ top: "530px", left: "270px", minWidth: "140px" }}
             />
           </div>
 

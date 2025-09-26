@@ -137,9 +137,10 @@ export function FeedbackPanel({
               </div>
             </div>
 
-            <Card className="h-full rounded-none border-0">
+            {/* <div className="h-full flex flex-col"> */}
+            <Card className="h-full rounded-none border-0 bg-transparent shadow-none">
               <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between ">
                   <CardTitle className="text-lg">Analysis Feedback</CardTitle>
                   <Button variant="ghost" size="sm" onClick={onToggle} className="h-8 w-8 p-0">
                     <X className="h-4 w-4" />
@@ -147,9 +148,10 @@ export function FeedbackPanel({
                 </div>
               </CardHeader>
 
-              <CardContent className="p-0 h-[calc(100%-80px)]">
+              <CardContent className="flex-1 p-0 h-[calc(100%-80px)]">
+              {/* <div className="flex-1 min-h-0 px-6"> */}
                 <Tabs value={activeTab} onValueChange={handleTabChange} className="h-full flex flex-col">
-                  <TabsList className="grid w-full grid-cols-2 mx-4 mt-4">
+                  <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
                     <TabsTrigger value="argumentative" className="flex items-center gap-2">
                       <Eye className="h-4 w-4" />
                       Visual Feedback
@@ -183,7 +185,9 @@ export function FeedbackPanel({
                   </div>
                 </Tabs>
               </CardContent>
+              {/* </div> */}
             </Card>
+            {/* </div> */}
           </motion.div>
         )}
       </AnimatePresence>

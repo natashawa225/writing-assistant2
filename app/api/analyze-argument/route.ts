@@ -184,15 +184,16 @@ async function generateDiagnosis(element: any, elementName: string, prompt: stri
     messages: [
       {
         role: "system",
-        content: `You are an expert writing coach analyzing argumentative essay elements.
+        content: 
+        `You are an expert writing coach analyzing argumentative essay elements.
 
-The essay prompt is: """${prompt}"""
+        The essay prompt is: """${prompt}"""
 
-Provide a diagnosis for the ${elementName} element:
-1. Explains the role of this element in argumentative writing
-2. Evaluates how well it serves the essay prompt
+        Provide a diagnosis for the ${elementName} element:
+        1. Explains the role of this element in argumentative writing
+        2. Evaluates how well it serves the essay prompt
 
-Be specific and direct. Do not provide suggestions or feedback yet.`
+        Be specific and direct. Do not provide suggestions or feedback yet.`
       },
       {
         role: "user", 
@@ -215,7 +216,8 @@ async function generateFeedback(element: any, elementName: string, diagnosis: st
     messages: [
       {
         role: "system",
-        content: `You are an expert writing coach providing constructive feedback.
+        content: 
+        `You are an expert writing coach providing constructive feedback.
 
 Based on the diagnosis, provide 3-4 bullet points of Indirect feedback for this ${elementName}.
 
