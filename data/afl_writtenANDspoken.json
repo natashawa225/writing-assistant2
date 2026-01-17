@@ -1,0 +1,1451 @@
+[
+  {
+    "phrase": "in terms of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 337,
+    "freq_writing": 282,
+    "ftw": 3.53
+  },
+  {
+    "phrase": "at the same time",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 92,
+    "freq_writing": 98,
+    "ftw": 2.56
+  },
+  {
+    "phrase": "from the point of view",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 14,
+    "ftw": 2.44
+  },
+  {
+    "phrase": "in order to",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 153,
+    "freq_writing": 255,
+    "ftw": 2.35
+  },
+  {
+    "phrase": "as well as",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 68,
+    "freq_writing": 255,
+    "ftw": 2.08
+  },
+  {
+    "phrase": "part of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 201,
+    "freq_writing": 216,
+    "ftw": 1.96
+  },
+  {
+    "phrase": "the fact that",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 178,
+    "freq_writing": 203,
+    "ftw": 1.96
+  },
+  {
+    "phrase": "in other words",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 146,
+    "freq_writing": 89,
+    "ftw": 1.9
+  },
+  {
+    "phrase": "the point of view of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 10,
+    "freq_writing": 15,
+    "ftw": 1.89
+  },
+  {
+    "phrase": "there is a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 143,
+    "freq_writing": 223,
+    "ftw": 1.72
+  },
+  {
+    "phrase": "as a result of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 26,
+    "freq_writing": 75,
+    "ftw": 1.58
+  },
+  {
+    "phrase": "this is a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 305,
+    "freq_writing": 76,
+    "ftw": 1.57
+  },
+  {
+    "phrase": "on the basis of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 23,
+    "freq_writing": 82,
+    "ftw": 1.5
+  },
+  {
+    "phrase": "a number of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 88,
+    "freq_writing": 215,
+    "ftw": 1.5
+  },
+  {
+    "phrase": "there is no",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 50,
+    "freq_writing": 185,
+    "ftw": 1.45
+  },
+  {
+    "phrase": "point of view",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 82,
+    "freq_writing": 60,
+    "ftw": 1.41
+  },
+  {
+    "phrase": "the number of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 79,
+    "freq_writing": 246,
+    "ftw": 1.38
+  },
+  {
+    "phrase": "the extent to which",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 10,
+    "freq_writing": 52,
+    "ftw": 1.36
+  },
+  {
+    "phrase": "as a result",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 61,
+    "freq_writing": 125,
+    "ftw": 1.35
+  },
+  {
+    "phrase": "in the case of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 32,
+    "freq_writing": 135,
+    "ftw": 1.32
+  },
+  {
+    "phrase": "whether or not",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 59,
+    "freq_writing": 81,
+    "ftw": 1.31
+  },
+  {
+    "phrase": "the same time",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 96,
+    "freq_writing": 104,
+    "ftw": 1.26
+  },
+  {
+    "phrase": "with respect to",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 44,
+    "freq_writing": 104,
+    "ftw": 1.26
+  },
+  {
+    "phrase": "point of view of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 15,
+    "ftw": 1.22
+  },
+  {
+    "phrase": "as a function of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 19,
+    "freq_writing": 36,
+    "ftw": 1.19
+  },
+  {
+    "phrase": "at the same",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 109,
+    "freq_writing": 117,
+    "ftw": 1.19
+  },
+  {
+    "phrase": "the point of view",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 17,
+    "freq_writing": 15,
+    "ftw": 1.13
+  },
+  {
+    "phrase": "in such a way",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 19,
+    "ftw": 1.11
+  },
+  {
+    "phrase": "the use of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 27,
+    "freq_writing": 270,
+    "ftw": 1.11
+  },
+  {
+    "phrase": "in other words the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 22,
+    "freq_writing": 18,
+    "ftw": 1.08
+  },
+  {
+    "phrase": "in terms of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 56,
+    "freq_writing": 67,
+    "ftw": 1.07
+  },
+  {
+    "phrase": "more likely to",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 42,
+    "freq_writing": 76,
+    "ftw": 1.06
+  },
+  {
+    "phrase": "likely to be",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 37,
+    "freq_writing": 115,
+    "ftw": 1.03
+  },
+  {
+    "phrase": "in this case",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 87,
+    "freq_writing": 91,
+    "ftw": 1.03
+  },
+  {
+    "phrase": "as opposed to",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 53,
+    "freq_writing": 40,
+    "ftw": 1.02
+  },
+  {
+    "phrase": "the way in which",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 27,
+    "freq_writing": 39,
+    "ftw": 0.94
+  },
+  {
+    "phrase": "based on the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 30,
+    "freq_writing": 134,
+    "ftw": 0.91
+  },
+  {
+    "phrase": "can be used",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 89,
+    "ftw": 0.87
+  },
+  {
+    "phrase": "the relationship between",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 21,
+    "freq_writing": 75,
+    "ftw": 0.87
+  },
+  {
+    "phrase": "it is not",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 33,
+    "freq_writing": 188,
+    "ftw": 0.81
+  },
+  {
+    "phrase": "and so on",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 153,
+    "freq_writing": 68,
+    "ftw": 0.79
+  },
+  {
+    "phrase": "on the basis",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 24,
+    "freq_writing": 94,
+    "ftw": 0.75
+  },
+  {
+    "phrase": "the difference between",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 44,
+    "freq_writing": 38,
+    "ftw": 0.74
+  },
+  {
+    "phrase": "it may be",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 45,
+    "freq_writing": 87,
+    "ftw": 0.72
+  },
+  {
+    "phrase": "the presence of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 21,
+    "freq_writing": 130,
+    "ftw": 0.7
+  },
+  {
+    "phrase": "in the sense that",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 34,
+    "freq_writing": 22,
+    "ftw": 0.7
+  },
+  {
+    "phrase": "a variety of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 26,
+    "freq_writing": 91,
+    "ftw": 0.69
+  },
+  {
+    "phrase": "different types of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 24,
+    "freq_writing": 28,
+    "ftw": 0.69
+  },
+  {
+    "phrase": "extent to which",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 10,
+    "freq_writing": 54,
+    "ftw": 0.66
+  },
+  {
+    "phrase": "exactly the same",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 43,
+    "freq_writing": 17,
+    "ftw": 0.65
+  },
+  {
+    "phrase": "a series of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 23,
+    "freq_writing": 87,
+    "ftw": 0.63
+  },
+  {
+    "phrase": "in relation to",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 12,
+    "freq_writing": 91,
+    "ftw": 0.63
+  },
+  {
+    "phrase": "it can be",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 55,
+    "freq_writing": 97,
+    "ftw": 0.63
+  },
+  {
+    "phrase": "the case of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 39,
+    "freq_writing": 168,
+    "ftw": 0.62
+  },
+  {
+    "phrase": "in the case",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 36,
+    "freq_writing": 153,
+    "ftw": 0.62
+  },
+  {
+    "phrase": "large number of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 10,
+    "freq_writing": 35,
+    "ftw": 0.62
+  },
+  {
+    "phrase": "that there is a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 23,
+    "freq_writing": 41,
+    "ftw": 0.61
+  },
+  {
+    "phrase": "to some extent",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 26,
+    "freq_writing": 18,
+    "ftw": 0.6
+  },
+  {
+    "phrase": "that there is",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 69,
+    "freq_writing": 116,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "the real world",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 19,
+    "freq_writing": 18,
+    "ftw": 0.57
+  },
+  {
+    "phrase": "is based on",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 17,
+    "freq_writing": 59,
+    "ftw": 0.56
+  },
+  {
+    "phrase": "due to the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 21,
+    "freq_writing": 127,
+    "ftw": 0.55
+  },
+  {
+    "phrase": "ways in which",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 23,
+    "freq_writing": 37,
+    "ftw": 0.54
+  },
+  {
+    "phrase": "an example of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 61,
+    "freq_writing": 41,
+    "ftw": 0.54
+  },
+  {
+    "phrase": "the fact that the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 15,
+    "freq_writing": 58,
+    "ftw": 0.54
+  },
+  {
+    "phrase": "referred to as",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 31,
+    "ftw": 0.52
+  },
+  {
+    "phrase": "may not be",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 33,
+    "freq_writing": 49,
+    "ftw": 0.52
+  },
+  {
+    "phrase": "way in which",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 45,
+    "freq_writing": 54,
+    "ftw": 0.51
+  },
+  {
+    "phrase": "it does not",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 68,
+    "ftw": 0.48
+  },
+  {
+    "phrase": "from the point of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 15,
+    "ftw": 0.47
+  },
+  {
+    "phrase": "the development of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 26,
+    "freq_writing": 121,
+    "ftw": 0.46
+  },
+  {
+    "phrase": "in the same",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 89,
+    "freq_writing": 88,
+    "ftw": 0.46
+  },
+  {
+    "phrase": "a result of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 33,
+    "freq_writing": 86,
+    "ftw": 0.46
+  },
+  {
+    "phrase": "the basis of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 27,
+    "freq_writing": 108,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "the role of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 25,
+    "freq_writing": 121,
+    "ftw": 0.43
+  },
+  {
+    "phrase": "there may be",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 26,
+    "freq_writing": 32,
+    "ftw": 0.43
+  },
+  {
+    "phrase": "difference between the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 15,
+    "freq_writing": 33,
+    "ftw": 0.42
+  },
+  {
+    "phrase": "between the two",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 33,
+    "freq_writing": 68,
+    "ftw": 0.41
+  },
+  {
+    "phrase": "the size of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 17,
+    "freq_writing": 32,
+    "ftw": 0.41
+  },
+  {
+    "phrase": "the importance of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 94,
+    "ftw": 0.4
+  },
+  {
+    "phrase": "that there are",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 63,
+    "freq_writing": 63,
+    "ftw": 0.39
+  },
+  {
+    "phrase": "as a function",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 19,
+    "freq_writing": 36,
+    "ftw": 0.34
+  },
+  {
+    "phrase": "associated with the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 12,
+    "freq_writing": 54,
+    "ftw": 0.31
+  },
+  {
+    "phrase": "the amount of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 50,
+    "freq_writing": 66,
+    "ftw": 0.3
+  },
+  {
+    "phrase": "a function of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 34,
+    "freq_writing": 60,
+    "ftw": 0.29
+  },
+  {
+    "phrase": "as an example",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 21,
+    "ftw": 0.27
+  },
+  {
+    "phrase": "for example if",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 19,
+    "ftw": 0.26
+  },
+  {
+    "phrase": "such as the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 12,
+    "freq_writing": 105,
+    "ftw": 0.26
+  },
+  {
+    "phrase": "based on a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 36,
+    "ftw": 0.26
+  },
+  {
+    "phrase": "as part of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 21,
+    "freq_writing": 61,
+    "ftw": 0.25
+  },
+  {
+    "phrase": "this is not",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 67,
+    "freq_writing": 62,
+    "ftw": 0.25
+  },
+  {
+    "phrase": "in which the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 27,
+    "freq_writing": 166,
+    "ftw": 0.24
+  },
+  {
+    "phrase": "the effect of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 110,
+    "ftw": 0.24
+  },
+  {
+    "phrase": "in response to",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 14,
+    "freq_writing": 57,
+    "ftw": 0.22
+  },
+  {
+    "phrase": "related to the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 21,
+    "freq_writing": 77,
+    "ftw": 0.22
+  },
+  {
+    "phrase": "each of these",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 24,
+    "freq_writing": 33,
+    "ftw": 0.21
+  },
+  {
+    "phrase": "the effects of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 18,
+    "freq_writing": 100,
+    "ftw": 0.21
+  },
+  {
+    "phrase": "terms of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 58,
+    "freq_writing": 79,
+    "ftw": 0.2
+  },
+  {
+    "phrase": "we can see",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 26,
+    "freq_writing": 12,
+    "ftw": 0.2
+  },
+  {
+    "phrase": "there are three",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 10,
+    "freq_writing": 15,
+    "ftw": 0.2
+  },
+  {
+    "phrase": "for example the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 17,
+    "freq_writing": 84,
+    "ftw": 0.18
+  },
+  {
+    "phrase": "according to the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 70,
+    "ftw": 0.18
+  },
+  {
+    "phrase": "the existence of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 14,
+    "freq_writing": 63,
+    "ftw": 0.18
+  },
+  {
+    "phrase": "the concept of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 21,
+    "freq_writing": 70,
+    "ftw": 0.18
+  },
+  {
+    "phrase": "in this way",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 17,
+    "freq_writing": 67,
+    "ftw": 0.17
+  },
+  {
+    "phrase": "focus on the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 17,
+    "freq_writing": 28,
+    "ftw": 0.16
+  },
+  {
+    "phrase": "the nature of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 19,
+    "freq_writing": 85,
+    "ftw": 0.15
+  },
+  {
+    "phrase": "the context of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 15,
+    "freq_writing": 89,
+    "ftw": 0.15
+  },
+  {
+    "phrase": "a list of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 31,
+    "freq_writing": 32,
+    "ftw": 0.15
+  },
+  {
+    "phrase": "this type of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 18,
+    "freq_writing": 40,
+    "ftw": 0.14
+  },
+  {
+    "phrase": "such a way",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 19,
+    "ftw": 0.13
+  },
+  {
+    "phrase": "the ability to",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 25,
+    "freq_writing": 54,
+    "ftw": 0.13
+  },
+  {
+    "phrase": "the idea that",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 59,
+    "freq_writing": 38,
+    "ftw": 0.13
+  },
+  {
+    "phrase": "a set of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 21,
+    "freq_writing": 68,
+    "ftw": 0.11
+  },
+  {
+    "phrase": "other words the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 22,
+    "freq_writing": 18,
+    "ftw": 0.11
+  },
+  {
+    "phrase": "parts of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 32,
+    "freq_writing": 54,
+    "ftw": 0.09
+  },
+  {
+    "phrase": "nature of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 18,
+    "freq_writing": 77,
+    "ftw": 0.09
+  },
+  {
+    "phrase": "the level of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 31,
+    "freq_writing": 77,
+    "ftw": 0.05
+  },
+  {
+    "phrase": "this would be",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 41,
+    "freq_writing": 18,
+    "ftw": 0.05
+  },
+  {
+    "phrase": "is that the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 117,
+    "freq_writing": 94,
+    "ftw": 0.04
+  },
+  {
+    "phrase": "is much more",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 17,
+    "ftw": 0.04
+  },
+  {
+    "phrase": "the same as",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 44,
+    "freq_writing": 40,
+    "ftw": 0.04
+  },
+  {
+    "phrase": "to show that",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 22,
+    "freq_writing": 37,
+    "ftw": 0.04
+  },
+  {
+    "phrase": "there is an",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 41,
+    "ftw": 0.03
+  },
+  {
+    "phrase": "the notion of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 18,
+    "freq_writing": 49,
+    "ftw": 0.03
+  },
+  {
+    "phrase": "in the sense",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 52,
+    "freq_writing": 38,
+    "ftw": 0.0
+  },
+  {
+    "phrase": "in the context",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 61,
+    "ftw": 0.0
+  },
+  {
+    "phrase": "the process of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 37,
+    "freq_writing": 68,
+    "ftw": -0.01
+  },
+  {
+    "phrase": "is not a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 43,
+    "freq_writing": 81,
+    "ftw": -0.02
+  },
+  {
+    "phrase": "both of these",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 23,
+    "freq_writing": 12,
+    "ftw": -0.03
+  },
+  {
+    "phrase": "for example in",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 36,
+    "ftw": -0.03
+  },
+  {
+    "phrase": "the part of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 24,
+    "ftw": -0.05
+  },
+  {
+    "phrase": "the size of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 28,
+    "freq_writing": 46,
+    "ftw": -0.06
+  },
+  {
+    "phrase": "the form of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 23,
+    "freq_writing": 78,
+    "ftw": -0.06
+  },
+  {
+    "phrase": "the sum of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 18,
+    "freq_writing": 31,
+    "ftw": -0.08
+  },
+  {
+    "phrase": "the reason for",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 29,
+    "ftw": -0.09
+  },
+  {
+    "phrase": "a and b",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 48,
+    "ftw": -0.1
+  },
+  {
+    "phrase": "that this is",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 91,
+    "freq_writing": 33,
+    "ftw": -0.11
+  },
+  {
+    "phrase": "fact that the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 17,
+    "freq_writing": 63,
+    "ftw": -0.11
+  },
+  {
+    "phrase": "this is an",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 54,
+    "freq_writing": 19,
+    "ftw": -0.12
+  },
+  {
+    "phrase": "because it is",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 22,
+    "freq_writing": 41,
+    "ftw": -0.13
+  },
+  {
+    "phrase": "have the same",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 38,
+    "freq_writing": 23,
+    "ftw": -0.15
+  },
+  {
+    "phrase": "part of a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 49,
+    "ftw": -0.18
+  },
+  {
+    "phrase": "the question of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 24,
+    "freq_writing": 64,
+    "ftw": -0.19
+  },
+  {
+    "phrase": "of these two",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 18,
+    "freq_writing": 20,
+    "ftw": -0.21
+  },
+  {
+    "phrase": "the value of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 60,
+    "ftw": -0.21
+  },
+  {
+    "phrase": "assume that the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 23,
+    "ftw": -0.21
+  },
+  {
+    "phrase": "size of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 19,
+    "freq_writing": 39,
+    "ftw": -0.21
+  },
+  {
+    "phrase": "in such a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 18,
+    "freq_writing": 46,
+    "ftw": -0.21
+  },
+  {
+    "phrase": "the distribution of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 10,
+    "freq_writing": 39,
+    "ftw": -0.22
+  },
+  {
+    "phrase": "of the same",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 32,
+    "freq_writing": 70,
+    "ftw": -0.22
+  },
+  {
+    "phrase": "the meaning of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 10,
+    "freq_writing": 40,
+    "ftw": -0.23
+  },
+  {
+    "phrase": "view of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 51,
+    "ftw": -0.23
+  },
+  {
+    "phrase": "each of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 18,
+    "freq_writing": 77,
+    "ftw": -0.24
+  },
+  {
+    "phrase": "which is not",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 21,
+    "freq_writing": 27,
+    "ftw": -0.25
+  },
+  {
+    "phrase": "the issue of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 36,
+    "ftw": -0.25
+  },
+  {
+    "phrase": "but this is",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 43,
+    "freq_writing": 24,
+    "ftw": -0.26
+  },
+  {
+    "phrase": "if this is",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 40,
+    "freq_writing": 21,
+    "ftw": -0.27
+  },
+  {
+    "phrase": "the rate of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 14,
+    "freq_writing": 47,
+    "ftw": -0.27
+  },
+  {
+    "phrase": "that we are",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 30,
+    "freq_writing": 30,
+    "ftw": -0.31
+  },
+  {
+    "phrase": "with the same",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 25,
+    "ftw": -0.31
+  },
+  {
+    "phrase": "the result of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 47,
+    "ftw": -0.31
+  },
+  {
+    "phrase": "the problem of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 19,
+    "freq_writing": 55,
+    "ftw": -0.31
+  },
+  {
+    "phrase": "is to be",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 85,
+    "ftw": -0.32
+  },
+  {
+    "phrase": "the study of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 12,
+    "freq_writing": 59,
+    "ftw": -0.32
+  },
+  {
+    "phrase": "which is the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 71,
+    "freq_writing": 34,
+    "ftw": -0.33
+  },
+  {
+    "phrase": "the definition of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 23,
+    "ftw": -0.33
+  },
+  {
+    "phrase": "here is that",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 38,
+    "freq_writing": 11,
+    "ftw": -0.35
+  },
+  {
+    "phrase": "from the point",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 16,
+    "ftw": -0.35
+  },
+  {
+    "phrase": "a form of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 12,
+    "freq_writing": 30,
+    "ftw": -0.36
+  },
+  {
+    "phrase": "the frequency of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 26,
+    "ftw": -0.37
+  },
+  {
+    "phrase": "the order of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 36,
+    "freq_writing": 27,
+    "ftw": -0.37
+  },
+  {
+    "phrase": "the way that",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 58,
+    "freq_writing": 15,
+    "ftw": -0.37
+  },
+  {
+    "phrase": "function of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 15,
+    "freq_writing": 35,
+    "ftw": -0.37
+  },
+  {
+    "phrase": "of the two",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 29,
+    "freq_writing": 73,
+    "ftw": -0.39
+  },
+  {
+    "phrase": "different from the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 19,
+    "ftw": -0.39
+  },
+  {
+    "phrase": "the structure of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 14,
+    "freq_writing": 36,
+    "ftw": -0.42
+  },
+  {
+    "phrase": "what are the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 60,
+    "freq_writing": 13,
+    "ftw": -0.42
+  },
+  {
+    "phrase": "is that it",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 44,
+    "freq_writing": 47,
+    "ftw": -0.42
+  },
+  {
+    "phrase": "the way in",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 30,
+    "freq_writing": 40,
+    "ftw": -0.42
+  },
+  {
+    "phrase": "to use the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 27,
+    "freq_writing": 42,
+    "ftw": -0.44
+  },
+  {
+    "phrase": "be the case",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 15,
+    "freq_writing": 17,
+    "ftw": -0.45
+  },
+  {
+    "phrase": "means that the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 25,
+    "ftw": -0.48
+  },
+  {
+    "phrase": "value of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 34,
+    "ftw": -0.49
+  },
+  {
+    "phrase": "of the system",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 41,
+    "ftw": -0.5
+  },
+  {
+    "phrase": "of view of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 18,
+    "ftw": -0.51
+  },
+  {
+    "phrase": "the work of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 51,
+    "ftw": -0.54
+  },
+  {
+    "phrase": "example of a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 23,
+    "freq_writing": 13,
+    "ftw": -0.54
+  },
+  {
+    "phrase": "is the case",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 13,
+    "freq_writing": 25,
+    "ftw": -0.55
+  },
+  {
+    "phrase": "is that there",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 23,
+    "freq_writing": 19,
+    "ftw": -0.58
+  },
+  {
+    "phrase": "of the second",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 15,
+    "freq_writing": 32,
+    "ftw": -0.58
+  },
+  {
+    "phrase": "the change in",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 15,
+    "freq_writing": 17,
+    "ftw": -0.58
+  },
+  {
+    "phrase": "so that the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 38,
+    "freq_writing": 57,
+    "ftw": -0.59
+  },
+  {
+    "phrase": "is not the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 27,
+    "freq_writing": 56,
+    "ftw": -0.6
+  },
+  {
+    "phrase": "the area of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 24,
+    "ftw": -0.61
+  },
+  {
+    "phrase": "form of the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 11,
+    "freq_writing": 30,
+    "ftw": -0.62
+  },
+  {
+    "phrase": "that is the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 65,
+    "freq_writing": 52,
+    "ftw": -0.63
+  },
+  {
+    "phrase": "and in the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 54,
+    "freq_writing": 85,
+    "ftw": -0.64
+  },
+  {
+    "phrase": "and the second",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 20,
+    "freq_writing": 16,
+    "ftw": -0.66
+  },
+  {
+    "phrase": "of the fact",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 15,
+    "freq_writing": 23,
+    "ftw": -0.67
+  },
+  {
+    "phrase": "the first is",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 10,
+    "freq_writing": 26,
+    "ftw": -0.7
+  },
+  {
+    "phrase": "that in the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 61,
+    "freq_writing": 46,
+    "ftw": -0.77
+  },
+  {
+    "phrase": "and the same",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 17,
+    "freq_writing": 17,
+    "ftw": -0.84
+  },
+  {
+    "phrase": "out that the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 14,
+    "freq_writing": 15,
+    "ftw": -0.91
+  },
+  {
+    "phrase": "the example of",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 14,
+    "freq_writing": 11,
+    "ftw": -0.93
+  },
+  {
+    "phrase": "that in a",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 32,
+    "freq_writing": 13,
+    "ftw": -1.08
+  },
+  {
+    "phrase": "is for the",
+    "register": "afl_writtenANDspoken",
+    "freq_speech": 16,
+    "freq_writing": 11,
+    "ftw": -1.29
+  }
+]

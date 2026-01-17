@@ -300,8 +300,8 @@ export default function ArgumentativeWritingAssistant() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <Brain className="h-6 w-6 text-primary" />
-                <h1 className="text-xl font-bold">ReflectNote: Writing Assistant for Deeper Reflection               </h1>
+                {/* <Brain className="h-6 w-6 text-primary" /> */}
+                <h1 className="text-xl font-bold">Revisage Analytics              </h1>
               </div>
 
             </div>

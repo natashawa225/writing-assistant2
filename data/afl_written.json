@@ -1,0 +1,1402 @@
+[
+  {
+    "phrase": "on the other hand",
+    "register": "written",
+    "freq_speech": 40,
+    "freq_writing": 119,
+    "ftw": 2.84
+  },
+  {
+    "phrase": "due to the fact that",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 13,
+    "ftw": 2.64
+  },
+  {
+    "phrase": "on the other hand the",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 24,
+    "ftw": 2.55
+  },
+  {
+    "phrase": "it should be noted",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 17,
+    "ftw": 2.51
+  },
+  {
+    "phrase": "it is not possible to",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 15,
+    "ftw": 2.44
+  },
+  {
+    "phrase": "a wide range of",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 31,
+    "ftw": 2.42
+  },
+  {
+    "phrase": "there are a number of",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 14,
+    "ftw": 2.41
+  },
+  {
+    "phrase": "in such a way that",
+    "register": "written",
+    "freq_speech": 9,
+    "freq_writing": 11,
+    "ftw": 2.32
+  },
+  {
+    "phrase": "take into account the",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 11,
+    "ftw": 2.27
+  },
+  {
+    "phrase": "as can be seen",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 15,
+    "ftw": 1.79
+  },
+  {
+    "phrase": "it is clear that",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 33,
+    "ftw": 1.72
+  },
+  {
+    "phrase": "take into account",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 19,
+    "ftw": 1.7
+  },
+  {
+    "phrase": "can be used to",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 45,
+    "ftw": 1.64
+  },
+  {
+    "phrase": "in this paper we",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 14,
+    "ftw": 1.64
+  },
+  {
+    "phrase": "are likely to",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 61,
+    "ftw": 1.61
+  },
+  {
+    "phrase": "in the next section",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 15,
+    "ftw": 1.6
+  },
+  {
+    "phrase": "a large number of",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 22,
+    "ftw": 1.59
+  },
+  {
+    "phrase": "the united kingdom",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 25,
+    "ftw": 1.57
+  },
+  {
+    "phrase": "on the basis of the",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 23,
+    "ftw": 1.57
+  },
+  {
+    "phrase": "that there is no",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 32,
+    "ftw": 1.56
+  },
+  {
+    "phrase": "over a period of",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 13,
+    "ftw": 1.55
+  },
+  {
+    "phrase": "as a result of the",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 17,
+    "ftw": 1.55
+  },
+  {
+    "phrase": "can be seen in",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 17,
+    "ftw": 1.52
+  },
+  {
+    "phrase": "a wide range",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 33,
+    "ftw": 1.51
+  },
+  {
+    "phrase": "there are a number",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 14,
+    "ftw": 1.47
+  },
+  {
+    "phrase": "it is interesting to",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 15,
+    "ftw": 1.47
+  },
+  {
+    "phrase": "it is impossible to",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 12,
+    "ftw": 1.47
+  },
+  {
+    "phrase": "it is obvious that",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 11,
+    "ftw": 1.46
+  },
+  {
+    "phrase": "it is possible to",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 48,
+    "ftw": 1.46
+  },
+  {
+    "phrase": "it is not possible",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 18,
+    "ftw": 1.45
+  },
+  {
+    "phrase": "been carried out",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 17,
+    "ftw": 1.45
+  },
+  {
+    "phrase": "can be found in",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 18,
+    "ftw": 1.45
+  },
+  {
+    "phrase": "it is important to",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 43,
+    "ftw": 1.4
+  },
+  {
+    "phrase": "was carried out",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 26,
+    "ftw": 1.39
+  },
+  {
+    "phrase": "is likely to be",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 38,
+    "ftw": 1.38
+  },
+  {
+    "phrase": "wide range of",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 36,
+    "ftw": 1.37
+  },
+  {
+    "phrase": "the same way as",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 15,
+    "ftw": 1.37
+  },
+  {
+    "phrase": "due to the fact",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 13,
+    "ftw": 1.36
+  },
+  {
+    "phrase": "in accordance with the",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 12,
+    "ftw": 1.36
+  },
+  {
+    "phrase": "it is necessary to",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 26,
+    "ftw": 1.35
+  },
+  {
+    "phrase": "the other hand",
+    "register": "written",
+    "freq_speech": 41,
+    "freq_writing": 120,
+    "ftw": 1.35
+  },
+  {
+    "phrase": "can be seen",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 87,
+    "ftw": 1.35
+  },
+  {
+    "phrase": "it is likely that",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 18,
+    "ftw": 1.31
+  },
+  {
+    "phrase": "such a way that",
+    "register": "written",
+    "freq_speech": 9,
+    "freq_writing": 11,
+    "ftw": 1.22
+  },
+  {
+    "phrase": "to carry out",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 29,
+    "ftw": 1.22
+  },
+  {
+    "phrase": "it is possible that",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 19,
+    "ftw": 1.22
+  },
+  {
+    "phrase": "with respect to the",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 37,
+    "ftw": 1.2
+  },
+  {
+    "phrase": "give rise to",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 19,
+    "ftw": 1.18
+  },
+  {
+    "phrase": "carried out by",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 20,
+    "ftw": 1.17
+  },
+  {
+    "phrase": "whether or not the",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 18,
+    "ftw": 1.13
+  },
+  {
+    "phrase": "in the present study",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 11,
+    "ftw": 1.11
+  },
+  {
+    "phrase": "should be noted",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 18,
+    "ftw": 1.07
+  },
+  {
+    "phrase": "be carried out",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 18,
+    "ftw": 1.06
+  },
+  {
+    "phrase": "the other hand the",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 24,
+    "ftw": 1.06
+  },
+  {
+    "phrase": "does not appear",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 13,
+    "ftw": 1.04
+  },
+  {
+    "phrase": "his or her",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 34,
+    "ftw": 1.01
+  },
+  {
+    "phrase": "is not possible to",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 15,
+    "ftw": 0.99
+  },
+  {
+    "phrase": "shown in figure",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 40,
+    "ftw": 0.96
+  },
+  {
+    "phrase": "be used as a",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 17,
+    "ftw": 0.95
+  },
+  {
+    "phrase": "for the purposes of",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 24,
+    "ftw": 0.95
+  },
+  {
+    "phrase": "be regarded as",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 40,
+    "ftw": 0.94
+  },
+  {
+    "phrase": "to ensure that the",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 17,
+    "ftw": 0.93
+  },
+  {
+    "phrase": "allows us to",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 15,
+    "ftw": 0.93
+  },
+  {
+    "phrase": "it has been",
+    "register": "written",
+    "freq_speech": 12,
+    "freq_writing": 79,
+    "ftw": 0.92
+  },
+  {
+    "phrase": "little or no",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 16,
+    "ftw": 0.9
+  },
+  {
+    "phrase": "carried out in",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 25,
+    "ftw": 0.9
+  },
+  {
+    "phrase": "to distinguish between",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 21,
+    "ftw": 0.88
+  },
+  {
+    "phrase": "in accordance with",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 26,
+    "ftw": 0.88
+  },
+  {
+    "phrase": "they do not",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 56,
+    "ftw": 0.88
+  },
+  {
+    "phrase": "at this stage",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 33,
+    "ftw": 0.88
+  },
+  {
+    "phrase": "is based on the",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 22,
+    "ftw": 0.88
+  },
+  {
+    "phrase": "shown in table",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 30,
+    "ftw": 0.87
+  },
+  {
+    "phrase": "in the absence of",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 41,
+    "ftw": 0.86
+  },
+  {
+    "phrase": "we have seen",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 26,
+    "ftw": 0.83
+  },
+  {
+    "phrase": "to determine whether",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 16,
+    "ftw": 0.82
+  },
+  {
+    "phrase": "in the context of",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 57,
+    "ftw": 0.79
+  },
+  {
+    "phrase": "a high degree",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 13,
+    "ftw": 0.78
+  },
+  {
+    "phrase": "the difference between the",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 14,
+    "ftw": 0.78
+  },
+  {
+    "phrase": "an increase in the",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 13,
+    "ftw": 0.78
+  },
+  {
+    "phrase": "it is possible",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 83,
+    "ftw": 0.77
+  },
+  {
+    "phrase": "can be achieved",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 17,
+    "ftw": 0.77
+  },
+  {
+    "phrase": "insight into the",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 16,
+    "ftw": 0.77
+  },
+  {
+    "phrase": "can be expressed",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 23,
+    "ftw": 0.75
+  },
+  {
+    "phrase": "we assume that",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 20,
+    "ftw": 0.75
+  },
+  {
+    "phrase": "they did not",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 26,
+    "ftw": 0.73
+  },
+  {
+    "phrase": "there has been",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 33,
+    "ftw": 0.72
+  },
+  {
+    "phrase": "on the part of",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 31,
+    "ftw": 0.7
+  },
+  {
+    "phrase": "in this paper",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 62,
+    "ftw": 0.7
+  },
+  {
+    "phrase": "the purpose of this",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 13,
+    "ftw": 0.7
+  },
+  {
+    "phrase": "less likely to",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 23,
+    "ftw": 0.68
+  },
+  {
+    "phrase": "a large number",
+    "register": "written",
+    "freq_speech": 9,
+    "freq_writing": 23,
+    "ftw": 0.67
+  },
+  {
+    "phrase": "can easily be",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 15,
+    "ftw": 0.67
+  },
+  {
+    "phrase": "with regard to",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 40,
+    "ftw": 0.66
+  },
+  {
+    "phrase": "there are several",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 18,
+    "ftw": 0.66
+  },
+  {
+    "phrase": "over a period",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 14,
+    "ftw": 0.66
+  },
+  {
+    "phrase": "in this case the",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 27,
+    "ftw": 0.66
+  },
+  {
+    "phrase": "in conjunction with",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 23,
+    "ftw": 0.65
+  },
+  {
+    "phrase": "at the time of",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 32,
+    "ftw": 0.65
+  },
+  {
+    "phrase": "we do not",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 38,
+    "ftw": 0.64
+  },
+  {
+    "phrase": "has been used",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 20,
+    "ftw": 0.63
+  },
+  {
+    "phrase": "appears to be",
+    "register": "written",
+    "freq_speech": 9,
+    "freq_writing": 53,
+    "ftw": 0.63
+  },
+  {
+    "phrase": "to do so",
+    "register": "written",
+    "freq_speech": 23,
+    "freq_writing": 55,
+    "ftw": 0.63
+  },
+  {
+    "phrase": "there are no",
+    "register": "written",
+    "freq_speech": 21,
+    "freq_writing": 39,
+    "ftw": 0.62
+  },
+  {
+    "phrase": "on the other",
+    "register": "written",
+    "freq_speech": 77,
+    "freq_writing": 147,
+    "ftw": 0.62
+  },
+  {
+    "phrase": "has also been",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 25,
+    "ftw": 0.61
+  },
+  {
+    "phrase": "it is worth",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 20,
+    "ftw": 0.61
+  },
+  {
+    "phrase": "can be found",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 33,
+    "ftw": 0.61
+  },
+  {
+    "phrase": "the next section",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 19,
+    "ftw": 0.6
+  },
+  {
+    "phrase": "are a number of",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 14,
+    "ftw": 0.6
+  },
+  {
+    "phrase": "this paper we",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 16,
+    "ftw": 0.6
+  },
+  {
+    "phrase": "be seen as",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 44,
+    "ftw": 0.6
+  },
+  {
+    "phrase": "be related to the",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 12,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "to ensure that",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 44,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "it is important",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 66,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "be explained by",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 15,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "same way as",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 15,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "see for example",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 20,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "the presence of a",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 24,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "that it is not",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 17,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "in some cases",
+    "register": "written",
+    "freq_speech": 19,
+    "freq_writing": 32,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "to the fact that",
+    "register": "written",
+    "freq_speech": 10,
+    "freq_writing": 23,
+    "ftw": 0.57
+  },
+  {
+    "phrase": "high levels of",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 17,
+    "ftw": 0.56
+  },
+  {
+    "phrase": "most likely to",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 26,
+    "ftw": 0.56
+  },
+  {
+    "phrase": "it appears that",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 29,
+    "ftw": 0.56
+  },
+  {
+    "phrase": "it follows that",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 31,
+    "ftw": 0.55
+  },
+  {
+    "phrase": "can also be",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 52,
+    "ftw": 0.55
+  },
+  {
+    "phrase": "it is clear",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 39,
+    "ftw": 0.54
+  },
+  {
+    "phrase": "by virtue of",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 25,
+    "ftw": 0.54
+  },
+  {
+    "phrase": "the most important",
+    "register": "written",
+    "freq_speech": 21,
+    "freq_writing": 53,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "an attempt to",
+    "register": "written",
+    "freq_speech": 12,
+    "freq_writing": 29,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "it is impossible",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 17,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "factors such as",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 14,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "is consistent with",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 29,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "total number of",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 20,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "similar to those",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 22,
+    "ftw": 0.52
+  },
+  {
+    "phrase": "as part of the",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 26,
+    "ftw": 0.52
+  },
+  {
+    "phrase": "can be considered",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 18,
+    "ftw": 0.52
+  },
+  {
+    "phrase": "at the outset",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 11,
+    "ftw": 0.51
+  },
+  {
+    "phrase": "in more detail",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 13,
+    "ftw": 0.51
+  },
+  {
+    "phrase": "should not be",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 51,
+    "ftw": 0.51
+  },
+  {
+    "phrase": "could be used",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 19,
+    "ftw": 0.51
+  },
+  {
+    "phrase": "appear to be",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 47,
+    "ftw": 0.5
+  },
+  {
+    "phrase": "as a consequence",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 24,
+    "ftw": 0.5
+  },
+  {
+    "phrase": "in this article",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 28,
+    "ftw": 0.5
+  },
+  {
+    "phrase": "assumed to be",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 39,
+    "ftw": 0.49
+  },
+  {
+    "phrase": "in the form of",
+    "register": "written",
+    "freq_speech": 9,
+    "freq_writing": 46,
+    "ftw": 0.48
+  },
+  {
+    "phrase": "as a whole",
+    "register": "written",
+    "freq_speech": 26,
+    "freq_writing": 43,
+    "ftw": 0.48
+  },
+  {
+    "phrase": "important role in",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 13,
+    "ftw": 0.47
+  },
+  {
+    "phrase": "it is interesting",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 18,
+    "ftw": 0.46
+  },
+  {
+    "phrase": "does not have",
+    "register": "written",
+    "freq_speech": 9,
+    "freq_writing": 25,
+    "ftw": 0.46
+  },
+  {
+    "phrase": "none of these",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 15,
+    "ftw": 0.46
+  },
+  {
+    "phrase": "as shown in",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 66,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "is likely to",
+    "register": "written",
+    "freq_speech": 9,
+    "freq_writing": 80,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "this means that",
+    "register": "written",
+    "freq_speech": 6,
+    "freq_writing": 36,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "be noted that",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 21,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "be achieved by",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 13,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "depends on the",
+    "register": "written",
+    "freq_speech": 18,
+    "freq_writing": 44,
+    "ftw": 0.44
+  },
+  {
+    "phrase": "at least in",
+    "register": "written",
+    "freq_speech": 19,
+    "freq_writing": 35,
+    "ftw": 0.44
+  },
+  {
+    "phrase": "a small number",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 12,
+    "ftw": 0.43
+  },
+  {
+    "phrase": "in table 1",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 29,
+    "ftw": 0.43
+  },
+  {
+    "phrase": "in most cases",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 17,
+    "ftw": 0.43
+  },
+  {
+    "phrase": "depending on the",
+    "register": "written",
+    "freq_speech": 14,
+    "freq_writing": 29,
+    "ftw": 0.41
+  },
+  {
+    "phrase": "in both cases",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 17,
+    "ftw": 0.41
+  },
+  {
+    "phrase": "the validity of the",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 18,
+    "ftw": 0.41
+  },
+  {
+    "phrase": "small number of",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 18,
+    "ftw": 0.4
+  },
+  {
+    "phrase": "their ability to",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 19,
+    "ftw": 0.4
+  },
+  {
+    "phrase": "need not be",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 25,
+    "ftw": 0.4
+  },
+  {
+    "phrase": "needs to be",
+    "register": "written",
+    "freq_speech": 30,
+    "freq_writing": 45,
+    "ftw": 0.4
+  },
+  {
+    "phrase": "have shown that",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 30,
+    "ftw": 0.39
+  },
+  {
+    "phrase": "it is necessary",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 34,
+    "ftw": 0.39
+  },
+  {
+    "phrase": "been shown to",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 31,
+    "ftw": 0.39
+  },
+  {
+    "phrase": "such as those",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 21,
+    "ftw": 0.39
+  },
+  {
+    "phrase": "are as follows",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 16,
+    "ftw": 0.38
+  },
+  {
+    "phrase": "for this purpose",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 15,
+    "ftw": 0.38
+  },
+  {
+    "phrase": "is determined by",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 23,
+    "ftw": 0.38
+  },
+  {
+    "phrase": "it is difficult",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 27,
+    "ftw": 0.37
+  },
+  {
+    "phrase": "even though the",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 21,
+    "ftw": 0.37
+  },
+  {
+    "phrase": "this does not",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 28,
+    "ftw": 0.37
+  },
+  {
+    "phrase": "was based on",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 19,
+    "ftw": 0.37
+  },
+  {
+    "phrase": "the nature of the",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 43,
+    "ftw": 0.37
+  },
+  {
+    "phrase": "in the course of",
+    "register": "written",
+    "freq_speech": 13,
+    "freq_writing": 27,
+    "ftw": 0.37
+  },
+  {
+    "phrase": "degree to which",
+    "register": "written",
+    "freq_speech": 1,
+    "freq_writing": 26,
+    "ftw": 0.37
+  },
+  {
+    "phrase": "be argued that",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 17,
+    "ftw": 0.36
+  },
+  {
+    "phrase": "in terms of a",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 15,
+    "ftw": 0.36
+  },
+  {
+    "phrase": "for this reason",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 21,
+    "ftw": 0.36
+  },
+  {
+    "phrase": "are based on",
+    "register": "written",
+    "freq_speech": 9,
+    "freq_writing": 24,
+    "ftw": 0.36
+  },
+  {
+    "phrase": "in a number of",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 19,
+    "ftw": 0.36
+  },
+  {
+    "phrase": "two types of",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 21,
+    "ftw": 0.34
+  },
+  {
+    "phrase": "the total number",
+    "register": "written",
+    "freq_speech": 4,
+    "freq_writing": 18,
+    "ftw": 0.34
+  },
+  {
+    "phrase": "is more likely",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 19,
+    "ftw": 0.34
+  },
+  {
+    "phrase": "which can be",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 57,
+    "ftw": 0.34
+  },
+  {
+    "phrase": "are able to",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 37,
+    "ftw": 0.32
+  },
+  {
+    "phrase": "be considered as",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 22,
+    "ftw": 0.32
+  },
+  {
+    "phrase": "be used to",
+    "register": "written",
+    "freq_speech": 8,
+    "freq_writing": 77,
+    "ftw": 0.31
+  },
+  {
+    "phrase": "b and c",
+    "register": "written",
+    "freq_speech": 5,
+    "freq_writing": 17,
+    "ftw": 0.31
+  },
+  {
+    "phrase": "depend on the",
+    "register": "written",
+    "freq_speech": 7,
+    "freq_writing": 30,
+    "ftw": 0.3
+  },
+  {
+    "phrase": "is that it is",
+    "register": "written",
+    "freq_speech": 3,
+    "freq_writing": 19,
+    "ftw": 0.3
+  },
+  {
+    "phrase": "is affected by",
+    "register": "written",
+    "freq_speech": 0,
+    "freq_writing": 11,
+    "ftw": 0.3
+  },
+  {
+    "phrase": "should also be",
+    "register": "written",
+    "freq_speech": 2,
+    "freq_writing": 18,
+    "ftw": 0.3
+  },
+  {
+    "phrase": "if they are",
+    "register": "written",
+    "freq_speech": 10,
+    "freq_writing": 33,
+    "ftw": 0.3
+  }
+]

@@ -1,0 +1,1402 @@
+[
+  {
+    "phrase": "be able to",
+    "register": "aflSpoken",
+    "freq_speech": 256,
+    "freq_writing": 99,
+    "ftw": 2.96
+  },
+  {
+    "phrase": "blah blah blah",
+    "register": "aflSpoken",
+    "freq_speech": 29,
+    "freq_writing": 0,
+    "ftw": 2.92
+  },
+  {
+    "phrase": "this is the",
+    "register": "aflSpoken",
+    "freq_speech": 340,
+    "freq_writing": 60,
+    "ftw": 2.77
+  },
+  {
+    "phrase": "you know what i mean",
+    "register": "aflSpoken",
+    "freq_speech": 64,
+    "freq_writing": 2,
+    "ftw": 2.27
+  },
+  {
+    "phrase": "you can see",
+    "register": "aflSpoken",
+    "freq_speech": 209,
+    "freq_writing": 1,
+    "ftw": 2.12
+  },
+  {
+    "phrase": "trying to figure out",
+    "register": "aflSpoken",
+    "freq_speech": 19,
+    "freq_writing": 1,
+    "ftw": 2.05
+  },
+  {
+    "phrase": "a little bit about",
+    "register": "aflSpoken",
+    "freq_speech": 47,
+    "freq_writing": 0,
+    "ftw": 2.0
+  },
+  {
+    "phrase": "does that make sense",
+    "register": "aflSpoken",
+    "freq_speech": 29,
+    "freq_writing": 0,
+    "ftw": 1.99
+  },
+  {
+    "phrase": "you know what",
+    "register": "aflSpoken",
+    "freq_speech": 228,
+    "freq_writing": 2,
+    "ftw": 1.99
+  },
+  {
+    "phrase": "the university of michigan",
+    "register": "aflSpoken",
+    "freq_speech": 35,
+    "freq_writing": 0,
+    "ftw": 1.98
+  },
+  {
+    "phrase": "for those of you who",
+    "register": "aflSpoken",
+    "freq_speech": 18,
+    "freq_writing": 0,
+    "ftw": 1.98
+  },
+  {
+    "phrase": "do you want me to",
+    "register": "aflSpoken",
+    "freq_speech": 14,
+    "freq_writing": 0,
+    "ftw": 1.96
+  },
+  {
+    "phrase": "thank you very much",
+    "register": "aflSpoken",
+    "freq_speech": 26,
+    "freq_writing": 0,
+    "ftw": 1.95
+  },
+  {
+    "phrase": "look at the",
+    "register": "aflSpoken",
+    "freq_speech": 197,
+    "freq_writing": 24,
+    "ftw": 1.95
+  },
+  {
+    "phrase": "we're gonna talk about",
+    "register": "aflSpoken",
+    "freq_speech": 20,
+    "freq_writing": 0,
+    "ftw": 1.95
+  },
+  {
+    "phrase": "talk a little bit",
+    "register": "aflSpoken",
+    "freq_speech": 19,
+    "freq_writing": 0,
+    "ftw": 1.92
+  },
+  {
+    "phrase": "if you look at",
+    "register": "aflSpoken",
+    "freq_speech": 80,
+    "freq_writing": 0,
+    "ftw": 1.89
+  },
+  {
+    "phrase": "and this is",
+    "register": "aflSpoken",
+    "freq_speech": 248,
+    "freq_writing": 20,
+    "ftw": 1.87
+  },
+  {
+    "phrase": "if you look at the",
+    "register": "aflSpoken",
+    "freq_speech": 27,
+    "freq_writing": 0,
+    "ftw": 1.8
+  },
+  {
+    "phrase": "no no no no",
+    "register": "aflSpoken",
+    "freq_speech": 31,
+    "freq_writing": 0,
+    "ftw": 1.78
+  },
+  {
+    "phrase": "at the end of",
+    "register": "aflSpoken",
+    "freq_speech": 89,
+    "freq_writing": 60,
+    "ftw": 1.74
+  },
+  {
+    "phrase": "we were talking about",
+    "register": "aflSpoken",
+    "freq_speech": 23,
+    "freq_writing": 0,
+    "ftw": 1.65
+  },
+  {
+    "phrase": "in ann arbor",
+    "register": "aflSpoken",
+    "freq_speech": 19,
+    "freq_writing": 0,
+    "ftw": 1.62
+  },
+  {
+    "phrase": "it turns out that",
+    "register": "aflSpoken",
+    "freq_speech": 24,
+    "freq_writing": 4,
+    "ftw": 1.61
+  },
+  {
+    "phrase": "you need to",
+    "register": "aflSpoken",
+    "freq_speech": 182,
+    "freq_writing": 0,
+    "ftw": 1.61
+  },
+  {
+    "phrase": "see what i'm saying",
+    "register": "aflSpoken",
+    "freq_speech": 17,
+    "freq_writing": 0,
+    "ftw": 1.6
+  },
+  {
+    "phrase": "take a look at",
+    "register": "aflSpoken",
+    "freq_speech": 31,
+    "freq_writing": 1,
+    "ftw": 1.58
+  },
+  {
+    "phrase": "you have a",
+    "register": "aflSpoken",
+    "freq_speech": 215,
+    "freq_writing": 4,
+    "ftw": 1.57
+  },
+  {
+    "phrase": "might be able to",
+    "register": "aflSpoken",
+    "freq_speech": 20,
+    "freq_writing": 6,
+    "ftw": 1.56
+  },
+  {
+    "phrase": "at the end",
+    "register": "aflSpoken",
+    "freq_speech": 137,
+    "freq_writing": 66,
+    "ftw": 1.48
+  },
+  {
+    "phrase": "you want to",
+    "register": "aflSpoken",
+    "freq_speech": 171,
+    "freq_writing": 7,
+    "ftw": 1.46
+  },
+  {
+    "phrase": "to do with",
+    "register": "aflSpoken",
+    "freq_speech": 165,
+    "freq_writing": 43,
+    "ftw": 1.44
+  },
+  {
+    "phrase": "nothing to do with",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 9,
+    "ftw": 1.43
+  },
+  {
+    "phrase": "know what i mean",
+    "register": "aflSpoken",
+    "freq_speech": 65,
+    "freq_writing": 3,
+    "ftw": 1.42
+  },
+  {
+    "phrase": "you look at",
+    "register": "aflSpoken",
+    "freq_speech": 137,
+    "freq_writing": 1,
+    "ftw": 1.42
+  },
+  {
+    "phrase": "university of michigan",
+    "register": "aflSpoken",
+    "freq_speech": 44,
+    "freq_writing": 0,
+    "ftw": 1.42
+  },
+  {
+    "phrase": "what i'm talking about",
+    "register": "aflSpoken",
+    "freq_speech": 13,
+    "freq_writing": 0,
+    "ftw": 1.41
+  },
+  {
+    "phrase": "the same thing",
+    "register": "aflSpoken",
+    "freq_speech": 122,
+    "freq_writing": 8,
+    "ftw": 1.35
+  },
+  {
+    "phrase": "to look at",
+    "register": "aflSpoken",
+    "freq_speech": 131,
+    "freq_writing": 20,
+    "ftw": 1.34
+  },
+  {
+    "phrase": "the end of",
+    "register": "aflSpoken",
+    "freq_speech": 158,
+    "freq_writing": 110,
+    "ftw": 1.33
+  },
+  {
+    "phrase": "gonna be able to",
+    "register": "aflSpoken",
+    "freq_speech": 18,
+    "freq_writing": 0,
+    "ftw": 1.32
+  },
+  {
+    "phrase": "we're talking about",
+    "register": "aflSpoken",
+    "freq_speech": 61,
+    "freq_writing": 0,
+    "ftw": 1.28
+  },
+  {
+    "phrase": "to figure out what",
+    "register": "aflSpoken",
+    "freq_speech": 12,
+    "freq_writing": 1,
+    "ftw": 1.27
+  },
+  {
+    "phrase": "so if you",
+    "register": "aflSpoken",
+    "freq_speech": 170,
+    "freq_writing": 0,
+    "ftw": 1.24
+  },
+  {
+    "phrase": "so this is",
+    "register": "aflSpoken",
+    "freq_speech": 173,
+    "freq_writing": 0,
+    "ftw": 1.23
+  },
+  {
+    "phrase": "if you want to",
+    "register": "aflSpoken",
+    "freq_speech": 59,
+    "freq_writing": 2,
+    "ftw": 1.23
+  },
+  {
+    "phrase": "no no no",
+    "register": "aflSpoken",
+    "freq_speech": 86,
+    "freq_writing": 0,
+    "ftw": 1.23
+  },
+  {
+    "phrase": "if you have",
+    "register": "aflSpoken",
+    "freq_speech": 160,
+    "freq_writing": 0,
+    "ftw": 1.22
+  },
+  {
+    "phrase": "come up with a",
+    "register": "aflSpoken",
+    "freq_speech": 17,
+    "freq_writing": 1,
+    "ftw": 1.21
+  },
+  {
+    "phrase": "we talked about",
+    "register": "aflSpoken",
+    "freq_speech": 72,
+    "freq_writing": 0,
+    "ftw": 1.2
+  },
+  {
+    "phrase": "when you look at",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 0,
+    "ftw": 1.2
+  },
+  {
+    "phrase": "in order to get",
+    "register": "aflSpoken",
+    "freq_speech": 23,
+    "freq_writing": 4,
+    "ftw": 1.19
+  },
+  {
+    "phrase": "the end of the",
+    "register": "aflSpoken",
+    "freq_speech": 88,
+    "freq_writing": 59,
+    "ftw": 1.19
+  },
+  {
+    "phrase": "oh my god",
+    "register": "aflSpoken",
+    "freq_speech": 32,
+    "freq_writing": 0,
+    "ftw": 1.17
+  },
+  {
+    "phrase": "come up with",
+    "register": "aflSpoken",
+    "freq_speech": 68,
+    "freq_writing": 3,
+    "ftw": 1.16
+  },
+  {
+    "phrase": "i was gonna say",
+    "register": "aflSpoken",
+    "freq_speech": 26,
+    "freq_writing": 0,
+    "ftw": 1.16
+  },
+  {
+    "phrase": "and then you",
+    "register": "aflSpoken",
+    "freq_speech": 170,
+    "freq_writing": 1,
+    "ftw": 1.16
+  },
+  {
+    "phrase": "a kind of",
+    "register": "aflSpoken",
+    "freq_speech": 150,
+    "freq_writing": 24,
+    "ftw": 1.16
+  },
+  {
+    "phrase": "it doesn't matter",
+    "register": "aflSpoken",
+    "freq_speech": 51,
+    "freq_writing": 0,
+    "ftw": 1.15
+  },
+  {
+    "phrase": "has to do with",
+    "register": "aflSpoken",
+    "freq_speech": 31,
+    "freq_writing": 3,
+    "ftw": 1.14
+  },
+  {
+    "phrase": "you can look at",
+    "register": "aflSpoken",
+    "freq_speech": 25,
+    "freq_writing": 0,
+    "ftw": 1.13
+  },
+  {
+    "phrase": "do you want me",
+    "register": "aflSpoken",
+    "freq_speech": 16,
+    "freq_writing": 0,
+    "ftw": 1.12
+  },
+  {
+    "phrase": "little bit about",
+    "register": "aflSpoken",
+    "freq_speech": 48,
+    "freq_writing": 0,
+    "ftw": 1.12
+  },
+  {
+    "phrase": "if you look",
+    "register": "aflSpoken",
+    "freq_speech": 117,
+    "freq_writing": 0,
+    "ftw": 1.1
+  },
+  {
+    "phrase": "i just wanted to",
+    "register": "aflSpoken",
+    "freq_speech": 28,
+    "freq_writing": 0,
+    "ftw": 1.1
+  },
+  {
+    "phrase": "you're talking about",
+    "register": "aflSpoken",
+    "freq_speech": 57,
+    "freq_writing": 0,
+    "ftw": 1.08
+  },
+  {
+    "phrase": "what does that mean",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 0,
+    "ftw": 1.08
+  },
+  {
+    "phrase": "the best way to",
+    "register": "aflSpoken",
+    "freq_speech": 18,
+    "freq_writing": 7,
+    "ftw": 1.08
+  },
+  {
+    "phrase": "if you want",
+    "register": "aflSpoken",
+    "freq_speech": 112,
+    "freq_writing": 3,
+    "ftw": 1.06
+  },
+  {
+    "phrase": "you know what i",
+    "register": "aflSpoken",
+    "freq_speech": 73,
+    "freq_writing": 2,
+    "ftw": 1.05
+  },
+  {
+    "phrase": "we've talked about",
+    "register": "aflSpoken",
+    "freq_speech": 24,
+    "freq_writing": 0,
+    "ftw": 1.05
+  },
+  {
+    "phrase": "we'll talk about",
+    "register": "aflSpoken",
+    "freq_speech": 34,
+    "freq_writing": 0,
+    "ftw": 1.03
+  },
+  {
+    "phrase": "let me just",
+    "register": "aflSpoken",
+    "freq_speech": 44,
+    "freq_writing": 0,
+    "ftw": 1.02
+  },
+  {
+    "phrase": "i was talking about",
+    "register": "aflSpoken",
+    "freq_speech": 14,
+    "freq_writing": 0,
+    "ftw": 1.02
+  },
+  {
+    "phrase": "has to be",
+    "register": "aflSpoken",
+    "freq_speech": 115,
+    "freq_writing": 45,
+    "ftw": 1.01
+  },
+  {
+    "phrase": "to talk about",
+    "register": "aflSpoken",
+    "freq_speech": 93,
+    "freq_writing": 9,
+    "ftw": 1.0
+  },
+  {
+    "phrase": "it turns out",
+    "register": "aflSpoken",
+    "freq_speech": 39,
+    "freq_writing": 7,
+    "ftw": 1.0
+  },
+  {
+    "phrase": "those of you who",
+    "register": "aflSpoken",
+    "freq_speech": 27,
+    "freq_writing": 0,
+    "ftw": 0.99
+  },
+  {
+    "phrase": "you might want to",
+    "register": "aflSpoken",
+    "freq_speech": 19,
+    "freq_writing": 0,
+    "ftw": 0.99
+  },
+  {
+    "phrase": "first of all",
+    "register": "aflSpoken",
+    "freq_speech": 97,
+    "freq_writing": 11,
+    "ftw": 0.98
+  },
+  {
+    "phrase": "and so on and so",
+    "register": "aflSpoken",
+    "freq_speech": 17,
+    "freq_writing": 0,
+    "ftw": 0.98
+  },
+  {
+    "phrase": "there was a",
+    "register": "aflSpoken",
+    "freq_speech": 125,
+    "freq_writing": 54,
+    "ftw": 0.97
+  },
+  {
+    "phrase": "at the university of",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 8,
+    "ftw": 0.97
+  },
+  {
+    "phrase": "yes yes yes",
+    "register": "aflSpoken",
+    "freq_speech": 30,
+    "freq_writing": 0,
+    "ftw": 0.97
+  },
+  {
+    "phrase": "you can see that",
+    "register": "aflSpoken",
+    "freq_speech": 45,
+    "freq_writing": 0,
+    "ftw": 0.96
+  },
+  {
+    "phrase": "i have a question",
+    "register": "aflSpoken",
+    "freq_speech": 31,
+    "freq_writing": 0,
+    "ftw": 0.96
+  },
+  {
+    "phrase": "it has to be",
+    "register": "aflSpoken",
+    "freq_speech": 37,
+    "freq_writing": 6,
+    "ftw": 0.93
+  },
+  {
+    "phrase": "we need to",
+    "register": "aflSpoken",
+    "freq_speech": 102,
+    "freq_writing": 30,
+    "ftw": 0.92
+  },
+  {
+    "phrase": "what i'm saying",
+    "register": "aflSpoken",
+    "freq_speech": 58,
+    "freq_writing": 0,
+    "ftw": 0.92
+  },
+  {
+    "phrase": "you want me to",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 0,
+    "ftw": 0.92
+  },
+  {
+    "phrase": "all sorts of",
+    "register": "aflSpoken",
+    "freq_speech": 50,
+    "freq_writing": 1,
+    "ftw": 0.91
+  },
+  {
+    "phrase": "as you can see",
+    "register": "aflSpoken",
+    "freq_speech": 20,
+    "freq_writing": 0,
+    "ftw": 0.9
+  },
+  {
+    "phrase": "to figure out",
+    "register": "aflSpoken",
+    "freq_speech": 53,
+    "freq_writing": 4,
+    "ftw": 0.9
+  },
+  {
+    "phrase": "keep in mind",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 3,
+    "ftw": 0.9
+  },
+  {
+    "phrase": "what do you mean",
+    "register": "aflSpoken",
+    "freq_speech": 29,
+    "freq_writing": 0,
+    "ftw": 0.89
+  },
+  {
+    "phrase": "it looks like",
+    "register": "aflSpoken",
+    "freq_speech": 66,
+    "freq_writing": 1,
+    "ftw": 0.88
+  },
+  {
+    "phrase": "let's look at",
+    "register": "aflSpoken",
+    "freq_speech": 38,
+    "freq_writing": 0,
+    "ftw": 0.87
+  },
+  {
+    "phrase": "you look at the",
+    "register": "aflSpoken",
+    "freq_speech": 41,
+    "freq_writing": 0,
+    "ftw": 0.87
+  },
+  {
+    "phrase": "to make sure",
+    "register": "aflSpoken",
+    "freq_speech": 57,
+    "freq_writing": 6,
+    "ftw": 0.86
+  },
+  {
+    "phrase": "if you wanted to",
+    "register": "aflSpoken",
+    "freq_speech": 19,
+    "freq_writing": 0,
+    "ftw": 0.85
+  },
+  {
+    "phrase": "make sure that",
+    "register": "aflSpoken",
+    "freq_speech": 56,
+    "freq_writing": 7,
+    "ftw": 0.84
+  },
+  {
+    "phrase": "end up with",
+    "register": "aflSpoken",
+    "freq_speech": 38,
+    "freq_writing": 4,
+    "ftw": 0.84
+  },
+  {
+    "phrase": "and you can see",
+    "register": "aflSpoken",
+    "freq_speech": 39,
+    "freq_writing": 0,
+    "ftw": 0.84
+  },
+  {
+    "phrase": "came up with",
+    "register": "aflSpoken",
+    "freq_speech": 31,
+    "freq_writing": 1,
+    "ftw": 0.84
+  },
+  {
+    "phrase": "doesn't have to be",
+    "register": "aflSpoken",
+    "freq_speech": 17,
+    "freq_writing": 0,
+    "ftw": 0.83
+  },
+  {
+    "phrase": "i mean if you",
+    "register": "aflSpoken",
+    "freq_speech": 41,
+    "freq_writing": 0,
+    "ftw": 0.83
+  },
+  {
+    "phrase": "you've got a",
+    "register": "aflSpoken",
+    "freq_speech": 58,
+    "freq_writing": 0,
+    "ftw": 0.83
+  },
+  {
+    "phrase": "gonna talk about",
+    "register": "aflSpoken",
+    "freq_speech": 41,
+    "freq_writing": 0,
+    "ftw": 0.82
+  },
+  {
+    "phrase": "how many of you",
+    "register": "aflSpoken",
+    "freq_speech": 17,
+    "freq_writing": 0,
+    "ftw": 0.82
+  },
+  {
+    "phrase": "i mean if",
+    "register": "aflSpoken",
+    "freq_speech": 104,
+    "freq_writing": 0,
+    "ftw": 0.81
+  },
+  {
+    "phrase": "look at it",
+    "register": "aflSpoken",
+    "freq_speech": 80,
+    "freq_writing": 2,
+    "ftw": 0.81
+  },
+  {
+    "phrase": "piece of paper",
+    "register": "aflSpoken",
+    "freq_speech": 16,
+    "freq_writing": 2,
+    "ftw": 0.81
+  },
+  {
+    "phrase": "and so forth",
+    "register": "aflSpoken",
+    "freq_speech": 60,
+    "freq_writing": 17,
+    "ftw": 0.8
+  },
+  {
+    "phrase": "and you can",
+    "register": "aflSpoken",
+    "freq_speech": 142,
+    "freq_writing": 3,
+    "ftw": 0.79
+  },
+  {
+    "phrase": "looking at the",
+    "register": "aflSpoken",
+    "freq_speech": 84,
+    "freq_writing": 12,
+    "ftw": 0.79
+  },
+  {
+    "phrase": "we're gonna talk",
+    "register": "aflSpoken",
+    "freq_speech": 23,
+    "freq_writing": 0,
+    "ftw": 0.79
+  },
+  {
+    "phrase": "go back to the",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 4,
+    "ftw": 0.79
+  },
+  {
+    "phrase": "you know what i'm",
+    "register": "aflSpoken",
+    "freq_speech": 24,
+    "freq_writing": 0,
+    "ftw": 0.76
+  },
+  {
+    "phrase": "that you can",
+    "register": "aflSpoken",
+    "freq_speech": 136,
+    "freq_writing": 1,
+    "ftw": 0.76
+  },
+  {
+    "phrase": "we're looking at",
+    "register": "aflSpoken",
+    "freq_speech": 26,
+    "freq_writing": 0,
+    "ftw": 0.76
+  },
+  {
+    "phrase": "what i mean",
+    "register": "aflSpoken",
+    "freq_speech": 102,
+    "freq_writing": 6,
+    "ftw": 0.74
+  },
+  {
+    "phrase": "do you know what",
+    "register": "aflSpoken",
+    "freq_speech": 31,
+    "freq_writing": 1,
+    "ftw": 0.73
+  },
+  {
+    "phrase": "how do you know",
+    "register": "aflSpoken",
+    "freq_speech": 20,
+    "freq_writing": 2,
+    "ftw": 0.73
+  },
+  {
+    "phrase": "you don't need to",
+    "register": "aflSpoken",
+    "freq_speech": 20,
+    "freq_writing": 1,
+    "ftw": 0.73
+  },
+  {
+    "phrase": "you're looking at",
+    "register": "aflSpoken",
+    "freq_speech": 32,
+    "freq_writing": 0,
+    "ftw": 0.72
+  },
+  {
+    "phrase": "turns out that",
+    "register": "aflSpoken",
+    "freq_speech": 28,
+    "freq_writing": 4,
+    "ftw": 0.72
+  },
+  {
+    "phrase": "it could be",
+    "register": "aflSpoken",
+    "freq_speech": 84,
+    "freq_writing": 23,
+    "ftw": 0.72
+  },
+  {
+    "phrase": "figure out what",
+    "register": "aflSpoken",
+    "freq_speech": 26,
+    "freq_writing": 1,
+    "ftw": 0.72
+  },
+  {
+    "phrase": "if you've got",
+    "register": "aflSpoken",
+    "freq_speech": 32,
+    "freq_writing": 0,
+    "ftw": 0.72
+  },
+  {
+    "phrase": "i wanted to",
+    "register": "aflSpoken",
+    "freq_speech": 84,
+    "freq_writing": 3,
+    "ftw": 0.71
+  },
+  {
+    "phrase": "you could you could",
+    "register": "aflSpoken",
+    "freq_speech": 15,
+    "freq_writing": 0,
+    "ftw": 0.71
+  },
+  {
+    "phrase": "might be able",
+    "register": "aflSpoken",
+    "freq_speech": 20,
+    "freq_writing": 6,
+    "ftw": 0.7
+  },
+  {
+    "phrase": "trying to figure",
+    "register": "aflSpoken",
+    "freq_speech": 20,
+    "freq_writing": 1,
+    "ftw": 0.7
+  },
+  {
+    "phrase": "what you're saying",
+    "register": "aflSpoken",
+    "freq_speech": 40,
+    "freq_writing": 0,
+    "ftw": 0.67
+  },
+  {
+    "phrase": "we have to",
+    "register": "aflSpoken",
+    "freq_speech": 117,
+    "freq_writing": 20,
+    "ftw": 0.67
+  },
+  {
+    "phrase": "i'm talking about",
+    "register": "aflSpoken",
+    "freq_speech": 32,
+    "freq_writing": 0,
+    "ftw": 0.67
+  },
+  {
+    "phrase": "so you can",
+    "register": "aflSpoken",
+    "freq_speech": 114,
+    "freq_writing": 0,
+    "ftw": 0.66
+  },
+  {
+    "phrase": "this kind of",
+    "register": "aflSpoken",
+    "freq_speech": 95,
+    "freq_writing": 23,
+    "ftw": 0.65
+  },
+  {
+    "phrase": "don't worry about",
+    "register": "aflSpoken",
+    "freq_speech": 13,
+    "freq_writing": 0,
+    "ftw": 0.65
+  },
+  {
+    "phrase": "it's gonna be",
+    "register": "aflSpoken",
+    "freq_speech": 70,
+    "freq_writing": 0,
+    "ftw": 0.64
+  },
+  {
+    "phrase": "if you have a",
+    "register": "aflSpoken",
+    "freq_speech": 45,
+    "freq_writing": 0,
+    "ftw": 0.64
+  },
+  {
+    "phrase": "wanna talk about",
+    "register": "aflSpoken",
+    "freq_speech": 21,
+    "freq_writing": 0,
+    "ftw": 0.64
+  },
+  {
+    "phrase": "so you can see",
+    "register": "aflSpoken",
+    "freq_speech": 18,
+    "freq_writing": 0,
+    "ftw": 0.64
+  },
+  {
+    "phrase": "i want you to",
+    "register": "aflSpoken",
+    "freq_speech": 37,
+    "freq_writing": 0,
+    "ftw": 0.63
+  },
+  {
+    "phrase": "to look at the",
+    "register": "aflSpoken",
+    "freq_speech": 27,
+    "freq_writing": 7,
+    "ftw": 0.63
+  },
+  {
+    "phrase": "to each other",
+    "register": "aflSpoken",
+    "freq_speech": 46,
+    "freq_writing": 24,
+    "ftw": 0.62
+  },
+  {
+    "phrase": "the kind of",
+    "register": "aflSpoken",
+    "freq_speech": 119,
+    "freq_writing": 24,
+    "ftw": 0.62
+  },
+  {
+    "phrase": "at this point",
+    "register": "aflSpoken",
+    "freq_speech": 54,
+    "freq_writing": 31,
+    "ftw": 0.61
+  },
+  {
+    "phrase": "one of these",
+    "register": "aflSpoken",
+    "freq_speech": 88,
+    "freq_writing": 24,
+    "ftw": 0.6
+  },
+  {
+    "phrase": "and if you",
+    "register": "aflSpoken",
+    "freq_speech": 132,
+    "freq_writing": 2,
+    "ftw": 0.6
+  },
+  {
+    "phrase": "you think about it",
+    "register": "aflSpoken",
+    "freq_speech": 26,
+    "freq_writing": 0,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "talk about the",
+    "register": "aflSpoken",
+    "freq_speech": 74,
+    "freq_writing": 2,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "it might be",
+    "register": "aflSpoken",
+    "freq_speech": 64,
+    "freq_writing": 36,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "for those of you",
+    "register": "aflSpoken",
+    "freq_speech": 23,
+    "freq_writing": 0,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "to do with the",
+    "register": "aflSpoken",
+    "freq_speech": 43,
+    "freq_writing": 18,
+    "ftw": 0.59
+  },
+  {
+    "phrase": "i'm not gonna",
+    "register": "aflSpoken",
+    "freq_speech": 45,
+    "freq_writing": 0,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "was talking about",
+    "register": "aflSpoken",
+    "freq_speech": 38,
+    "freq_writing": 0,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "have to do with",
+    "register": "aflSpoken",
+    "freq_speech": 20,
+    "freq_writing": 2,
+    "ftw": 0.58
+  },
+  {
+    "phrase": "tell me what",
+    "register": "aflSpoken",
+    "freq_speech": 25,
+    "freq_writing": 1,
+    "ftw": 0.57
+  },
+  {
+    "phrase": "look at this",
+    "register": "aflSpoken",
+    "freq_speech": 57,
+    "freq_writing": 1,
+    "ftw": 0.57
+  },
+  {
+    "phrase": "in a sense",
+    "register": "aflSpoken",
+    "freq_speech": 74,
+    "freq_writing": 15,
+    "ftw": 0.56
+  },
+  {
+    "phrase": "okay i don't know",
+    "register": "aflSpoken",
+    "freq_speech": 14,
+    "freq_writing": 0,
+    "ftw": 0.56
+  },
+  {
+    "phrase": "i'll talk about",
+    "register": "aflSpoken",
+    "freq_speech": 14,
+    "freq_writing": 0,
+    "ftw": 0.56
+  },
+  {
+    "phrase": "you need to do",
+    "register": "aflSpoken",
+    "freq_speech": 15,
+    "freq_writing": 0,
+    "ftw": 0.56
+  },
+  {
+    "phrase": "do you want",
+    "register": "aflSpoken",
+    "freq_speech": 69,
+    "freq_writing": 3,
+    "ftw": 0.55
+  },
+  {
+    "phrase": "we talk about",
+    "register": "aflSpoken",
+    "freq_speech": 41,
+    "freq_writing": 0,
+    "ftw": 0.54
+  },
+  {
+    "phrase": "any questions about",
+    "register": "aflSpoken",
+    "freq_speech": 14,
+    "freq_writing": 0,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "come back to",
+    "register": "aflSpoken",
+    "freq_speech": 37,
+    "freq_writing": 1,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "you can see the",
+    "register": "aflSpoken",
+    "freq_speech": 28,
+    "freq_writing": 0,
+    "ftw": 0.53
+  },
+  {
+    "phrase": "the reason why",
+    "register": "aflSpoken",
+    "freq_speech": 36,
+    "freq_writing": 8,
+    "ftw": 0.52
+  },
+  {
+    "phrase": "it in terms of",
+    "register": "aflSpoken",
+    "freq_speech": 14,
+    "freq_writing": 2,
+    "ftw": 0.52
+  },
+  {
+    "phrase": "what i want to",
+    "register": "aflSpoken",
+    "freq_speech": 17,
+    "freq_writing": 3,
+    "ftw": 0.52
+  },
+  {
+    "phrase": "we looked at",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 3,
+    "ftw": 0.51
+  },
+  {
+    "phrase": "if you wanna",
+    "register": "aflSpoken",
+    "freq_speech": 64,
+    "freq_writing": 0,
+    "ftw": 0.51
+  },
+  {
+    "phrase": "take a look",
+    "register": "aflSpoken",
+    "freq_speech": 41,
+    "freq_writing": 1,
+    "ftw": 0.5
+  },
+  {
+    "phrase": "if you were to",
+    "register": "aflSpoken",
+    "freq_speech": 22,
+    "freq_writing": 0,
+    "ftw": 0.5
+  },
+  {
+    "phrase": "i'll show you",
+    "register": "aflSpoken",
+    "freq_speech": 21,
+    "freq_writing": 0,
+    "ftw": 0.49
+  },
+  {
+    "phrase": "talking about the",
+    "register": "aflSpoken",
+    "freq_speech": 64,
+    "freq_writing": 3,
+    "ftw": 0.49
+  },
+  {
+    "phrase": "that make sense",
+    "register": "aflSpoken",
+    "freq_speech": 31,
+    "freq_writing": 1,
+    "ftw": 0.49
+  },
+  {
+    "phrase": "this is this is",
+    "register": "aflSpoken",
+    "freq_speech": 39,
+    "freq_writing": 0,
+    "ftw": 0.48
+  },
+  {
+    "phrase": "how do we",
+    "register": "aflSpoken",
+    "freq_speech": 59,
+    "freq_writing": 5,
+    "ftw": 0.48
+  },
+  {
+    "phrase": "we were talking",
+    "register": "aflSpoken",
+    "freq_speech": 26,
+    "freq_writing": 0,
+    "ftw": 0.48
+  },
+  {
+    "phrase": "wanna look at",
+    "register": "aflSpoken",
+    "freq_speech": 19,
+    "freq_writing": 0,
+    "ftw": 0.48
+  },
+  {
+    "phrase": "you're trying to",
+    "register": "aflSpoken",
+    "freq_speech": 38,
+    "freq_writing": 0,
+    "ftw": 0.47
+  },
+  {
+    "phrase": "a look at",
+    "register": "aflSpoken",
+    "freq_speech": 61,
+    "freq_writing": 5,
+    "ftw": 0.47
+  },
+  {
+    "phrase": "if you were",
+    "register": "aflSpoken",
+    "freq_speech": 76,
+    "freq_writing": 3,
+    "ftw": 0.47
+  },
+  {
+    "phrase": "you're interested in",
+    "register": "aflSpoken",
+    "freq_speech": 21,
+    "freq_writing": 0,
+    "ftw": 0.47
+  },
+  {
+    "phrase": "to think about",
+    "register": "aflSpoken",
+    "freq_speech": 81,
+    "freq_writing": 5,
+    "ftw": 0.46
+  },
+  {
+    "phrase": "gonna be able",
+    "register": "aflSpoken",
+    "freq_speech": 18,
+    "freq_writing": 0,
+    "ftw": 0.46
+  },
+  {
+    "phrase": "by the way",
+    "register": "aflSpoken",
+    "freq_speech": 65,
+    "freq_writing": 4,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "we look at",
+    "register": "aflSpoken",
+    "freq_speech": 43,
+    "freq_writing": 7,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "i think this is",
+    "register": "aflSpoken",
+    "freq_speech": 26,
+    "freq_writing": 0,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "but if you",
+    "register": "aflSpoken",
+    "freq_speech": 94,
+    "freq_writing": 2,
+    "ftw": 0.45
+  },
+  {
+    "phrase": "at some point",
+    "register": "aflSpoken",
+    "freq_speech": 24,
+    "freq_writing": 7,
+    "ftw": 0.44
+  },
+  {
+    "phrase": "i'm gonna go",
+    "register": "aflSpoken",
+    "freq_speech": 24,
+    "freq_writing": 0,
+    "ftw": 0.44
+  },
+  {
+    "phrase": "thank you very",
+    "register": "aflSpoken",
+    "freq_speech": 27,
+    "freq_writing": 0,
+    "ftw": 0.43
+  },
+  {
+    "phrase": "can look at",
+    "register": "aflSpoken",
+    "freq_speech": 34,
+    "freq_writing": 0,
+    "ftw": 0.43
+  },
+  {
+    "phrase": "what happens is",
+    "register": "aflSpoken",
+    "freq_speech": 40,
+    "freq_writing": 0,
+    "ftw": 0.43
+  },
+  {
+    "phrase": "on the board",
+    "register": "aflSpoken",
+    "freq_speech": 30,
+    "freq_writing": 3,
+    "ftw": 0.42
+  },
+  {
+    "phrase": "um let me",
+    "register": "aflSpoken",
+    "freq_speech": 17,
+    "freq_writing": 0,
+    "ftw": 0.42
+  }
+]
