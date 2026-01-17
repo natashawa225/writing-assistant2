@@ -185,9 +185,9 @@ export function LexicalFeedback({
                 <CardTitle className="flex items-center gap-2 text-base">
                   <BookOpen className="h-4 w-4" />
                   Academic Word List
-                  <Badge variant="outline" className="ml-auto">
+                  {/* <Badge variant="outline" className="ml-auto">
                     Score: {analysis.awlCoverage.score.toFixed(0)}/100
-                  </Badge>
+                  </Badge> */}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -282,9 +282,9 @@ export function LexicalFeedback({
                 <CardTitle className="flex items-center gap-2 text-base">
                   <BookOpen className="h-4 w-4" />
                   Academic Formula List
-                  <Badge variant="outline" className="ml-auto">
+                  {/* <Badge variant="outline" className="ml-auto">
                     Score: {analysis.aflCoverage.score.toFixed(0)}/100
-                  </Badge>
+                  </Badge> */}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -394,7 +394,7 @@ export function LexicalFeedback({
                             : "destructive"
                       }
                     >
-                      {analysis.lexicalDiversity.mattr.toFixed(3)} ({analysis.lexicalDiversity.diversityLevel})
+                      {analysis.lexicalDiversity?.mattr?.toFixed(3) ?? "N/A"} ({analysis.lexicalDiversity.diversityLevel})
                     </Badge>
                   </div>
                   <Progress value={analysis.lexicalDiversity.mattr * 100} className="h-2" />

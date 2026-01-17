@@ -20,103 +20,54 @@ const FeedbackSchema = z.object({
   color: z.string().optional(),
 })
 
+// UPDATED SCHEMA - Make fields optional that will be filled during merge
 const LexicalAnalysisSchema = z.object({
   awlCoverage: z.object({
-    score: z.number().min(0).max(100),
     suggestions: z.array(
       z.object({
         original: z.string(),
         reason: z.string(),
         suggestion: z.string(),
-        sublist: z.string(),
-        category: z.string(),
         explanation: z.string(),
-        example: z.string(),
         exampleEssay: z.string(),
+        // These will be filled in during merge
+        sublist: z.string().optional(),
+        category: z.string().optional(),
+        example: z.string().optional(),
+        start: z.number().optional(),
+        end: z.number().optional(),
       }),
     ),
   }),
   aflCoverage: z.object({
-    score: z.number().min(0).max(100),
     suggestions: z.array(
       z.object({
         original: z.string(),
         reason: z.string(),
         suggestion: z.string(),
-        value: z.string().optional(),   // 👈 make it optional here
         explanation: z.string(),
-        example: z.string(),
         exampleEssay: z.string(),
+        // These will be filled in during merge
+        value: z.string().optional(),
+        example: z.string().optional(),
+        start: z.number().optional(),
+        end: z.number().optional(),
       }),
     ),
   }),
-  
-  lexicalDiversity: z.object({
-    uniqueWords: z.number(),
-    totalWords: z.number(),
-    diversityLevel: z.enum(["Low", "Medium", "High"]),
-    mattr: z.number(),
-    feedback: z.string(),
-    suggestions: z.array(z.string()),
-    repetitiveWords: z.array(
-      z.object({
-        word: z.string(),
-        count: z.number(),
-        frequency: z.string(),
-        answer: z.string(),
-        reason: z.string(),
-      })
-    ).optional(),
-  }),  
-  feedback: z.array(FeedbackSchema).optional(),
 })
 
-// function getFeedback(listIndex: number, phrase: string): { feedback: string; reason: string } {
-//   switch (listIndex) {
-//     case 0:
-//       return {
-//         feedback: `Academic filler: "${phrase}". Consider simplifying or rephrasing.`,
-//         reason: `Phrases from list 0 tend to pad writing without adding meaning, which weakens clarity.`,
-//       }
-//     case 1:
-//       return {
-//         feedback: `Conversational/Informal phrase: "${phrase}". Try using more formal academic tone.`,
-//         reason: `List 1 phrases are informal and may reduce the academic credibility of the essay.`,
-//       }
-//     case 2:
-//       return {
-//         feedback: `Verbose or weak phrase: "${phrase}". Aim for precision.`,
-//         reason: `List 2 phrases are wordy or imprecise, which can obscure the main argument.`,
-//       }
-//     default:
-//       return {
-//         feedback: `Detected phrase: "${phrase}". You may want to revise it.`,
-//         reason: `This phrase was flagged but not categorized. Revise if it weakens clarity.`,
-//       }
-//   }
-// }
-
-// Extract score mapping into reusable function
 function mapFTWScoreToValue(score: number): string {
   if (score >= 0.75) return "Essential: Very common in academic writing"
   if (score >= 0.50) return "Useful: Good phrase, but less frequent."
   if (score >= 0.25) return "Advanced: Less common in student writing."
   return "Rare: Consider a more common academic phrase."
 }
-
-// function getAFLFeedbackReason(listIndex: number): string {
-//   switch (listIndex) {
-//     case 0:
-//       return `Phrases from list 0 tend to pad writing without adding meaning, which weakens clarity.`
-//     case 1:
-//       return `List 1 phrases are informal and may reduce the academic credibility of the essay.`
-//     case 2:
-//       return `List 2 phrases are wordy or imprecise, which can obscure the main argument.`
-//     default:
-//       return `This phrase was flagged but not categorized. Revise if it weakens clarity.`
-//   }
-// }
-
+function maskWord(word: string) {
+  if (!word) return ""
+  const firstLetter = word[0]
+  return firstLetter + "_".repeat(word.length - 1)
+}
 function calculateMATTR(text: string): number {
   const words = text.toLowerCase().match(/\b\w+\b/g) || []
   if (words.length < 50) return 0
@@ -152,20 +103,13 @@ export async function POST(request: NextRequest) {
     else if (mattrScore > 0.5) diversityLevel = "Medium"
 
     const wordFrequency = words.reduce((acc: Record<string, number>, w: string) => {
-      acc[w] = (acc[w] || 0) + 1  // if word exists, increment, else start at 1
+      acc[w] = (acc[w] || 0) + 1
       return acc
     }, {})
     
-    // Step 2: turn that object into an array of [word, count] pairs
     const entries = Object.entries(wordFrequency) as [string, number][]
-    
-    // Step 3: sort descending by count (most frequent first)
     const sorted = entries.sort((a, b) => b[1] - a[1])
-    
-    // Step 4: take top 5
     const topFive = sorted.slice(0, 5)
-    
-    // Step 5: make a nice string like "word (count)"
     const topWords = topFive.map(([word, count]) => `${word} (${count})`)
     
     console.log(topWords)
@@ -183,34 +127,76 @@ export async function POST(request: NextRequest) {
 
     // Prefill COCA examples & AFL value
     const awlData = awlWords.map(d => ({
-      original: d.word,
-      sublist: d.sublist.toString(),
+      original: d.word ?? "unknown",
+      sublist: d.sublist?.toString() ?? "unknown",
       category: "Foundation words",
-      example: getCOCAExamples(d.word, 2).join(" | "),
-      start: d.start,
-      end: d.end,
+      example: getCOCAExamples(d.word ?? "", 2).join(" | ") || "No example available",
+      start: d.start ?? 0,
+      end: d.end ?? 0,
     }))
+    
     const aflData = aflMatches.map(m => ({
-      original: m.match,
-      value: mapFTWScoreToValue(m.ftw),
-      example: getCOCAExamples(m.phrase, 2).join(" | "),
-      start: m.start,
-      end: m.end,
+      original: m.match ?? "unknown",
+      value: mapFTWScoreToValue(m.ftw ?? 0),
+      example: getCOCAExamples(m.phrase ?? "", 2).join(" | ") || "No example available",
+      start: m.start ?? 0,
+      end: m.end ?? 0,
     }))
-
+    
+    const lexicalDiversityData = {
+      mattr: mattrScore,
+      uniqueWords: uniqueWords.size,
+      totalWords: words.length,
+      diversityLevel,
+      feedback: lexicalFeedback,
+      suggestions: lexicalSuggestions,
+      repetitiveWords: [],
+    }
+    
     // --- CALL GPT ONLY FOR SUGGESTIONS & REASON ---
     const lexicalPrompt = `
-You are a lexical analysis expert. For each AWL word and AFL phrase in the following essay, provide:
+You are a lexical analysis expert. For ONLY the AWL words and AFL phrases provided below, generate:
 
-1. suggestion: a more formal/academic alternative word or phrase. dont return the original word or phrase.
-2. reason: a reflective prompt guiding the student to revise, without giving the answer directly.
-3. explanation: why this alternative is stronger in academic writing.
-4. exampleEssay: a rephrased sentence using the suggested word/phrase.
+1. suggestion: a more formal/academic alternative word or phrase (don't return the original word or phrase)
+2. reason: a reflective prompt guiding the student to revise, without giving the answer directly
+3. example: create an academic example sentence that demonstrates how the suggested word/phrase is typically used in high-quality academic writing, based on COCA corpus patterns. Mask the suggested word in the sentence by keeping only the first letter and replacing the rest with underscores (e.g., "prioritize" -> "p______"). The rest of the sentence should remain natural, grammatical, and contextually meaningful. Avoid inventing informal or unrealistic sentences.
+4. explanation: why this alternative is stronger in academic writing
+5. exampleEssay: a rephrased sentence using the suggested word/phrase
+
+IMPORTANT: Only generate suggestions for the exact words/phrases listed below. Do not add additional ones.
 
 Essay: ${essay}
-AWL: ${JSON.stringify(awlData)}
-AFL: ${JSON.stringify(aflData)}
-Output in a structured JSON matching the schema: {awlCoverage: {suggestions: [...]}, aflCoverage: {suggestions: [...]}}
+
+AWL words to analyze: ${JSON.stringify(awlData.map(d => d.original))}
+AFL phrases to analyze: ${JSON.stringify(aflData.map(d => d.original))}
+
+Output in a structured JSON with this exact format:
+{
+  "awlCoverage": {
+    "suggestions": [
+      {
+        "original": "word from AWL list",
+        "suggestion": "better alternative",
+        "reason": "reflective question",
+        "example": "sentence with masked suggestion",
+        "explanation": "why it's better",
+        "exampleEssay": "example sentence"
+      }
+    ]
+  },
+  "aflCoverage": {
+    "suggestions": [
+      {
+        "original": "phrase from AFL list",
+        "suggestion": "better alternative",
+        "reason": "reflective question",
+        "example": "sentence with masked suggestion",
+        "explanation": "why it's better",
+        "exampleEssay": "example sentence"
+      }
+    ]
+  }
+}
 `
     const result = await generateObject({
       model: openai("gpt-4o"),
@@ -219,35 +205,51 @@ Output in a structured JSON matching the schema: {awlCoverage: {suggestions: [..
       schema: LexicalAnalysisSchema,
     })
 
-    // Override local lexical diversity
-    result.object.lexicalDiversity = {
-      ...result.object.lexicalDiversity,
-      mattr: mattrScore,
-      uniqueWords: uniqueWords.size,
-      totalWords: words.length,
-      diversityLevel,
-      feedback: lexicalFeedback,
-      suggestions: lexicalSuggestions,
+    // --- MERGE LOCAL DATA WITH GPT OUTPUT ---
+    // Match AWL suggestions by original word and fill in missing data
+    const awlMerged = result.object.awlCoverage.suggestions.map(s => {
+      const local = awlData.find(d => d.original.toLowerCase() === s.original.toLowerCase())
+    
+      return {
+        original: s.original,
+        suggestion: s.suggestion,
+        reason: s.reason,
+        explanation: s.explanation,
+        example: s.example,
+        exampleEssay: s.exampleEssay,
+        sublist: local?.sublist ?? "unknown",
+        category: local?.category ?? "Foundation words",
+        start: local?.start ?? 0,
+        end: local?.end ?? 0,
+      }
+    })
+    
+
+    // Match AFL suggestions by original phrase and fill in missing data
+    const aflMerged = result.object.aflCoverage.suggestions.map(s => {
+      const local = aflData.find(d => d.original.toLowerCase() === s.original.toLowerCase())
+      
+      return {
+        original: s.original,
+        suggestion: s.suggestion,
+        reason: s.reason,
+        explanation: s.explanation,
+        example: s.example,
+        exampleEssay: s.exampleEssay,
+        value: local?.value ?? "Rare: Consider a more common academic phrase.",
+        start: local?.start ?? 0,
+        end: local?.end ?? 0,
+      }
+    })
+
+    // Final object to return
+    const finalObject = {
+      awlCoverage: { suggestions: awlMerged },
+      aflCoverage: { suggestions: aflMerged },
+      lexicalDiversity: lexicalDiversityData,
     }
 
-    // Ensure AFL value and AWL sublist/category are preserved locally
-    result.object.awlCoverage.suggestions = result.object.awlCoverage.suggestions.map((s, i) => ({
-      ...s,
-      sublist: awlData[i]?.sublist ?? "unknown",
-      category: awlData[i]?.category ?? "Foundation words",
-      example: awlData[i]?.example ?? "",
-      start: awlData[i]?.start ?? 0,
-      end: awlData[i]?.end ?? 0,
-    }))
-    result.object.aflCoverage.suggestions = result.object.aflCoverage.suggestions.map((s, i) => ({
-      ...s,
-      value: aflData[i]?.value ?? "Rare: Consider a more common academic phrase.",
-      example: aflData[i]?.example ?? "",
-      start: aflData[i]?.start ?? 0,
-      end: aflData[i]?.end ?? 0,
-    }))
-
-    return NextResponse.json(result.object)
+    return NextResponse.json(finalObject)
   } catch (error) {
     console.error("Error analyzing lexical features:", error)
     return NextResponse.json({ error: "Failed to analyze lexical features" }, { status: 500 })
