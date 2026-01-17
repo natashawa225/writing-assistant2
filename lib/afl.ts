@@ -44,9 +44,6 @@ function buildAFLIndex(phrases: AFLPhrase[]) {
   return index
 }
 
-/**
- * ✅ PRECOMPUTED INDICES (runs once)
- */
 const AFL_INDICES = [
   buildAFLIndex(aflWritten),
   buildAFLIndex(aflSpoken),
@@ -57,14 +54,32 @@ export interface AFLMatch {
   listIndex: number
   phrase: string
   match: string
-  index: number
+  tokenIndex: number
+  start: number
+  end: number
+  ftw: number
+  register: AFLRegister
+}
+function tokenizeWithOffsets(text: string) {
+  const tokens: { token: string; start: number; end: number }[] = []
+
+  let cursor = 0
+  for (const raw of text.split(" ")) {
+    const start = cursor
+    const end = start + raw.length
+    tokens.push({ token: raw, start, end })
+    cursor = end + 1 // +1 for the space
+  }
+
+  return tokens
 }
 
 export function detectAFLphrase(text: string): AFLMatch[] {
   const results: AFLMatch[] = []
 
-  const normalized = text.toLowerCase().replace(/\s+/g, " ")
-  const tokens = normalized.split(" ")
+  const normalized = text.toLowerCase().replace(/\s+/g, " ").trim()
+  const tokenData = tokenizeWithOffsets(normalized)
+  const tokens = tokenData.map(t => t.token)
 
   let i = 0
 
@@ -81,11 +96,18 @@ export function detectAFLphrase(text: string): AFLMatch[] {
         const slice = tokens.slice(i, i + phraseTokens.length)
 
         if (slice.join(" ") === p.phrase) {
+          const start = tokenData[i].start
+          const end = tokenData[i + phraseTokens.length - 1].end
+
           results.push({
             listIndex,
+            register: p.register,
             phrase: p.phrase,
             match: slice.join(" "),
-            index: i,
+            tokenIndex: i,
+            start,
+            end,
+            ftw: p.ftw,
           })
 
           i += phraseTokens.length

@@ -1,50 +1,34 @@
-//lib/awl.ts
-import type { AFLPhrase, AFLRegister, DetectedAFL } from "@/lib/types"
-import { awlLists } from "@/data/awl-list";
+// lib/awl.ts
+import awlLookup from "@/data/awl_lookup.json"
 
-export function buildAFLIndex(phrases: AFLPhrase[]) {
-  const index = new Map<string, AFLPhrase[]>();
-
-  for (const p of phrases) {
-    const normalized = p.phrase.toLowerCase().trim();
-    const firstToken = normalized.split(" ")[0];
-
-    if (!index.has(firstToken)) {
-      index.set(firstToken, []);
-    }
-
-    index.get(firstToken)!.push({
-      ...p,
-      phrase: normalized
-    });
-  }
-
-  // longest phrases first (critical)
-  for (const list of index.values()) {
-    list.sort((a, b) => b.phrase.length - a.phrase.length);
-  }
-
-  return index;
+// Precompute map: word (lowercase) -> sublist number
+const AWL_MAP: Record<string, number> = {}
+for (const [word, sublist] of Object.entries(awlLookup)) {
+  AWL_MAP[word.toLowerCase()] = sublist
 }
 
-
 export function detectAWLWordsBySublist(text: string) {
-  const detected: { word: string; sublist: string }[] = []
+  const detected: { word: string; sublist: string; start: number; end: number }[] = [];
 
-  awlLists.forEach((list, index) => {
-    const pattern = new RegExp(list.join('|'), 'gi')
-    const matches = text.match(pattern)
-    if (matches) {
-      matches.forEach(word => {
-        detected.push({
-          word,
-          sublist: mapSublistToLabel(index + 1), // ✅ label instead of raw number
-        })
-      })
+  // Tokenize with offsets
+  let cursor = 0;
+  const regex = /\b\w+\b/g;
+  let match;
+  while ((match = regex.exec(text)) !== null) {
+    const word = match[0].toLowerCase();
+    const sublist = AWL_MAP[word];
+    if (sublist !== undefined) {
+      detected.push({
+        word: match[0],          // preserve original casing
+        sublist: mapSublistToLabel(sublist),
+        start: match.index,
+        end: match.index + match[0].length,
+      });
     }
-  })
+    cursor = match.index + match[0].length;
+  }
 
-  return detected
+  return detected;
 }
 
 function mapSublistToLabel(sublist: number): string {
