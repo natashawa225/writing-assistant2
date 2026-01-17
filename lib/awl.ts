@@ -1,5 +1,32 @@
 //lib/awl.ts
+import type { AFLPhrase, AFLRegister, DetectedAFL } from "@/lib/types"
 import { awlLists } from "@/data/awl-list";
+
+export function buildAFLIndex(phrases: AFLPhrase[]) {
+  const index = new Map<string, AFLPhrase[]>();
+
+  for (const p of phrases) {
+    const normalized = p.phrase.toLowerCase().trim();
+    const firstToken = normalized.split(" ")[0];
+
+    if (!index.has(firstToken)) {
+      index.set(firstToken, []);
+    }
+
+    index.get(firstToken)!.push({
+      ...p,
+      phrase: normalized
+    });
+  }
+
+  // longest phrases first (critical)
+  for (const list of index.values()) {
+    list.sort((a, b) => b.phrase.length - a.phrase.length);
+  }
+
+  return index;
+}
+
 
 export function detectAWLWordsBySublist(text: string) {
   const detected: { word: string; sublist: string }[] = []
