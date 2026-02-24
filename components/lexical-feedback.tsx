@@ -16,6 +16,7 @@ interface LexicalFeedbackProps {
   isAnalyzing: boolean
   onHighlightText: (text: string) => void
   onSubTabChange?: (subTab: string) => void
+  onFeedbackLevelTriggered?: (level: 1 | 2 | 3, cardId: string) => void
 }
 
 export function LexicalFeedback({
@@ -24,6 +25,7 @@ export function LexicalFeedback({
   isAnalyzing,
   onHighlightText,
   onSubTabChange,
+  onFeedbackLevelTriggered,
 }: LexicalFeedbackProps) {
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
   const [feedbackLevel, setFeedbackLevel] = useState<{ [key: string]: number }>({})
@@ -72,10 +74,14 @@ export function LexicalFeedback({
   }
 
   const advanceFeedbackLevel = (cardId: string) => {
-    setFeedbackLevel((prev) => ({
-      ...prev,
-      [cardId]: Math.min((prev[cardId] || 0) + 1, 2),
-    }))
+    setFeedbackLevel((prev) => {
+      const nextLevel = Math.min((prev[cardId] || 0) + 1, 3) as 1 | 2 | 3
+      onFeedbackLevelTriggered?.(nextLevel, cardId)
+      return {
+        ...prev,
+        [cardId]: nextLevel,
+      }
+    })
   }
 
   const getCategoryColor = (category: string) => {

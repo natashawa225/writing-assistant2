@@ -1,109 +1,168 @@
 "use client"
+
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { PromptSelector } from "@/components/prompt-selector"
-import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getDeviceId } from "@/lib/deviceId"
 import { Separator } from "@/components/ui/separator"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { getOrCreateSessionId } from "@/lib/deviceId"
 import { EssayEditor } from "@/components/essay-editor"
 import { FeedbackPanel } from "@/components/feedback-panel"
-import { analyzeArgumentativeStructure, analyzeLexicalFeatures } from "@/lib/analysis"
-import { EssayStorage, type SavedEssay } from "@/lib/storage"
-import { EssayListModal } from "@/components/essay-list-modal"
+import { analyzeArgumentativeStructure } from "@/lib/analysis"
 import type { AnalysisResult, LexicalAnalysis, Highlight } from "@/lib/types"
-import { Sparkles, Save, Brain, BookOpen, FolderOpen } from "lucide-react"
+import { Sparkles, BookOpen, Send } from "lucide-react"
 
-// const SAMPLE_ESSAY = `Technology has fundamentally transformed the way we communicate, work, and live our daily lives. While some argue that this digital revolution has created more problems than solutions, I firmly believe that technology has been overwhelmingly beneficial to society and continues to drive human progress forward.
+type InteractionEventType =
+  | "initial_draft"
+  | "edit"
+  | "feedback_level_1"
+  | "feedback_level_2"
+  | "feedback_level_3"
+  | "analyze_clicked"
+  | "final_submission"
 
-// The most compelling evidence for technology's positive impact lies in its ability to connect people across vast distances. Social media platforms, video conferencing, and instant messaging have eliminated geographical barriers, allowing families to stay connected, businesses to operate globally, and students to access educational resources from anywhere in the world. During the COVID-19 pandemic, these technologies proved essential for maintaining social connections and economic stability.
-
-// Furthermore, technological advances in healthcare have saved countless lives and improved quality of life for millions. Medical imaging, robotic surgery, and telemedicine have revolutionized patient care, while pharmaceutical research powered by artificial intelligence has accelerated drug discovery processes that once took decades.
-
-// Critics argue that technology has created social isolation and mental health issues, particularly among young people. They point to increased rates of anxiety and depression correlating with social media usage and screen time. While these concerns deserve attention, they represent challenges that can be addressed through education and responsible usage rather than fundamental flaws in technology itself.
-
-// However, the benefits of technological connectivity far outweigh these concerns. The same platforms that critics blame for isolation also provide support networks for marginalized communities, enable social movements for positive change, and offer educational opportunities to underserved populations. The key lies not in rejecting technology but in learning to use it wisely.
-
-// In conclusion, technology remains one of humanity's greatest tools for progress. While we must address its challenges responsibly, the evidence clearly shows that technological advancement has improved communication, healthcare, education, and countless other aspects of human life. Rather than fearing change, we should embrace technology's potential while working to mitigate its risks.`
+interface RevisionBehaviorData {
+  totalEditsAfterAnalyze: number
+  feedbackLevelCounts: {
+    level1: number
+    level2: number
+    level3: number
+  }
+  revisionWindowMinutes: number
+  thesisChangedSignificantly: boolean
+  claimEvidenceStructureChanged: boolean
+  mostRevisedSections: string[]
+  firstDraftWordCount: number
+  finalDraftWordCount: number
+  firstToFinalWordDelta: number
+  totalLogsAnalyzed: number
+}
 
 export default function ArgumentativeWritingAssistant() {
   const [essay, setEssay] = useState("")
   const [isPanelOpen, setIsPanelOpen] = useState(false)
   const [panelWidth, setPanelWidth] = useState(480)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
   const [argumentAnalysis, setArgumentAnalysis] = useState<AnalysisResult | null>(null)
   const [lexicalAnalysis, setLexicalAnalysis] = useState<LexicalAnalysis | null>(null)
   const [highlights, setHighlights] = useState<Highlight[]>([])
   const [selectedElementId, setSelectedElementId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState("argumentative")
   const [activeSubTab, setActiveSubTab] = useState<string>("")
-  const [showEssayList, setShowEssayList] = useState(false)
-  const [currentEssayId, setCurrentEssayId] = useState<string | null>(null)
   const [currentHighlight, setCurrentHighlight] = useState<{
     text: string
     effectiveness: string
   } | null>(null)
-  const [deviceId, setDeviceId] = useState<string | null>(null)
-
   const [selectedPrompt, setSelectedPrompt] = useState<string>("")
+  const [sessionId, setSessionId] = useState<string | null>(null)
+  const [hasLoggedInitialDraft, setHasLoggedInitialDraft] = useState(false)
+  const [analyzeClickedAt, setAnalyzeClickedAt] = useState<string | null>(null)
+  const [nowMs, setNowMs] = useState(Date.now())
+  const [showInsightsModal, setShowInsightsModal] = useState(false)
+  const [revisionInsights, setRevisionInsights] = useState<string>("")
+  const [revisionData, setRevisionData] = useState<RevisionBehaviorData | null>(null)
 
+  const editDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const lastLoggedEssayRef = useRef("")
 
   useEffect(() => {
-    const id = getDeviceId()
-    setDeviceId(id)
+    const id = getOrCreateSessionId()
+    setSessionId(id)
   }, [])
 
-  const handleSelectEssay = (savedEssay: SavedEssay) => {
-    setEssay(savedEssay.content)
-    setSelectedPrompt(savedEssay.prompt)
-    setCurrentEssayId(savedEssay.id)
-  }
+  useEffect(() => {
+    if (!analyzeClickedAt || isSubmitted) return
 
-  const handleSave = async () => {
-    if (!essay.trim()) return
+    const interval = setInterval(() => {
+      setNowMs(Date.now())
+    }, 1000)
 
-    try {
-      const title = essay.split("\n")[0].substring(0, 50) || "Untitled Essay"
+    return () => clearInterval(interval)
+  }, [analyzeClickedAt, isSubmitted])
 
-      if (currentEssayId) {
-        // Update existing essay
-        EssayStorage.updateEssay(currentEssayId, {
-          title,
-          content: essay,
-          prompt: selectedPrompt,
+  const logInteraction = useCallback(
+    async ({
+      eventType,
+      essayText,
+      feedbackLevel,
+      metadata,
+    }: {
+      eventType: InteractionEventType
+      essayText?: string
+      feedbackLevel?: number
+      metadata?: Record<string, unknown>
+    }) => {
+      if (!sessionId) return
+
+      try {
+        await fetch("/api/interaction-log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            event_type: eventType,
+            essay_text: essayText ?? essay,
+            feedback_level: feedbackLevel ?? null,
+            metadata: metadata ?? null,
+          }),
         })
-      } else {
-        // Save new essay
-        const savedEssay = EssayStorage.saveEssay({
-          title,
-          content: essay,
-          prompt: selectedPrompt,
-        })
-        setCurrentEssayId(savedEssay.id)
+      } catch (error) {
+        console.error("Failed to log interaction", error)
       }
+    },
+    [essay, sessionId],
+  )
 
-      alert("✅ Essay saved successfully!")
-    } catch (err) {
-      console.error(err)
-      alert("⚠️ Error saving essay")
+  useEffect(() => {
+    if (!analyzeClickedAt || !sessionId || isSubmitted) return
+    if (!essay.trim()) return
+    if (essay === lastLoggedEssayRef.current) return
+
+    if (editDebounceRef.current) {
+      clearTimeout(editDebounceRef.current)
     }
-  }
-  const wordCount = essay.trim().split(/\s+/).filter(Boolean).length
 
-  
+    editDebounceRef.current = setTimeout(async () => {
+      await logInteraction({
+        eventType: "edit",
+        essayText: essay,
+        metadata: { source: "autosave_30s" },
+      })
+      lastLoggedEssayRef.current = essay
+    }, 30000)
+
+    return () => {
+      if (editDebounceRef.current) {
+        clearTimeout(editDebounceRef.current)
+      }
+    }
+  }, [essay, analyzeClickedAt, sessionId, isSubmitted, logInteraction])
 
   const handleAnalyze = async () => {
+    if (!essay.trim() || isSubmitted) return
+
     setIsAnalyzing(true)
     setIsPanelOpen(true)
 
     try {
-      const [argResult] = await Promise.all([
-        analyzeArgumentativeStructure(essay, selectedPrompt), // 👈 pass prompt
-        // analyzeLexicalFeatures(essay),
-      ])
+      if (!hasLoggedInitialDraft) {
+        await logInteraction({ eventType: "initial_draft", essayText: essay })
+        setHasLoggedInitialDraft(true)
+      }
 
+      await logInteraction({ eventType: "analyze_clicked", essayText: essay })
+
+      if (!analyzeClickedAt) {
+        setAnalyzeClickedAt(new Date().toISOString())
+      }
+
+      lastLoggedEssayRef.current = essay
+
+      const argResult = await analyzeArgumentativeStructure(essay, selectedPrompt)
       setArgumentAnalysis(argResult)
-      // setLexicalAnalysis(lexResult)
 
       const newHighlights: Highlight[] = []
 
@@ -118,7 +177,7 @@ export default function ArgumentativeWritingAssistant() {
                   elementId: key,
                   start,
                   end: start + el.text.length,
-                  text: el.text, // Store the actual text content
+                  text: el.text,
                   type: "argument",
                   subtype: key,
                   color: getHighlightColor(el.effectiveness),
@@ -136,7 +195,7 @@ export default function ArgumentativeWritingAssistant() {
               elementId: key,
               start,
               end: start + element.text.length,
-              text: element.text, // Store the actual text content
+              text: element.text,
               type: "argument",
               subtype: key,
               color: getHighlightColor(element.effectiveness),
@@ -147,78 +206,43 @@ export default function ArgumentativeWritingAssistant() {
         }
       })
 
-      // if (lexResult && lexResult.awlCoverage) {
-      //   lexResult.awlCoverage.suggestions.forEach((suggestion, index) => {
-      //     const regex = new RegExp(`\\b${suggestion.original}\\b`, "gi")
-      //     let match
-      //     while ((match = regex.exec(essay)) !== null) {
-      //       newHighlights.push({
-      //         id: `awl-${index}-${match.index}`,
-      //         elementId: "",
-      //         start: match.index,
-      //         end: match.index + match[0].length,
-      //         text: match[0], // Store the matched text
-      //         type: "lexical",
-      //         subtype: "awl",
-      //         color: "bg-blue-100 border-blue-300",
-      //         feedback: `Academic Word List: ${suggestion.original} (Sublist ${suggestion.sublist})`,
-      //         persistent: true,
-      //         word: suggestion.original,
-      //       })
-      //     }
-      //   })
-      // }
-
-      // if (lexResult && lexResult.aflCoverage) {
-      //   lexResult.aflCoverage.suggestions.forEach((suggestion, index) => {
-      //     const regex = new RegExp(suggestion.original.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi")
-      //     let match
-      //     while ((match = regex.exec(essay)) !== null) {
-      //       newHighlights.push({
-      //         id: `afl-${index}-${match.index}`,
-      //         elementId: "",
-      //         start: match.index,
-      //         end: match.index + match[0].length,
-      //         text: match[0], // Store the matched text
-      //         type: "lexical",
-      //         subtype: "afl",
-      //         color: "bg-green-100 border-green-300",
-      //         feedback: `Academic Formula List: ${suggestion.original}`,
-      //         persistent: true,
-      //         word: suggestion.original,
-      //       })
-      //     }
-      //   })
-      // }
-
-      // if (lexResult && lexResult.lexicalDiversity.mattr < 0.7) {
-      //   const repetitiveWords = findRepetitiveWords(essay)
-      //   repetitiveWords.forEach((item, index) => {
-      //     const regex = new RegExp(`\\b${item.word}\\b`, "gi")
-      //     let match
-      //     while ((match = regex.exec(essay)) !== null) {
-      //       newHighlights.push({
-      //         id: `repetitive-${index}-${match.index}`,
-      //         elementId: "",
-      //         start: match.index,
-      //         end: match.index + match[0].length,
-      //         text: match[0], // Store the matched text
-      //         type: "lexical",
-      //         subtype: "repetitive",
-      //         color: "bg-orange-100 border-orange-300",
-      //         feedback: `Repetitive word: "${item.word}" appears ${item.count} times (${item.frequency}%)`,
-      //         persistent: true,
-      //         word: item.word,
-      //       })
-      //     }
-      //   })
-      // }
-
-      // setHighlights(newHighlights)
+      setHighlights(newHighlights)
     } catch (error) {
-      console.error("Analysis failed:", error)
+      console.error("Analysis failed", error)
     } finally {
       setIsAnalyzing(false)
+    }
+  }
+
+  const handleSubmit = async () => {
+    if (!sessionId || !canSubmit || isSubmitting || isSubmitted) return
+
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch("/api/finalize-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          session_id: sessionId,
+          final_essay_text: essay,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Submit failed")
+      }
+
+      const payload = await response.json()
+      setRevisionInsights(payload.summary ?? "")
+      setRevisionData((payload.revision_data as RevisionBehaviorData) ?? null)
+      setIsSubmitted(true)
+      setShowInsightsModal(true)
+    } catch (error) {
+      console.error("Final submission failed", error)
+      alert("Failed to finalize session. Please try again.")
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -236,17 +260,13 @@ export default function ArgumentativeWritingAssistant() {
   }
 
   const handleHighlightClick = (highlight: Highlight) => {
-    console.log("Highlight clicked:", highlight)
     setIsPanelOpen(true)
     setSelectedElementId(highlight.elementId)
   }
 
-  // const handleHighlightText = (text: string) => {
-  //   console.log("Highlighting text in essay:", text)
-  // }
   const handleHighlightText = (text: string, effectiveness?: string) => {
     setCurrentHighlight({ text, effectiveness: effectiveness ?? "" })
-    setSelectedElementId(text) // optional: track selected sentence
+    setSelectedElementId(text)
   }
 
   const handleElementSelect = (elementId: string | null) => {
@@ -268,100 +288,90 @@ export default function ArgumentativeWritingAssistant() {
     setActiveSubTab(subTab)
   }
 
-  const findRepetitiveWords = (text: string) => {
-    const words = text.toLowerCase().match(/\b\w+\b/g) || []
-    const wordCounts: { [key: string]: number } = {}
+  const handleFeedbackLevelTriggered = useCallback(
+    (level: 1 | 2 | 3, cardId: string) => {
+      void logInteraction({
+        eventType: `feedback_level_${level}`,
+        essayText: essay,
+        feedbackLevel: level,
+        metadata: { cardId },
+      })
+    },
+    [essay, logInteraction],
+  )
 
-    words.forEach((word) => {
-      if (word.length > 3) {
-        wordCounts[word] = (wordCounts[word] || 0) + 1
-      }
-    })
+  const wordCount = essay.trim().split(/\s+/).filter(Boolean).length
+  const analyzeAtMs = analyzeClickedAt ? Date.parse(analyzeClickedAt) : null
+  const submitUnlockAtMs = analyzeAtMs ? analyzeAtMs + 5 * 60 * 1000 : null
 
-    const totalWords = words.length
-    const expectedFrequency = Math.max(2, Math.floor(totalWords / 100))
+  const canSubmit = useMemo(() => {
+    if (!submitUnlockAtMs || isSubmitted) return false
+    return nowMs >= submitUnlockAtMs
+  }, [submitUnlockAtMs, nowMs, isSubmitted])
 
-    return Object.entries(wordCounts)
-      .filter(([word, count]) => count > expectedFrequency)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([word, count]) => ({
-        word,
-        count,
-        frequency: ((count / totalWords) * 100).toFixed(1),
-      }))
-  }
+  const remainingMs = submitUnlockAtMs ? Math.max(0, submitUnlockAtMs - nowMs) : 5 * 60 * 1000
+  const remainingMinutes = Math.floor(remainingMs / 60000)
+  const remainingSeconds = Math.floor((remainingMs % 60000) / 1000)
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b bg-card">
-        
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                {/* <Brain className="h-6 w-6 text-primary" /> */}
-                <h1 className="text-xl font-bold">Revisage Analytics              </h1>
-              </div>
-
+              <h1 className="text-xl font-bold">Revisage Analytics</h1>
             </div>
 
             <div className="flex items-center gap-3">
               <Button
-                onClick={() => setShowEssayList(true)}
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2 hover:bg-slate-50"
-              >
-                <FolderOpen className="h-4 w-4" />
-                Essays
-              </Button>
-              <Button
-                onClick={handleSave}
-                disabled={!essay.trim()}
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-2 hover:bg-slate-50 bg-transparent"
-              >
-                <Save className="h-4 w-4" />
-                Save
-              </Button>
-
-              <Button
                 onClick={handleAnalyze}
-                disabled={isAnalyzing || wordCount < 200}
+                disabled={isAnalyzing || wordCount < 200 || isSubmitted}
                 className="flex items-center gap-2"
               >
                 <Sparkles className="h-4 w-4" />
                 {isAnalyzing ? "Analyzing..." : "Analyze Essay"}
               </Button>
-            
 
+              <Button
+                onClick={handleSubmit}
+                disabled={!canSubmit || isSubmitting || isSubmitted}
+                className="flex items-center gap-2"
+                variant="default"
+              >
+                <Send className="h-4 w-4" />
+                {isSubmitting ? "Submitting..." : "Submit / Finish Session"}
+              </Button>
             </div>
+          </div>
+
+          <Separator className="my-3" />
+
+          <div className="text-sm text-muted-foreground">
+            {!analyzeClickedAt && "Submit is locked until Analyze Essay is clicked and 5 minutes pass."}
+            {analyzeClickedAt && !canSubmit &&
+              `Submit unlocks in ${remainingMinutes}:${remainingSeconds.toString().padStart(2, "0")}.`}
+            {canSubmit && !isSubmitted && "Submit is unlocked."}
+            {isSubmitted && "Session finalized. Editing is disabled."}
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="flex h-[calc(100vh-73px)]">
-        {/* Left Panel - Essay Editor */}
-        <div 
-          className="flex-1 flex flex-col h-full p-4 space-y-4" 
+      <div className="flex h-[calc(100vh-120px)]">
+        <div
+          className="flex-1 flex flex-col h-full p-4 space-y-4"
           style={{ width: isPanelOpen ? `calc(100% - ${panelWidth}px)` : "100%" }}
         >
-          {/* Prompt Selection */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <BookOpen className="h-5 w-5" />
-                      Select Essay Prompt
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <PromptSelector onPromptSelect={setSelectedPrompt} selectedPrompt={selectedPrompt} />
-                  </CardContent>
-                </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5" />
+                Select Essay Prompt
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <PromptSelector onPromptSelect={setSelectedPrompt} selectedPrompt={selectedPrompt} />
+            </CardContent>
+          </Card>
 
           <EssayEditor
             essay={essay}
@@ -371,11 +381,11 @@ export default function ArgumentativeWritingAssistant() {
             selectedElementId={selectedElementId}
             activeTab={activeTab}
             activeSubTab={activeSubTab}
-            currentHighlight={currentHighlight} // 👈 this powers persistent highlights
+            currentHighlight={currentHighlight}
+            isLocked={isSubmitted}
           />
         </div>
 
-        {/* Right Panel - Feedback */}
         <FeedbackPanel
           isOpen={isPanelOpen}
           onToggle={() => setIsPanelOpen(!isPanelOpen)}
@@ -389,13 +399,30 @@ export default function ArgumentativeWritingAssistant() {
           onElementSelect={handleElementSelect}
           onTabChange={handleTabChange}
           onSubTabChange={handleSubTabChange}
+          onFeedbackLevelTriggered={handleFeedbackLevelTriggered}
         />
       </div>
-      <EssayListModal
-        isOpen={showEssayList}
-        onClose={() => setShowEssayList(false)}
-        onSelectEssay={handleSelectEssay}
-      />
+
+      <Dialog open={showInsightsModal} onOpenChange={setShowInsightsModal}>
+        <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Revision Insights</DialogTitle>
+          </DialogHeader>
+
+          {revisionData && (
+            <div className="text-sm text-muted-foreground space-y-1 mb-4">
+              <p>Revisions made: {revisionData.totalEditsAfterAnalyze}</p>
+              <p>
+                Feedback levels: L1 {revisionData.feedbackLevelCounts.level1}, L2 {revisionData.feedbackLevelCounts.level2},
+                L3 {revisionData.feedbackLevelCounts.level3}
+              </p>
+              <p>Revision window: {revisionData.revisionWindowMinutes} minutes</p>
+            </div>
+          )}
+
+          <div className="whitespace-pre-wrap text-sm leading-relaxed">{revisionInsights}</div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

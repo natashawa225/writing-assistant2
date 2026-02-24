@@ -14,6 +14,7 @@ interface EssayEditorProps {
   activeTab?: string
   activeSubTab?: string
   currentHighlight?: { text: string; effectiveness: string } | null
+  isLocked?: boolean
 }
 
 export function EssayEditor({
@@ -25,6 +26,7 @@ export function EssayEditor({
   activeTab = "argumentative",
   activeSubTab,
   currentHighlight,
+  isLocked = false,
 }: EssayEditorProps) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const highlightRef = useRef<HTMLDivElement>(null)
@@ -330,13 +332,15 @@ export function EssayEditor({
             value={text}
             onChange={handleChange}
             onScroll={handleScroll}
+            readOnly={isLocked}
+            disabled={isLocked}
             className="absolute inset-0 w-full h-full p-4 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans leading-relaxed"
             style={{
               color: getDynamicHighlights().length > 0 ? "black" : "black",
               caretColor: "black",
               background: "transparent",
             }}
-            placeholder="Start writing your argumentative essay..."
+            placeholder={isLocked ? "Session submitted. Editing is disabled." : "Start writing your argumentative essay..."}
           />
         </div>
 

@@ -1,4 +1,3 @@
-// Local storage utilities for essay management
 export interface SavedEssay {
   id: string
   title: string
@@ -8,14 +7,11 @@ export interface SavedEssay {
   updatedAt: string
 }
 
+const inMemoryEssays = new Map<string, SavedEssay>()
+
 export class EssayStorage {
-  private static readonly STORAGE_KEY = "saved_essays"
-  private static readonly API_KEY = "openai_api_key"
-
   static saveEssay(essay: Omit<SavedEssay, "id" | "createdAt" | "updatedAt">): SavedEssay {
-    const essays = this.getAllEssays()
     const now = new Date().toISOString()
-
     const savedEssay: SavedEssay = {
       ...essay,
       id: crypto.randomUUID(),
@@ -23,9 +19,7 @@ export class EssayStorage {
       updatedAt: now,
     }
 
-    essays.push(savedEssay)
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(essays))
-
+    inMemoryEssays.set(savedEssay.id, savedEssay)
     return savedEssay
   }
 
@@ -33,57 +27,40 @@ export class EssayStorage {
     id: string,
     updates: Partial<Pick<SavedEssay, "title" | "content" | "prompt">>,
   ): SavedEssay | null {
-    const essays = this.getAllEssays()
-    const index = essays.findIndex((e) => e.id === id)
+    const existing = inMemoryEssays.get(id)
+    if (!existing) return null
 
-    if (index === -1) return null
-
-    essays[index] = {
-      ...essays[index],
+    const updated: SavedEssay = {
+      ...existing,
       ...updates,
       updatedAt: new Date().toISOString(),
     }
 
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(essays))
-    return essays[index]
+    inMemoryEssays.set(id, updated)
+    return updated
   }
 
   static deleteEssay(id: string): boolean {
-    const essays = this.getAllEssays()
-    const filteredEssays = essays.filter((e) => e.id !== id)
-
-    if (filteredEssays.length === essays.length) return false
-
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(filteredEssays))
-    return true
+    return inMemoryEssays.delete(id)
   }
 
   static getAllEssays(): SavedEssay[] {
-    if (typeof window === "undefined") return []
-
-    try {
-      const stored = localStorage.getItem(this.STORAGE_KEY)
-      return stored ? JSON.parse(stored) : []
-    } catch {
-      return []
-    }
+    return [...inMemoryEssays.values()].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))
   }
 
   static getEssay(id: string): SavedEssay | null {
-    const essays = this.getAllEssays()
-    return essays.find((e) => e.id === id) || null
+    return inMemoryEssays.get(id) ?? null
   }
 
-  static saveApiKey(apiKey: string): void {
-    localStorage.setItem(this.API_KEY, apiKey)
+  static saveApiKey(_apiKey: string): void {
+    // Intentionally disabled: API keys are server-side only.
   }
 
   static getApiKey(): string | null {
-    if (typeof window === "undefined") return null
-    return localStorage.getItem(this.API_KEY)
+    return null
   }
 
   static hasApiKey(): boolean {
-    return !!this.getApiKey()
+    return false
   }
 }

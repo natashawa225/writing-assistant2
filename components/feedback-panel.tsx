@@ -25,6 +25,7 @@ interface FeedbackPanelProps {
   onElementSelect?: (elementId: string | null) => void
   onTabChange?: (tab: string) => void
   onSubTabChange?: (subTab: string) => void
+  onFeedbackLevelTriggered?: (level: 1 | 2 | 3, cardId: string) => void
 }
 
 export function FeedbackPanel({
@@ -40,6 +41,7 @@ export function FeedbackPanel({
   onElementSelect,
   onTabChange,
   onSubTabChange,
+  onFeedbackLevelTriggered,
 }: FeedbackPanelProps) {
   const [activeTab, setActiveTab] = useState("argumentative")
   const [isResizing, setIsResizing] = useState(false)
@@ -137,7 +139,6 @@ export function FeedbackPanel({
               </div>
             </div>
 
-            {/* <div className="h-full flex flex-col"> */}
             <Card className="h-full rounded-none border-0 bg-transparent shadow-none">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between ">
@@ -147,9 +148,17 @@ export function FeedbackPanel({
                   </Button>
                 </div>
               </CardHeader>
+              <CardContent className="flex-1 p-0 h-[calc(100%-80px)] overflow-hidden">
+                <ArgumentativeFeedback
+                  analysis={argumentAnalysis}
+                  essay={essay}
+                  isAnalyzing={isAnalyzing}
+                  onHighlightText={onHighlightText}
+                  onElementSelect={onElementSelect}
+                />
+              </CardContent>
 
-              <CardContent className="flex-1 p-0 h-[calc(100%-80px)]">
-              {/* <div className="flex-1 min-h-0 px-6"> */}
+              {/* <CardContent className="flex-1 p-0 h-[calc(100%-80px)]">
                 <Tabs value={activeTab} onValueChange={handleTabChange} className="h-full flex flex-col">
                   <TabsList className="grid w-full grid-cols-2 flex-shrink-0">
                     <TabsTrigger value="argumentative" className="flex items-center gap-2">
@@ -180,14 +189,13 @@ export function FeedbackPanel({
                         isAnalyzing={isAnalyzing}
                         onHighlightText={onHighlightText}
                         onSubTabChange={onSubTabChange}
+                        onFeedbackLevelTriggered={onFeedbackLevelTriggered}
                       />
                     </TabsContent>
                   </div>
                 </Tabs>
-              </CardContent>
-              {/* </div> */}
+              </CardContent> */}
             </Card>
-            {/* </div> */}
           </motion.div>
         )}
       </AnimatePresence>
