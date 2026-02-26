@@ -19,9 +19,20 @@ interface ArgumentativeFeedbackProps {
   isAnalyzing: boolean
   onHighlightText?: (text: string, effectiveness: string) => void
   onElementSelect?: (elementId: string | null) => void
+  onFeedbackEvent?: (payload: {
+    eventType: "level_viewed" | "suggestion_revealed"
+    feedbackLevel: 2 | 3
+    issueClientKey: string
+    metadata: {
+      source: "crossley_diagram_click" | "show_correction"
+      elementId: string
+      elementType: string
+      elementIndex: number | null
+    }
+  }) => void
 }
 
-export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighlightText }: ArgumentativeFeedbackProps) {
+export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighlightText, onFeedbackEvent }: ArgumentativeFeedbackProps) {
   const [showDiagram, setShowDiagram] = useState(false)
   const [selectedElement, setSelectedElement] = useState<string | null>(null)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
@@ -53,6 +64,37 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
   }
 
   const toggleCorrection = (elementId: string) => {
+    const isOpening = !showCorrections.has(elementId)
+    if (isOpening) {
+      const match = elementId.match(/^(.*?)-(\d+)$/)
+      const rawElementType = match ? match[1] : elementId
+      const elementType = rawElementType === "claim" ? "claims" : rawElementType === "evidence" ? "evidence" : rawElementType
+      const elementIndex = match ? parseInt(match[2], 10) : null
+
+      onFeedbackEvent?.({
+        eventType: "level_viewed",
+        feedbackLevel: 3,
+        issueClientKey: elementId,
+        metadata: {
+          source: "show_correction",
+          elementId,
+          elementType,
+          elementIndex,
+        },
+      })
+      onFeedbackEvent?.({
+        eventType: "suggestion_revealed",
+        feedbackLevel: 3,
+        issueClientKey: elementId,
+        metadata: {
+          source: "show_correction",
+          elementId,
+          elementType,
+          elementIndex,
+        },
+      })
+    }
+
     const newShowCorrections = new Set(showCorrections)
     if (newShowCorrections.has(elementId)) {
       newShowCorrections.delete(elementId)
@@ -122,6 +164,19 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
     
     setSelectedElement(selectedElement === uniqueId ? null : uniqueId)
     setSelectedIndex(index !== undefined ? index : null)
+
+    const elementType = baseElementId === "claim" ? "claims" : baseElementId === "evidence" ? "evidence" : baseElementId
+    onFeedbackEvent?.({
+      eventType: "level_viewed",
+      feedbackLevel: 2,
+      issueClientKey: elementId,
+      metadata: {
+        source: "crossley_diagram_click",
+        elementId,
+        elementType,
+        elementIndex: index ?? null,
+      },
+    })
 
     // Highlight text in essay if element has text
     const element = getElement(baseElementId, index)

@@ -5,12 +5,12 @@ export function getOrCreateSessionId(): string | null {
     return null
   }
 
-  const existing = sessionStorage.getItem(SESSION_KEY)
+  const existing = window.localStorage.getItem(SESSION_KEY)
   if (existing) {
     return existing
   }
 
   const nextId = crypto.randomUUID()
-  sessionStorage.setItem(SESSION_KEY, nextId)
+  window.localStorage.setItem(SESSION_KEY, nextId)
   return nextId
 }

@@ -25,7 +25,17 @@ interface FeedbackPanelProps {
   onElementSelect?: (elementId: string | null) => void
   onTabChange?: (tab: string) => void
   onSubTabChange?: (subTab: string) => void
-  onFeedbackLevelTriggered?: (level: 1 | 2 | 3, cardId: string) => void
+  onFeedbackEvent?: (payload: {
+    eventType: "level_viewed" | "suggestion_revealed"
+    feedbackLevel: 2 | 3
+    issueClientKey: string
+    metadata: {
+      source: "crossley_diagram_click" | "show_correction"
+      elementId: string
+      elementType: string
+      elementIndex: number | null
+    }
+  }) => void
 }
 
 export function FeedbackPanel({
@@ -41,7 +51,7 @@ export function FeedbackPanel({
   onElementSelect,
   onTabChange,
   onSubTabChange,
-  onFeedbackLevelTriggered,
+  onFeedbackEvent,
 }: FeedbackPanelProps) {
   const [activeTab, setActiveTab] = useState("argumentative")
   const [isResizing, setIsResizing] = useState(false)
@@ -142,7 +152,7 @@ export function FeedbackPanel({
             <Card className="h-full rounded-none border-0 bg-transparent shadow-none">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between ">
-                  <CardTitle className="text-lg">Analysis Feedback</CardTitle>
+                  <CardTitle className="text-lg">Feedback Panel</CardTitle>
                   <Button variant="ghost" size="sm" onClick={onToggle} className="h-8 w-8 p-0">
                     <X className="h-4 w-4" />
                   </Button>
@@ -155,6 +165,7 @@ export function FeedbackPanel({
                   isAnalyzing={isAnalyzing}
                   onHighlightText={onHighlightText}
                   onElementSelect={onElementSelect}
+                  onFeedbackEvent={onFeedbackEvent}
                 />
               </CardContent>
 

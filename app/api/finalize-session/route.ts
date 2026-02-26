@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
 import { openai } from "@/lib/openai"
-import { buildRevisionBehaviorData, getSessionLogs, insertInteractionLog } from "@/lib/interaction-logs-server"
+import {
+  buildRevisionBehaviorData,
+  getSessionDraftSnapshots,
+  getSessionLogs,
+  insertDraftSnapshot,
+  insertInteractionLog,
+  updateSessionSubmittedAt,
+} from "@/lib/interaction-logs-server"
 
 const bodySchema = z.object({
   session_id: z.string().uuid(),
@@ -21,12 +28,21 @@ export async function POST(request: Request) {
     const finalLog = await insertInteractionLog({
       session_id,
       event_type: "final_submission",
-      essay_text: final_essay_text,
       metadata: { source: "submit_button" },
     })
 
+    await insertDraftSnapshot({
+      session_id,
+      issue_id: null,
+      stage: "final",
+      draft_text: final_essay_text,
+    })
+
+    const sessionRow = await updateSessionSubmittedAt(session_id)
+
     const allLogs = await getSessionLogs(session_id)
-    const revisionData = buildRevisionBehaviorData(allLogs)
+    const allSnapshots = await getSessionDraftSnapshots(session_id)
+    const revisionData = buildRevisionBehaviorData(allLogs, allSnapshots)
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -68,7 +84,7 @@ ${JSON.stringify(revisionData, null, 2)}`,
       final_submission_log_id: finalLog.id,
       revision_data: revisionData,
       summary,
-      submitted_at: finalLog.timestamp,
+      submitted_at: sessionRow.submitted_at,
     })
   } catch (error) {
     console.error("finalize-session POST failed", error)

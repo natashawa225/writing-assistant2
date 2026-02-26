@@ -10,16 +10,17 @@ import { getOrCreateSessionId } from "@/lib/deviceId"
 import { EssayEditor } from "@/components/essay-editor"
 import { FeedbackPanel } from "@/components/feedback-panel"
 import { analyzeArgumentativeStructure } from "@/lib/analysis"
+import type { FeedbackLevel } from "@/lib/interaction-logs-server"
 import type { AnalysisResult, LexicalAnalysis, Highlight } from "@/lib/types"
 import { Sparkles, BookOpen, Send } from "lucide-react"
 
 type InteractionEventType =
   | "initial_draft"
-  | "edit"
-  | "feedback_level_1"
-  | "feedback_level_2"
-  | "feedback_level_3"
-  | "analyze_clicked"
+  | "issue_flagged"
+  | "level_viewed"
+  | "suggestion_revealed"
+  | "edit_detected"
+  | "issue_resolved"
   | "final_submission"
 
 interface RevisionBehaviorData {
@@ -37,6 +38,19 @@ interface RevisionBehaviorData {
   finalDraftWordCount: number
   firstToFinalWordDelta: number
   totalLogsAnalyzed: number
+}
+
+interface IssueRegistryRow {
+  issueId: string
+  initialText: string
+}
+
+function normalizeElementType(raw: string): string {
+  const value = raw.trim().toLowerCase()
+  if (value === "claims") return "claim"
+  if (value === "evidences") return "evidence"
+  if (value === "counterclaim" || value === "counterclaims") return "rebuttal"
+  return value
 }
 
 export default function ArgumentativeWritingAssistant() {
@@ -64,14 +78,29 @@ export default function ArgumentativeWritingAssistant() {
   const [showInsightsModal, setShowInsightsModal] = useState(false)
   const [revisionInsights, setRevisionInsights] = useState<string>("")
   const [revisionData, setRevisionData] = useState<RevisionBehaviorData | null>(null)
-
+  const [issueRegistry, setIssueRegistry] = useState<Record<string, IssueRegistryRow>>({})
   const editDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const lastLoggedEssayRef = useRef("")
+  const lastEditLoggedEssayRef = useRef("")
 
   useEffect(() => {
     const id = getOrCreateSessionId()
     setSessionId(id)
   }, [])
+
+  useEffect(() => {
+    if (!sessionId) return
+
+    void fetch("/api/session/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        session_id: sessionId,
+        condition: "multilevel",
+      }),
+    }).catch((error) => {
+      console.error("Failed to initialize session", error)
+    })
+  }, [sessionId])
 
   useEffect(() => {
     if (!analyzeClickedAt || isSubmitted) return
@@ -86,13 +115,13 @@ export default function ArgumentativeWritingAssistant() {
   const logInteraction = useCallback(
     async ({
       eventType,
-      essayText,
+      issueId,
       feedbackLevel,
       metadata,
     }: {
       eventType: InteractionEventType
-      essayText?: string
-      feedbackLevel?: number
+      issueId?: string | null
+      feedbackLevel?: FeedbackLevel
       metadata?: Record<string, unknown>
     }) => {
       if (!sessionId) return
@@ -103,8 +132,8 @@ export default function ArgumentativeWritingAssistant() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             session_id: sessionId,
+            issue_id: issueId ?? null,
             event_type: eventType,
-            essay_text: essayText ?? essay,
             feedback_level: feedbackLevel ?? null,
             metadata: metadata ?? null,
           }),
@@ -113,33 +142,76 @@ export default function ArgumentativeWritingAssistant() {
         console.error("Failed to log interaction", error)
       }
     },
-    [essay, sessionId],
+    [sessionId],
+  )
+
+  const insertDraftSnapshot = useCallback(
+    async ({ stage, draftText, issueId }: { stage: string; draftText: string; issueId?: string | null }) => {
+      if (!sessionId) return
+
+      try {
+        await fetch("/api/draft-snapshot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            issue_id: issueId ?? null,
+            stage,
+            draft_text: draftText,
+          }),
+        })
+      } catch (error) {
+        console.error("Failed to insert draft snapshot", error)
+      }
+    },
+    [sessionId],
   )
 
   useEffect(() => {
-    if (!analyzeClickedAt || !sessionId || isSubmitted) return
+    if (!sessionId || hasLoggedInitialDraft) return
     if (!essay.trim()) return
-    if (essay === lastLoggedEssayRef.current) return
+
+    void Promise.all([
+      logInteraction({
+        eventType: "initial_draft",
+        metadata: { source: "first_non_empty_draft" },
+      }),
+      insertDraftSnapshot({
+        stage: "initial",
+        draftText: essay,
+      }),
+    ]).then(() => {
+      setHasLoggedInitialDraft(true)
+    })
+  }, [essay, hasLoggedInitialDraft, insertDraftSnapshot, logInteraction, sessionId])
+
+  useEffect(() => {
+    if (!sessionId || !analyzeClickedAt || isSubmitted) return
+    if (!essay.trim()) return
+    if (essay === lastEditLoggedEssayRef.current) return
 
     if (editDebounceRef.current) {
       clearTimeout(editDebounceRef.current)
     }
 
-    editDebounceRef.current = setTimeout(async () => {
-      await logInteraction({
-        eventType: "edit",
-        essayText: essay,
-        metadata: { source: "autosave_30s" },
+    editDebounceRef.current = setTimeout(() => {
+      void logInteraction({
+        eventType: "edit_detected",
+        metadata: { source: "debounced_edit_tracking" },
       })
-      lastLoggedEssayRef.current = essay
-    }, 30000)
+      void insertDraftSnapshot({
+        stage: "after_edit",
+        draftText: essay,
+      })
+      lastEditLoggedEssayRef.current = essay
+    }, 1500)
 
     return () => {
       if (editDebounceRef.current) {
         clearTimeout(editDebounceRef.current)
       }
     }
-  }, [essay, analyzeClickedAt, sessionId, isSubmitted, logInteraction])
+  }, [analyzeClickedAt, essay, insertDraftSnapshot, isSubmitted, logInteraction, sessionId])
 
   const handleAnalyze = async () => {
     if (!essay.trim() || isSubmitted) return
@@ -148,18 +220,11 @@ export default function ArgumentativeWritingAssistant() {
     setIsPanelOpen(true)
 
     try {
-      if (!hasLoggedInitialDraft) {
-        await logInteraction({ eventType: "initial_draft", essayText: essay })
-        setHasLoggedInitialDraft(true)
-      }
-
-      await logInteraction({ eventType: "analyze_clicked", essayText: essay })
-
       if (!analyzeClickedAt) {
         setAnalyzeClickedAt(new Date().toISOString())
       }
 
-      lastLoggedEssayRef.current = essay
+      lastEditLoggedEssayRef.current = essay
 
       const argResult = await analyzeArgumentativeStructure(essay, selectedPrompt)
       setArgumentAnalysis(argResult)
@@ -207,6 +272,54 @@ export default function ArgumentativeWritingAssistant() {
       })
 
       setHighlights(newHighlights)
+
+      if (sessionId && newHighlights.length > 0) {
+        const issuesPayload = newHighlights.map((highlight, index) => ({
+          client_key: highlight.id,
+          element_type: normalizeElementType(highlight.subtype ?? highlight.elementId),
+          issue_index: index,
+          initial_text: highlight.text,
+          original_text: highlight.text,
+        }))
+
+        const response = await fetch("/api/issues", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            session_id: sessionId,
+            issues: issuesPayload,
+          }),
+        })
+
+        if (response.ok) {
+          const payload = (await response.json()) as {
+            rows: Array<{ id: string; client_key: string; initial_text: string }>
+          }
+
+          const nextRegistry: Record<string, IssueRegistryRow> = {}
+          payload.rows.forEach((row) => {
+            nextRegistry[row.client_key] = {
+              issueId: row.id,
+              initialText: row.initial_text,
+            }
+          })
+
+          setIssueRegistry(nextRegistry)
+          payload.rows.forEach((row) => {
+            void logInteraction({
+              eventType: "issue_flagged",
+              issueId: row.id,
+              metadata: { source: "analysis_highlight" },
+            })
+            void logInteraction({
+              eventType: "level_viewed",
+              issueId: row.id,
+              feedbackLevel: 1,
+              metadata: { source: "analysis_highlight" },
+            })
+          })
+        }
+      }
     } catch (error) {
       console.error("Analysis failed", error)
     } finally {
@@ -288,16 +401,29 @@ export default function ArgumentativeWritingAssistant() {
     setActiveSubTab(subTab)
   }
 
-  const handleFeedbackLevelTriggered = useCallback(
-    (level: 1 | 2 | 3, cardId: string) => {
+  const handleFeedbackEvent = useCallback(
+    (payload: {
+      eventType: "level_viewed" | "suggestion_revealed"
+      feedbackLevel: 2 | 3
+      issueClientKey: string
+      metadata: {
+        source: "crossley_diagram_click" | "show_correction"
+        elementId: string
+        elementType: string
+        elementIndex: number | null
+      }
+    }) => {
+      const issueId = issueRegistry[payload.issueClientKey]?.issueId
+      if (!issueId) return
+
       void logInteraction({
-        eventType: `feedback_level_${level}`,
-        essayText: essay,
-        feedbackLevel: level,
-        metadata: { cardId },
+        eventType: payload.eventType,
+        issueId,
+        feedbackLevel: payload.feedbackLevel,
+        metadata: payload.metadata,
       })
     },
-    [essay, logInteraction],
+    [issueRegistry, logInteraction],
   )
 
   const wordCount = essay.trim().split(/\s+/).filter(Boolean).length
@@ -347,7 +473,7 @@ export default function ArgumentativeWritingAssistant() {
           <Separator className="my-3" />
 
           <div className="text-sm text-muted-foreground">
-            {!analyzeClickedAt && "Submit is locked until Analyze Essay is clicked and 5 minutes pass."}
+            {!analyzeClickedAt}
             {analyzeClickedAt && !canSubmit &&
               `Submit unlocks in ${remainingMinutes}:${remainingSeconds.toString().padStart(2, "0")}.`}
             {canSubmit && !isSubmitted && "Submit is unlocked."}
@@ -399,7 +525,7 @@ export default function ArgumentativeWritingAssistant() {
           onElementSelect={handleElementSelect}
           onTabChange={handleTabChange}
           onSubTabChange={handleSubTabChange}
-          onFeedbackLevelTriggered={handleFeedbackLevelTriggered}
+          onFeedbackEvent={handleFeedbackEvent}
         />
       </div>
 
