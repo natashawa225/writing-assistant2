@@ -16,6 +16,7 @@ import { Sparkles, BookOpen, Send } from "lucide-react"
 
 type InteractionEventType =
   | "initial_draft"
+  | "analyze_clicked"
   | "issue_flagged"
   | "level_viewed"
   | "suggestion_revealed"
@@ -224,6 +225,11 @@ export default function ArgumentativeWritingAssistant() {
         setAnalyzeClickedAt(new Date().toISOString())
       }
 
+      await logInteraction({
+        eventType: "analyze_clicked",
+        metadata: { source: "analyze_button" },
+      })
+
       lastEditLoggedEssayRef.current = essay
 
       const argResult = await analyzeArgumentativeStructure(essay, selectedPrompt)
@@ -343,7 +349,8 @@ export default function ArgumentativeWritingAssistant() {
       })
 
       if (!response.ok) {
-        throw new Error("Submit failed")
+        const failure = await response.json().catch(() => null)
+        throw new Error(failure?.error || "Submit failed")
       }
 
       const payload = await response.json()
@@ -353,7 +360,7 @@ export default function ArgumentativeWritingAssistant() {
       setShowInsightsModal(true)
     } catch (error) {
       console.error("Final submission failed", error)
-      alert("Failed to finalize session. Please try again.")
+      alert(error instanceof Error ? error.message : "Failed to finalize session. Please try again.")
     } finally {
       setIsSubmitting(false)
     }

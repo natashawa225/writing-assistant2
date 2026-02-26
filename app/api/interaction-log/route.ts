@@ -4,6 +4,7 @@ import { insertInteractionLog, type FeedbackLevel, type InteractionEventType } f
 
 const interactionEvents = [
   "initial_draft",
+  "analyze_clicked",
   "issue_flagged",
   "level_viewed",
   "suggestion_revealed",

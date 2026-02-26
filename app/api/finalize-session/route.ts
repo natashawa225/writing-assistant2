@@ -7,6 +7,7 @@ import {
   getSessionLogs,
   insertDraftSnapshot,
   insertInteractionLog,
+  updateSessionReflectiveSummary,
   updateSessionSubmittedAt,
 } from "@/lib/interaction-logs-server"
 
@@ -44,18 +45,40 @@ export async function POST(request: Request) {
     const allSnapshots = await getSessionDraftSnapshots(session_id)
     const revisionData = buildRevisionBehaviorData(allLogs, allSnapshots)
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      temperature: 0.4,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an expert writing process analyst. Do NOT summarize essay content. Summarize revision behavior only and provide reflective insights about decision-making.",
-        },
-        {
-          role: "user",
-          content: `Generate a structured report with the exact heading \"Revision Insights\".
+    const fallbackSummary = `Revision Insights
+
+Revision Activity Overview
+- Total revisions after analysis: ${revisionData.totalEditsAfterAnalyze}
+- Revision window: ${revisionData.revisionWindowMinutes} minutes
+- Draft length change: ${revisionData.firstDraftWordCount} -> ${revisionData.finalDraftWordCount} words (${revisionData.firstToFinalWordDelta >= 0 ? "+" : ""}${revisionData.firstToFinalWordDelta})
+
+Feedback Escalation Pattern
+- Level 1 views: ${revisionData.feedbackLevelCounts.level1}
+- Level 2 views: ${revisionData.feedbackLevelCounts.level2}
+- Level 3 views: ${revisionData.feedbackLevelCounts.level3}
+
+Structural Changes Observed
+- Most revised sections: ${revisionData.mostRevisedSections.join(", ") || "none detected"}
+
+Suggested Focus for Future Revision
+- Continue escalating to deeper feedback levels when revising key argument sections.
+- Make one final cohesion pass after substantive edits to stabilize structure.
+- Track revision goals per paragraph before editing to improve efficiency.`
+
+    let summary = fallbackSummary
+    try {
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        temperature: 0.4,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are an expert writing process analyst. Do NOT summarize essay content. Summarize revision behavior only and provide reflective insights about decision-making.",
+          },
+          {
+            role: "user",
+            content: `Generate a structured report with the exact heading \"Revision Insights\".
 
 Requirements:
 - Do NOT summarize essay content.
@@ -69,14 +92,18 @@ Requirements:
 
 Revision behavior data:
 ${JSON.stringify(revisionData, null, 2)}`,
-        },
-      ],
-    })
+          },
+        ],
+      })
+      summary = completion.choices[0]?.message?.content?.trim() || fallbackSummary
+    } catch (openAiError) {
+      console.error("OpenAI summary generation failed, returning fallback summary", openAiError)
+    }
 
-    const summary = completion.choices[0]?.message?.content?.trim()
-
-    if (!summary) {
-      return NextResponse.json({ error: "OpenAI returned an empty summary" }, { status: 502 })
+    try {
+      await updateSessionReflectiveSummary(session_id, summary)
+    } catch (persistError) {
+      console.error("Failed to persist reflective_summary", persistError)
     }
 
     return NextResponse.json({

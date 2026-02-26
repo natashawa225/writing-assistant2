@@ -1,5 +1,6 @@
 export type InteractionEventType =
   | "initial_draft"
+  | "analyze_clicked"
   | "issue_flagged"
   | "level_viewed"
   | "suggestion_revealed"
@@ -130,6 +131,32 @@ export async function updateSessionSubmittedAt(sessionId: string): Promise<Sessi
   if (!response.ok) {
     const body = await response.text()
     throw new Error(`Failed to update session submitted_at: ${response.status} ${body}`)
+  }
+
+  const rows = (await response.json()) as SessionRow[]
+  return rows[0]
+}
+
+export async function updateSessionReflectiveSummary(sessionId: string, reflectiveSummary: string): Promise<SessionRow> {
+  const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
+
+  const url = new URL(`${supabaseUrl}/rest/v1/sessions`)
+  url.searchParams.set("id", `eq.${sessionId}`)
+
+  const response = await fetch(url.toString(), {
+    method: "PATCH",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify({ reflective_summary: reflectiveSummary }),
+  })
+
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`Failed to update session reflective_summary: ${response.status} ${body}`)
   }
 
   const rows = (await response.json()) as SessionRow[]
@@ -290,34 +317,77 @@ export interface RevisionBehaviorData {
   totalLogsAnalyzed: number
 }
 
+function splitParagraphs(text: string): string[] {
+  return text
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+}
+
+function textChangeMagnitude(a: string, b: string): number {
+  const aTokens = a.toLowerCase().match(/[a-z0-9']+/g) ?? []
+  const bTokens = b.toLowerCase().match(/[a-z0-9']+/g) ?? []
+  const aSet = new Set(aTokens)
+  const bSet = new Set(bTokens)
+  let diff = Math.abs(aTokens.length - bTokens.length)
+  for (const t of aSet) if (!bSet.has(t)) diff += 1
+  for (const t of bSet) if (!aSet.has(t)) diff += 1
+  return diff
+}
+
 export function buildRevisionBehaviorData(logs: InteractionLogRow[], snapshots: DraftSnapshotRow[]): RevisionBehaviorData {
   const initialDraftEvent = logs.find((log) => log.event_type === "initial_draft")
+  const analyzeClickedEvent = logs.find((log) => log.event_type === "analyze_clicked")
   const finalSubmissionEvent = [...logs].reverse().find((log) => log.event_type === "final_submission")
   const initialDraftSnapshot = snapshots.find((snapshot) => snapshot.stage === "initial")
   const finalDraftSnapshot = [...snapshots].reverse().find((snapshot) => snapshot.stage === "final")
 
-  const startMs = initialDraftEvent ? Date.parse(initialDraftEvent.timestamp) : Date.now()
+  const startMs = analyzeClickedEvent
+    ? Date.parse(analyzeClickedEvent.timestamp)
+    : initialDraftEvent
+      ? Date.parse(initialDraftEvent.timestamp)
+      : Date.now()
   const endMs = finalSubmissionEvent ? Date.parse(finalSubmissionEvent.timestamp) : Date.now()
+  const logsInWindow = logs.filter((log) => Date.parse(log.timestamp) >= startMs && Date.parse(log.timestamp) <= endMs)
+  const snapshotsInWindow = snapshots.filter(
+    (snapshot) => Date.parse(snapshot.timestamp) >= startMs && Date.parse(snapshot.timestamp) <= endMs,
+  )
 
   const feedbackLevelCounts = {
-    level1: logs.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 1).length,
-    level2: logs.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 2).length,
-    level3: logs.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 3).length,
+    level1: logsInWindow.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 1).length,
+    level2: logsInWindow.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 2).length,
+    level3: logsInWindow.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 3).length,
   }
 
   const firstDraftText = initialDraftSnapshot?.draft_text ?? ""
   const finalDraftText = finalDraftSnapshot?.draft_text ?? ""
+  const sectionScores = new Map<string, number>()
+  for (let i = 1; i < snapshotsInWindow.length; i += 1) {
+    const prev = splitParagraphs(snapshotsInWindow[i - 1]?.draft_text ?? "")
+    const next = splitParagraphs(snapshotsInWindow[i]?.draft_text ?? "")
+    const maxLen = Math.max(prev.length, next.length)
+    for (let p = 0; p < maxLen; p += 1) {
+      const change = textChangeMagnitude(prev[p] ?? "", next[p] ?? "")
+      if (!change) continue
+      const key = p === 0 ? "introduction" : `paragraph_${p + 1}`
+      sectionScores.set(key, (sectionScores.get(key) ?? 0) + change)
+    }
+  }
+  const mostRevisedSections = [...sectionScores.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([label]) => label)
 
   return {
-    totalEditsAfterAnalyze: logs.filter((log) => log.event_type === "edit_detected").length,
+    totalEditsAfterAnalyze: logsInWindow.filter((log) => log.event_type === "edit_detected").length,
     feedbackLevelCounts,
     revisionWindowMinutes: Math.max(0, Math.round((endMs - startMs) / 60000)),
     thesisChangedSignificantly: false,
     claimEvidenceStructureChanged: false,
-    mostRevisedSections: [],
+    mostRevisedSections,
     firstDraftWordCount: wordCount(firstDraftText),
     finalDraftWordCount: wordCount(finalDraftText),
     firstToFinalWordDelta: wordCount(finalDraftText) - wordCount(firstDraftText),
-    totalLogsAnalyzed: logs.length,
+    totalLogsAnalyzed: logsInWindow.length,
   }
 }
