@@ -2,12 +2,25 @@ import { type NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { openai } from "@/lib/openai"
 
+const ReasonSchema = z.union([
+  z.string(),
+  z.object({
+    rhetorical_function: z.string().optional(),
+    reader_impact: z.string().optional(),
+    text_quality: z.string().optional(),
+  }).transform((obj) =>
+    [obj.rhetorical_function, obj.reader_impact, obj.text_quality]
+      .filter(Boolean)
+      .join(" ")
+  ),
+]).default("")
+
 const ArgumentElementSchema = z.object({
   text: z.string().default(""),
   effectiveness: z.enum(["Effective", "Adequate", "Ineffective", "Missing"]).default("Missing"),
   feedback: z.array(z.string()).default([]),
   suggestion: z.string().default(""),
-  reason: z.string().default(""),
+  reason: ReasonSchema,  // <-- was z.string().default("")
 })
 
 const AnalysisResultSchema = z.object({
@@ -188,15 +201,13 @@ Essay prompt: """${prompt}"""
 Rules:
 - If effectiveness is "Effective":
   * Give positive reinforcement and explain what makes it strong
-  * Suggest how to push it even further
+  * Suggest how it could be developed further.
 - If "Adequate", "Ineffective", or "Missing":
   * Goal: Help the student notice the issue and reflect on how to improve it.
   * Write three short sections:
   * Issue: 1–2 sentences describing what may be unclear, missing, or underdeveloped. Do NOT rewrite the student’s sentence.
   * Reflection: Ask 1–2 guiding questions that encourage the student to think about how to improve it. Do NOT provide the corrected version.
-
-Hint (optional):
-Give one brief general hint if needed, but do not give a full example or rewrite.
+  * Hint (optional): Give one brief general hint if needed, but do not give a full example or rewrite.
 
 Use simple, student-friendly language.
 Keep the tone supportive and encouraging.
@@ -213,7 +224,8 @@ Issue: ...
 Reflection: ...
 Hint: ...
 
-Return JSON: {"feedback": [["point1", "point2", "point3"], ...]}`
+{"feedback":[["paragraph1","paragraph2","paragraph3"]]}
+`
       },
       {
         role: "user",
@@ -259,13 +271,13 @@ async function batchSuggestionsAndReasonsAll(
         content: `You are a supportive writing teacher helping students improve their argumentative essays.
 
 For EACH element below, provide:
-1. A suggestion: One clear, specific revision. You may rewrite or suggest a sentence. Keep it concise, student-friendly, and use a natural teacher-like tone. Focus only on the selected element.
+1. A suggestion: Write one clear and specific revision suggestion (you may rewrite briefly).
 2. A reason with three aspects:
    - Rhetorical function: What this element does in an argument and how it works
    - Reader impact: How it affects the reader's understanding or engagement, and what may happen if it is missing
    - Text quality: How it improves writing quality (e.g., coherence, clarity) with a cause-effect explanation
 
-Avoid vague statements like "it improves clarity" without explanation.
+Be specific, natural, and concise. Avoid vague statements.
 
 Example output for one element:
 {
