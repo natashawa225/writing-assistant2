@@ -17,7 +17,6 @@ import { Sparkles, BookOpen, Send } from "lucide-react"
 type InteractionEventType =
   | "initial_draft"
   | "analyze_clicked"
-  | "issue_flagged"
   | "level_viewed"
   | "suggestion_revealed"
   | "edit_detected"
@@ -312,11 +311,11 @@ export default function ArgumentativeWritingAssistant() {
 
           setIssueRegistry(nextRegistry)
           payload.rows.forEach((row) => {
-            void logInteraction({
-              eventType: "issue_flagged",
-              issueId: row.id,
-              metadata: { source: "analysis_highlight" },
-            })
+            // void logInteraction({
+            //   eventType: "issue_flagged",
+            //   issueId: row.id,
+            //   metadata: { source: "analysis_highlight" },
+            // })
             void logInteraction({
               eventType: "level_viewed",
               issueId: row.id,

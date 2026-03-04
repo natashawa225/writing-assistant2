@@ -5,7 +5,6 @@ import { openai } from "@/lib/openai"
 const ArgumentElementSchema = z.object({
   text: z.string().default(""),
   effectiveness: z.enum(["Effective", "Adequate", "Ineffective", "Missing"]).default("Missing"),
-  diagnosis: z.string().default(""),
   feedback: z.array(z.string()).default([]),
   suggestion: z.string().default(""),
   reason: z.string().default(""),
@@ -27,166 +26,154 @@ const AnalysisResultSchema = z.object({
 
 const FeedbackResultSchema = AnalysisResultSchema
 
-function normalizeFeedback(data: any): any {
-  function walk(obj: any): any {
-    if (Array.isArray(obj)) {
-      return obj.map(walk)
-    }
-    if (obj && typeof obj === "object") {
-      const out: any = {}
-      for (const k of Object.keys(obj)) {
-        if (k === "feedback") {
-          out[k] = Array.isArray(obj[k])
-            ? obj[k]
-            : obj[k]
-            ? [obj[k]]
-            : []
-        } else {
-          out[k] = walk(obj[k])
-        }
-      }
-      return out
-    }
-    return obj
-  }
-  return walk(data)
+// ============================================================================
+// XML PARSING — matches the new fine-tuned model's output format
+// ============================================================================
+
+const TAG_MAP: Record<string, string> = {
+  L1:   "lead",
+  P1:   "position",
+  C1:   "claims",
+  D1:   "evidence",
+  CT1:  "counterclaims",
+  CD1:  "counterclaim_evidence",
+  R1:   "rebuttals",
+  RD1:  "rebuttal_evidence",
+  S1:   "conclusion",
 }
 
-function enrichElements(raw: any): any {
-  function enrich(el: any) {
-    if (!el) {
-      return { 
-        text: "", 
-        effectiveness: "Missing", 
-        diagnosis: "", 
-        feedback: [], 
-        suggestion: "", 
-        reason: "" 
-      }
+type ParsedElement = { text: string; effectiveness: string }
+type ParsedXML = {
+  lead?: ParsedElement
+  position?: ParsedElement
+  claims: ParsedElement[]
+  evidence: ParsedElement[]
+  counterclaims: ParsedElement[]
+  counterclaim_evidence: ParsedElement[]
+  rebuttals: ParsedElement[]
+  rebuttal_evidence: ParsedElement[]
+  conclusion?: ParsedElement
+}
+
+function parseXMLOutput(xml: string): ParsedXML {
+  const result: ParsedXML = {
+    claims: [],
+    evidence: [],
+    counterclaims: [],
+    counterclaim_evidence: [],
+    rebuttals: [],
+    rebuttal_evidence: [],
+  }
+
+  const tagPattern = /<(L1|P1|C1|D1|CT1|CD1|R1|RD1|S1)\s+effectiveness="([^"]+)">([\s\S]*?)<\/\1>/g
+  let match: RegExpExecArray | null
+
+  while ((match = tagPattern.exec(xml)) !== null) {
+    const [, tag, effectiveness, rawText] = match
+    const key = TAG_MAP[tag]
+    if (!key) continue
+
+    const element: ParsedElement = {
+      text: rawText.trim(),
+      effectiveness: normalizeEffectiveness(effectiveness),
     }
 
-    let text = ""
-    if (typeof el === "string") {
-      text = el
+    const arrayKeys = ["claims", "evidence", "counterclaims", "counterclaim_evidence", "rebuttals", "rebuttal_evidence"]
+    if (arrayKeys.includes(key)) {
+      (result as any)[key].push(element)
     } else {
-      text = el.text ?? el.sentence ?? ""
-    }
-
-    return {
-      text,
-      effectiveness: el.effectiveness ?? "Missing",
-      diagnosis: "",
-      feedback: [],
-      suggestion: "",
-      reason: "",
+      (result as any)[key] = element
     }
   }
 
-  const data = raw.elements ?? raw
-  const getFirstOrEmpty = (item: any) => {
-    if (Array.isArray(item)) return item.length > 0 ? item[0] : null
-    return item || null
-  }
+  return result
+}
 
-  function padArray(arr: any[], targetLength: number) {
-    const result = [...arr]
-    while (result.length < targetLength) {
-      result.push(enrich(null))
-    }
-    return result
+function normalizeEffectiveness(raw: string): "Effective" | "Adequate" | "Ineffective" | "Missing" {
+  const map: Record<string, "Effective" | "Adequate" | "Ineffective" | "Missing"> = {
+    effective: "Effective",
+    adequate: "Adequate",
+    ineffective: "Ineffective",
+    missing: "Missing",
   }
+  return map[raw.toLowerCase()] ?? "Adequate"
+}
 
+// ============================================================================
+// ENRICHMENT — normalises parsed XML into the internal structure
+// ============================================================================
+
+function makeEmpty() {
+  return { text: "", effectiveness: "Missing" as const, feedback: [], suggestion: "", reason: "" }
+}
+
+function toElement(el: ParsedElement | undefined) {
+  if (!el) return makeEmpty()
+  return { text: el.text, effectiveness: el.effectiveness as any, feedback: [], suggestion: "", reason: "" }
+}
+
+function padArray<T>(arr: T[], target: number, fill: () => T): T[] {
+  const out = [...arr]
+  while (out.length < target) out.push(fill())
+  return out
+}
+
+function enrichElements(parsed: ParsedXML) {
   return {
     elements: {
-      lead: enrich(data.lead),
-      position: enrich(data.position),
-      claims: padArray(Array.isArray(data.claims) ? data.claims.map(enrich) : [], 2),
-      counterclaim: enrich(getFirstOrEmpty(data.counterclaims)),
-      counterclaim_evidence: enrich(getFirstOrEmpty(data.counterclaim_evidence)),
-      rebuttal: enrich(getFirstOrEmpty(data.rebuttals)),
-      rebuttal_evidence: enrich(getFirstOrEmpty(data.rebuttal_evidence)),
-      evidence: padArray(Array.isArray(data.evidence) ? data.evidence.map(enrich) : [], 3),
-      conclusion: enrich(data.conclusion),
+      lead:                 toElement(parsed.lead),
+      position:             toElement(parsed.position),
+      claims:               padArray(parsed.claims.map(toElement), 2, makeEmpty),
+      counterclaim:         toElement(parsed.counterclaims[0]),
+      counterclaim_evidence:toElement(parsed.counterclaim_evidence[0]),
+      rebuttal:             toElement(parsed.rebuttals[0]),
+      rebuttal_evidence:    toElement(parsed.rebuttal_evidence[0]),
+      evidence:             padArray(parsed.evidence.map(toElement), 3, makeEmpty),
+      conclusion:           toElement(parsed.conclusion),
     },
   }
 }
 
-function collectElements(enriched: any): Array<{element: any, path: string, name: string, index?: number}> {
-  const elements: Array<{element: any, path: string, name: string, index?: number}> = []
-  
-  const singleElements = ['lead', 'position', 'counterclaim', 'counterclaim_evidence', 'rebuttal', 'rebuttal_evidence', 'conclusion']
-  for (const name of singleElements) {
-    elements.push({
-      element: enriched.elements[name],
-      path: `elements.${name}`,
-      name
-    })
+// ============================================================================
+// ELEMENT COLLECTION / RECONSTRUCTION
+// ============================================================================
+
+type ElementEntry = { element: any; path: string; name: string; index?: number }
+
+function collectElements(enriched: ReturnType<typeof enrichElements>): ElementEntry[] {
+  const out: ElementEntry[] = []
+
+  for (const name of ["lead","position","counterclaim","counterclaim_evidence","rebuttal","rebuttal_evidence","conclusion"] as const) {
+    out.push({ element: enriched.elements[name], path: `elements.${name}`, name })
   }
-  
-  enriched.elements.claims.forEach((claim: any, index: number) => {
-    elements.push({
-      element: claim,
-      path: `elements.claims[${index}]`,
-      name: 'claim',
-      index
-    })
-  })
-  
-  enriched.elements.evidence.forEach((evidence: any, index: number) => {
-    elements.push({
-      element: evidence,
-      path: `elements.evidence[${index}]`,
-      name: 'evidence',
-      index
-    })
-  })
-  
-  return elements
+  enriched.elements.claims.forEach((el, i) =>
+    out.push({ element: el, path: `elements.claims[${i}]`, name: "claim", index: i }))
+  enriched.elements.evidence.forEach((el, i) =>
+    out.push({ element: el, path: `elements.evidence[${i}]`, name: "evidence", index: i }))
+
+  return out
 }
 
-function reconstructStructure(enriched: any, processedElements: any[]): any {
+function reconstructStructure(enriched: ReturnType<typeof enrichElements>, processed: any[]) {
   const result = JSON.parse(JSON.stringify(enriched))
-  
-  let elementIndex = 0
-  
-  const singleElements = ['lead', 'position', 'counterclaim', 'counterclaim_evidence', 'rebuttal', 'rebuttal_evidence', 'conclusion']
-  for (const name of singleElements) {
-    result.elements[name] = processedElements[elementIndex++]
+  let idx = 0
+  for (const name of ["lead","position","counterclaim","counterclaim_evidence","rebuttal","rebuttal_evidence","conclusion"]) {
+    result.elements[name] = processed[idx++]
   }
-  
-  for (let i = 0; i < result.elements.claims.length; i++) {
-    result.elements.claims[i] = processedElements[elementIndex++]
-  }
-  
-  for (let i = 0; i < result.elements.evidence.length; i++) {
-    result.elements.evidence[i] = processedElements[elementIndex++]
-  }
-  
+  result.elements.claims.forEach((_: any, i: number) => { result.elements.claims[i] = processed[idx++] })
+  result.elements.evidence.forEach((_: any, i: number) => { result.elements.evidence[i] = processed[idx++] })
   return result
 }
 
 // ============================================================================
-// ✅ OPTIMIZED 4-STEP LLM CHAIN - Works with Fine-Tuned Model Output
-// ============================================================================
-// Your fine-tuned model ALREADY provides: text + effectiveness
-// The 4-step chain adds: diagnosis + feedback + suggestion + reason
+// STEP 1 — Feedback for ALL elements (one call)
 // ============================================================================
 
-// STEP 1: Diagnose ALL elements in ONE call
-async function batchDiagnoseAll(
-  elements: Array<{element: any, name: string, index?: number}>,
-  prompt: string
-): Promise<string[]> {
-  
-  // Build a numbered list of all elements with their FT-model effectiveness
-  const elementsList = elements.map((e, i) => {
-    const displayName = e.index !== undefined 
-      ? `${e.name} #${e.index + 1}` 
-      : e.name
-    return `${i}. ${displayName}
-   Text: "${e.element.text}"
-   Effectiveness (from fine-tuned model): ${e.element.effectiveness}`
-  }).join('\n\n')
+async function batchFeedbackAll(elements: ElementEntry[], prompt: string): Promise<string[][]> {
+  const list = elements.map((e, i) => {
+    const label = e.index !== undefined ? `${e.name} #${e.index + 1}` : e.name
+    return `${i}. ${label}\n   Text: "${e.element.text}"\n   Effectiveness: ${e.element.effectiveness}`
+  }).join("\n\n")
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
@@ -194,399 +181,245 @@ async function batchDiagnoseAll(
     messages: [
       {
         role: "system",
-        content: `You are an expert writing coach analyzing argumentative essay elements.
+        content: `Provide indirecta and constructive feedback on argumentative essay elements.
 
 Essay prompt: """${prompt}"""
 
-A fine-tuned model has already classified each element's effectiveness. Your job is to provide DIAGNOSIS for each element.
-
-For EACH element, provide a diagnosis that:
-1. Explains the role of this element in argumentative writing
-2. Evaluates how well it serves the essay prompt
-3. Considers the effectiveness rating from the fine-tuned model
-
-Be specific and direct. Do not provide suggestions or feedback yet - only diagnose.
-
-Return JSON: {"diagnoses": ["diagnosis for element 0", "diagnosis for element 1", ...]}`
-      },
-      {
-        role: "user",
-        content: `Elements to diagnose:\n\n${elementsList}\n\nProvide diagnosis for each element in order:`
-      }
-    ]
-  })
-  
-  const result = JSON.parse(completion.choices[0].message.content || '{"diagnoses": []}')
-  return result.diagnoses || []
-}
-
-// STEP 2: Generate feedback for ALL elements in ONE call
-async function batchFeedbackAll(
-  elements: Array<{element: any, name: string, index?: number}>,
-  diagnoses: string[]
-): Promise<string[][]> {
-  
-  const elementsList = elements.map((e, i) => {
-    const displayName = e.index !== undefined 
-      ? `${e.name} #${e.index + 1}` 
-      : e.name
-    return `${i}. ${displayName}
-   Text: "${e.element.text}"
-   Effectiveness: ${e.element.effectiveness}
-   Diagnosis: ${diagnoses[i]}`
-  }).join('\n\n')
-
-  const completion = await openai.chat.completions.create({
-    model: "gpt-4o",
-    response_format: { type: "json_object" },
-    messages: [
-      {
-        role: "system",
-        content: `You are an expert writing coach providing constructive feedback.
-
-For EACH element below, provide 3-4 bullet points of indirect feedback.
-
 Rules:
-- If effectiveness is "Effective": 
-  * Give positive reinforcement
-  * Explain why the element is strong (clarity, persuasiveness, alignment)
-  * Include suggestions to improve even further
-  
-- If "Adequate", "Ineffective", or "Missing": 
-  * Provide guidance for improvement
-  * Use <strong>...</strong> tags to highlight important concepts
-  * Be encouraging but specific
-  * Give reflective prompts that guide the student to revise
-  * Do NOT supply exact rewritten sentences or replacement words
+- If effectiveness is "Effective":
+  * Give positive reinforcement and explain what makes it strong
+  * Suggest how to push it even further
+- If "Adequate", "Ineffective", or "Missing":
+  * Goal: Help the student notice the issue and reflect on how to improve it.
+  * Write three short sections:
+  * Issue: 1–2 sentences describing what may be unclear, missing, or underdeveloped. Do NOT rewrite the student’s sentence.
+  * Reflection: Ask 1–2 guiding questions that encourage the student to think about how to improve it. Do NOT provide the corrected version.
 
-Example feedback point:
-"Your <strong>claim is clear</strong>, but instead of <strong>repeating it</strong> in every paragraph, state it once strongly in the introduction and let each body paragraph focus on <strong>one reason</strong>."
+Hint (optional):
+Give one brief general hint if needed, but do not give a full example or rewrite.
 
-Return JSON: {"feedback": [["point1", "point2", "point3"], ["point1", "point2", "point3"], ...]}`
+Use simple, student-friendly language.
+Keep the tone supportive and encouraging.
+Focus only on the selected element.
+
+Avoid:
+- Rewriting the student’s sentence
+- Giving a full corrected version
+- Being overly vague
+
+Output exactly in this format:
+
+Issue: ...
+Reflection: ...
+Hint: ...
+
+Return JSON: {"feedback": [["point1", "point2", "point3"], ...]}`
       },
       {
         role: "user",
-        content: `Elements with diagnoses:\n\n${elementsList}\n\nProvide feedback for each element in order:`
-      }
-    ]
+        content: `Elements:\n\n${list}\n\nProvide feedback for each element in order:`,
+      },
+    ],
   })
-  
-  const result = JSON.parse(completion.choices[0].message.content || '{"feedback": []}')
+
+  const result = JSON.parse(completion.choices[0].message.content || '{"feedback":[]}')
   return result.feedback || []
 }
 
-// STEP 3: Generate suggestions for ALL non-effective elements in ONE call
-async function batchSuggestionsAll(
-  elements: Array<{element: any, name: string, index?: number}>
-): Promise<string[]> {
-  
-  // Filter elements that need suggestions (not "Effective")
-  const needsSuggestion = elements.map((e, i) => ({ ...e, originalIndex: i }))
+// ============================================================================
+// STEP 2 — Suggestions + Reasons for ALL non-Effective elements (one call)
+// ============================================================================
+
+async function batchSuggestionsAndReasonsAll(
+  elements: ElementEntry[]
+): Promise<{ suggestions: string[]; reasons: string[] }> {
+  const needs = elements
+    .map((e, i) => ({ ...e, originalIndex: i }))
     .filter(e => e.element.effectiveness !== "Effective")
-  
-  if (needsSuggestion.length === 0) {
-    console.log('   ℹ️ All elements are Effective - skipping suggestions')
-    return elements.map(() => "")
-  }
-  
-  const elementsList = needsSuggestion.map((e, i) => {
-    const displayName = e.index !== undefined 
-      ? `${e.name} #${e.index + 1}` 
-      : e.name
-    return `${i}. ${displayName}
-   Original text: "${e.element.text}"
-   Effectiveness: ${e.element.effectiveness}`
-  }).join('\n\n')
 
-  const completion = await openai.chat.completions.create({
-    model: "gpt-5-mini",
-    response_format: { type: "json_object" },
-    messages: [
-      {
-        role: "system",
-        content: `You are an expert writing coach providing improved versions of essay elements.
-
-For EACH element below, provide ONE improved sentence that is:
-- Stronger and more precise while keeping core meaning
-- More compelling with stronger academic language
-- More specific and clear
-
-Guidelines by effectiveness level:
-- If "Adequate": Rewrite into a stronger, more precise version
-- If "Ineffective": Create a clear, specific, academic example that fulfills the role
-- If "Missing": Create an appropriate example
-
-Always return ONE improved sentence per element, no extra text.
-
-Return JSON: {"suggestions": ["suggestion 1", "suggestion 2", ...]}`
-      },
-      {
-        role: "user",
-        content: `Elements to improve:\n\n${elementsList}\n\nProvide one improved sentence for each:`
-      }
-    ]
-  })
-  
-  const result = JSON.parse(completion.choices[0].message.content || '{"suggestions": []}')
-  const suggestions = result.suggestions || []
-  
-  // Map suggestions back to original array positions
   const fullSuggestions = new Array(elements.length).fill("")
-  needsSuggestion.forEach((e, i) => {
-    fullSuggestions[e.originalIndex] = suggestions[i] || ""
-  })
-  
-  return fullSuggestions
-}
+  const fullReasons = new Array(elements.length).fill("")
 
-// STEP 4: Generate reasons for ALL suggestions in ONE call
-async function batchReasonsAll(
-  elements: Array<{element: any, name: string, index?: number}>,
-  suggestions: string[]
-): Promise<string[]> {
-  
-  // Filter elements that need reasons (have suggestions and not "Effective")
-  const needsReason = elements.map((e, i) => ({ ...e, suggestion: suggestions[i], originalIndex: i }))
-    .filter(e => e.suggestion && e.element.effectiveness !== "Effective")
-  
-  if (needsReason.length === 0) {
-    console.log('   ℹ️ No suggestions generated - skipping reasons')
-    return elements.map(() => "")
+  if (needs.length === 0) {
+    console.log("   ℹ️ All elements are Effective — skipping suggestions & reasons")
+    return { suggestions: fullSuggestions, reasons: fullReasons }
   }
-  
-  const elementsList = needsReason.map((e, i) => {
-    const displayName = e.index !== undefined 
-      ? `${e.name} #${e.index + 1}` 
-      : e.name
-    return `${i}. ${displayName}
-   Original: "${e.element.text}"
-   Suggestion: "${e.suggestion}"
-   Effectiveness: ${e.element.effectiveness}`
-  }).join('\n\n')
+
+  const list = needs.map((e, i) => {
+    const label = e.index !== undefined ? `${e.name} #${e.index + 1}` : e.name
+    return `${i}. ${label}\n   Original: "${e.element.text}"\n   Effectiveness: ${e.element.effectiveness}`
+  }).join("\n\n")
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     response_format: { type: "json_object" },
     messages: [
       {
         role: "system",
-        content: `You are an expert writing coach explaining improvements.
+        content: `You are a supportive writing teacher helping students improve their argumentative essays.
 
-For EACH element below, explain in 2-4 sentences why the suggested improvement is stronger than the original.
-Focus on clarity, persuasiveness, and argumentative effectiveness.
+For EACH element below, provide:
+1. A suggestion: One clear, specific revision. You may rewrite or suggest a sentence. Keep it concise, student-friendly, and use a natural teacher-like tone. Focus only on the selected element.
+2. A reason with three aspects:
+   - Rhetorical function: What this element does in an argument and how it works
+   - Reader impact: How it affects the reader's understanding or engagement, and what may happen if it is missing
+   - Text quality: How it improves writing quality (e.g., coherence, clarity) with a cause-effect explanation
 
-Return JSON: {"reasons": ["reason 1", "reason 2", ...]}`
+Avoid vague statements like "it improves clarity" without explanation.
+
+Example output for one element:
+{
+  "suggestion": "You could add an opening sentence such as 'In many cities today, transportation problems are becoming increasingly serious' before your main point.",
+  "reason": {
+    "rhetorical_function": "A lead introduces the topic and works as a bridge into your argument, helping the reader move smoothly from a general idea to your specific position.",
+    "reader_impact": "Without a lead, the essay may feel too abrupt and the reader may not have enough context to fully engage with your point.",
+    "text_quality": "Adding a lead creates a clearer progression from general to specific ideas, which improves coherence and overall flow."
+  }
+}
+Return JSON:
+{
+  "items": [
+    {"suggestion": "...", "reason": "..."},
+    ...
+  ]
+}`,
       },
       {
         role: "user",
-        content: `Elements with suggestions:\n\n${elementsList}\n\nExplain why each suggestion is better:`
-      }
-    ]
+        content: `Elements to improve:\n\n${list}`,
+      },
+    ],
   })
-  
-  const result = JSON.parse(completion.choices[0].message.content || '{"reasons": []}')
-  const reasons = result.reasons || []
-  
-  // Map reasons back to original array positions
-  const fullReasons = new Array(elements.length).fill("")
-  needsReason.forEach((e, i) => {
-    fullReasons[e.originalIndex] = reasons[i] || ""
+
+  const result = JSON.parse(completion.choices[0].message.content || '{"items":[]}')
+  const items: Array<{ suggestion: string; reason: string }> = result.items || []
+
+  needs.forEach((e, i) => {
+    fullSuggestions[e.originalIndex] = items[i]?.suggestion || ""
+    fullReasons[e.originalIndex] = items[i]?.reason || ""
   })
-  
-  return fullReasons
+
+  return { suggestions: fullSuggestions, reasons: fullReasons }
 }
 
-// MAIN OPTIMIZED CHAIN: 4 calls total instead of 48+!
-async function optimizedProcess4StepChain(
-  elements: Array<{element: any, path: string, name: string, index?: number}>,
-  prompt: string
-): Promise<any[]> {
-  
-  const startTime = Date.now()
-  console.log(`\n🔗 Starting optimized 4-step LLM chain for ${elements.length} elements`)
-  
-  // Count elements by effectiveness for logging
+// ============================================================================
+// MAIN CHAIN — 2 LLM calls total (after FT model)
+// ============================================================================
+
+async function runFeedbackChain(elements: ElementEntry[], prompt: string): Promise<any[]> {
+  const start = Date.now()
+  console.log(`\n🔗 Starting 2-step feedback chain for ${elements.length} elements`)
+
   const effectiveCounts = elements.reduce((acc, e) => {
     acc[e.element.effectiveness] = (acc[e.element.effectiveness] || 0) + 1
     return acc
   }, {} as Record<string, number>)
-  console.log('📊 Element effectiveness from fine-tuned model:', effectiveCounts)
-  
-  // STEP 1: Diagnose ALL (1 API call)
-  console.log('\n📍 Step 1/4: Diagnosing ALL elements...')
-  const diagnoses = await batchDiagnoseAll(elements, prompt)
-  console.log(`✅ Step 1/4 complete (${Date.now() - startTime}ms)`)
-  
-  // STEP 2: Feedback for ALL (1 API call)
-  console.log('📍 Step 2/4: Generating feedback for ALL elements...')
-  const feedbacks = await batchFeedbackAll(elements, diagnoses)
-  console.log(`✅ Step 2/4 complete (${Date.now() - startTime}ms)`)
-  
-  // STEP 3: Suggestions for ALL non-effective (1 API call)
-  console.log('📍 Step 3/4: Generating suggestions for non-Effective elements...')
-  const suggestions = await batchSuggestionsAll(elements)
-  console.log(`✅ Step 3/4 complete (${Date.now() - startTime}ms)`)
-  
-  // STEP 4: Reasons for ALL suggestions (1 API call)
-  console.log('📍 Step 4/4: Generating reasons for ALL suggestions...')
-  const reasons = await batchReasonsAll(elements, suggestions)
-  console.log(`✅ Step 4/4 complete (${Date.now() - startTime}ms)`)
-  
-  console.log(`\n🎉 Total chain time: ${Date.now() - startTime}ms`)
-  console.log(`🚀 Estimated speedup: ~${Math.floor((elements.length * 4) / 4)}x faster\n`)
-  
-  // Combine all results
+  console.log("📊 Effectiveness distribution:", effectiveCounts)
+
+  // STEP 1: Feedback for ALL (1 call)
+  console.log("\n📍 Step 1/2: Generating feedback for ALL elements...")
+  const feedbacks = await batchFeedbackAll(elements, prompt)
+  console.log(`✅ Step 1/2 complete (${Date.now() - start}ms)`)
+
+  // STEP 2: Suggestions + Reasons for non-Effective (1 call)
+  console.log("📍 Step 2/2: Generating suggestions + reasons for non-Effective elements...")
+  const { suggestions, reasons } = await batchSuggestionsAndReasonsAll(elements)
+  console.log(`✅ Step 2/2 complete (${Date.now() - start}ms)`)
+
+  console.log(`\n🎉 Chain complete in ${Date.now() - start}ms`)
+
   return elements.map((e, i) => ({
     ...e.element,
-    diagnosis: diagnoses[i] || "",
-    feedback: feedbacks[i] || [],
+    feedback: Array.isArray(feedbacks[i]) ? feedbacks[i] : [],
     suggestion: suggestions[i] || "",
-    reason: reasons[i] || ""
+    reason: reasons[i] || "",
   }))
 }
 
-// Updated system prompt for the fine-tuned model
-const FINE_TUNED_SYSTEM_PROMPT = `You are an argument-mining classifier for argumentative essays. 
+// ============================================================================
+// FINE-TUNED MODEL SYSTEM PROMPT (XML output format)
+// ============================================================================
 
-Return JSON with this EXACT structure:
-{
-  "lead": {"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"},
-  "position": {"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"},
-  "claims": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
-  "evidence": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
-  "counterclaims": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
-  "counterclaim_evidence": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
-  "rebuttals": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
-  "rebuttal_evidence": [{"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}],
-  "conclusion": {"text": "...", "effectiveness": "Effective|Adequate|Ineffective|Missing"}
-}
+const FT_SYSTEM_PROMPT = `Parse the following L2 argumentative essay into argumentative elements using XML tags.
 
-CRITICAL: Each element must have both "text" and "effectiveness" fields. Do not include a top-level "effectiveness" field.`
+Tag definitions:
+L1 = Lead
+P1 = Position
+C1 = Claim
+D1 = Evidence
+CT1 = Counterclaim
+CD1 = Counterargument_Evidence
+R1 = Rebuttal
+RD1 = Rebuttal_Evidence
+S1 = Concluding Statement
+
+Instructions:
+- Wrap each argumentative element in its correct XML tag and include an effectiveness attribute.
+- Do not modify the original wording.
+- Output only the tagged essay.`
+
+// ============================================================================
+// ROUTE HANDLER
+// ============================================================================
 
 export async function POST(request: NextRequest) {
-  const totalStartTime = Date.now()
-  
+  const totalStart = Date.now()
+
   try {
     const { essay, prompt } = await request.json()
-    const FT_MODEL = process.env.FT_MODEL
+    const FT_MODEL = process.env.FT_MODEL ?? "gpt-4o-mini"
 
-    let completion
-    let modelUsed = FT_MODEL ?? "gpt-4o-mini"
+    // ── FT Model: structure + effectiveness via XML ──────────────────────────
+    let rawXML: string
+    let modelUsed = FT_MODEL
 
     try {
-      console.log("⚡ Using model:", modelUsed)
-
-      // STEP 1 → Fine-tuned model gives structure + effectiveness
-      completion = await openai.chat.completions.create({
+      console.log("⚡ Using FT model:", modelUsed)
+      const completion = await openai.chat.completions.create({
         model: modelUsed,
         messages: [
-          { role: "system", content: FINE_TUNED_SYSTEM_PROMPT },
-          { role: "user", content: essay },
+          { role: "system", content: FT_SYSTEM_PROMPT },
+          { role: "user", content: `Prompt: ${prompt ?? ""}\n\nEssay:\n${essay}` },
         ],
-        response_format: { type: "json_object" },
       })
+      rawXML = completion.choices[0].message.content ?? ""
     } catch (err: any) {
       console.warn("⚠️ FT model unavailable, falling back to gpt-4o-mini:", err.message)
       modelUsed = "gpt-4o-mini"
-      console.log("⚡ Using model:", modelUsed)
-
-      completion = await openai.chat.completions.create({
+      const completion = await openai.chat.completions.create({
         model: modelUsed,
         messages: [
-          { role: "system", content: FINE_TUNED_SYSTEM_PROMPT },
-          { role: "user", content: essay },
+          { role: "system", content: FT_SYSTEM_PROMPT },
+          { role: "user", content: `Prompt: ${prompt ?? ""}\n\nEssay:\n${essay}` },
         ],
-        response_format: { type: "json_object" },
       })
+      rawXML = completion.choices[0].message.content ?? ""
     }
 
-    const rawContent = completion.choices[0].message.content
-    const analysis = JSON.parse(rawContent ?? "{}")
+    console.log("🔍 Raw FT XML output:\n", rawXML)
+    console.log(`⏱️ FT model: ${Date.now() - totalStart}ms`)
 
-    console.log("🔍 Raw FT analysis:", JSON.stringify(analysis, null, 2))
+    // ── Parse XML → internal structure ──────────────────────────────────────
+    const parsed = parseXMLOutput(rawXML)
+    const enriched = enrichElements(parsed)
 
-    // Check if we got the old format and need to assign default effectiveness
-    if ('effectiveness' in analysis && typeof analysis.effectiveness === 'string') {
-      console.warn("⚠️ Model returned old format with top-level effectiveness. Assigning 'Adequate' to all elements.")
-      
-      const convertElement = (text: any) => {
-        if (typeof text === 'string') {
-          return { text, effectiveness: text ? 'Adequate' : 'Missing' }
-        }
-        return text
-      }
-
-      analysis.lead = convertElement(analysis.lead)
-      analysis.position = convertElement(analysis.position)
-      analysis.claims = (analysis.claims || []).map(convertElement)
-      analysis.evidence = (analysis.evidence || []).map(convertElement)
-      analysis.counterclaims = (analysis.counterclaims || []).map(convertElement)
-      analysis.counterclaim_evidence = (analysis.counterclaim_evidence || []).map(convertElement)
-      analysis.rebuttals = (analysis.rebuttals || []).map(convertElement)
-      analysis.rebuttal_evidence = (analysis.rebuttal_evidence || []).map(convertElement)
-      analysis.conclusion = convertElement(analysis.conclusion)
-      
-      delete analysis.effectiveness
-    }
-
-    function lockEffectiveness(
-      original: Record<string, any>,
-      updated: Record<string, any>
-    ): Record<string, any> {
-      const lock = (o: Record<string, any>, u: Record<string, any>) => {
-        if (!o || !u) return u
-        u.effectiveness = o.effectiveness
-        for (const key of Object.keys(o)) {
-          if (Array.isArray(o[key]) && Array.isArray(u[key])) {
-            for (let i = 0; i < o[key].length; i++) lock(o[key][i], u[key][i])
-          } else if (
-            typeof o[key] === "object" &&
-            o[key] !== null &&
-            typeof u[key] === "object" &&
-            u[key] !== null
-          ) {
-            lock(o[key], u[key])
-          }
-        }
-      }
-      lock(original, updated)
-      return updated
-    }
-    
-    console.log(`⏱️ Structure detection: ${Date.now() - totalStartTime}ms`)
-    
-    // STEP 2 → Enrich with empty fields
-    const enriched = enrichElements(analysis)
-
-    // STEP 3 → OPTIMIZED 4-Step Chain (4 calls instead of 48+!)
-    console.log("🔄 Starting OPTIMIZED 4-step GPT chain processing...")
-    
+    // ── Run 2-step feedback chain ────────────────────────────────────────────
     const allElements = collectElements(enriched)
-    const processedElements = await optimizedProcess4StepChain(allElements, prompt || "")
-    
-    const finalFeedback = reconstructStructure(enriched, processedElements)
+    const processedElements = await runFeedbackChain(allElements, prompt ?? "")
+    const finalResult = reconstructStructure(enriched, processedElements)
 
-    // STEP 4 → Lock element-level effectiveness (preserve from FT model)
-    const lockedFeedback = lockEffectiveness(enriched, finalFeedback)
-
-    // STEP 5 → Normalize feedback field
-    const normalized = normalizeFeedback(lockedFeedback)
-
-    // STEP 6 → Validate with Zod
-    const parsed = FeedbackResultSchema.safeParse(normalized)
-    if (!parsed.success) {
-      console.error("❌ Zod validation failed", parsed.error.format())
+    // ── Validate with Zod ────────────────────────────────────────────────────
+    const validated = FeedbackResultSchema.safeParse(finalResult)
+    if (!validated.success) {
+      console.error("❌ Zod validation failed", validated.error.format())
       return NextResponse.json(
-        { error: "Schema validation failed", issues: parsed.error.format() },
-        { status: 400 },
+        { error: "Schema validation failed", issues: validated.error.format() },
+        { status: 400 }
       )
     }
 
-    console.log(`🎉 TOTAL TIME: ${Date.now() - totalStartTime}ms`)
-    console.log(`✅ Successfully completed with optimized LLM chaining!`)
-
-    // STEP 7 → Return normalized version
-    return NextResponse.json(normalized)
+    console.log(`🎉 TOTAL TIME: ${Date.now() - totalStart}ms`)
+    return NextResponse.json(validated.data)
   } catch (error) {
     console.error("Error analyzing argumentative structure:", error)
     return NextResponse.json({ error: "Failed to analyze essay" }, { status: 500 })
@@ -760,124 +593,6 @@ export async function POST(request: NextRequest) {
 //   return result
 // }
 
-// const FeedbackBatchSchema = z.object({
-//   feedback: z.array(z.array(z.string())),
-// })
-// function sentenceCount(text: string): number {
-//   // Strip HTML tags before counting to avoid periods inside tags being counted
-//   const stripped = text.replace(/<[^>]+>/g, "")
-//   return stripped
-//     .split(/[.!?]+/)
-//     .map((part) => part.trim())
-//     .filter(Boolean).length
-// }
-
-// function wrapWithStrongIfMissing(text: string): string {
-//   if (text.includes("<strong>") && text.includes("</strong>")) return text
-
-//   const prefix = text.startsWith("- ") ? "- " : ""
-//   const body = prefix ? text.slice(2).trim() : text.trim()
-//   const words = body.split(/\s+/).filter(Boolean)
-//   const phrase = words.slice(0, Math.min(4, words.length)).join(" ")
-//   if (!phrase) return `${prefix}<strong>Revision focus</strong>`
-
-//   const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-//   return `${prefix}${body.replace(new RegExp(escaped), `<strong>${phrase}</strong>`)}`
-// }
-
-// function normalizeTwoSentences(text: string): string {
-//   // Split on sentence-ending punctuation followed by a space or end-of-string
-//   // but avoid splitting inside HTML tags
-//   const stripped = text.replace(/<[^>]+>/g, "")
-//   const parts = stripped.match(/[^.!?]+[.!?]+/g)?.map((p) => p.trim()).filter(Boolean) ?? []
-//   if (parts.length <= 2) return text.trim()
-
-//   // Find the character position of the end of the 2nd sentence in the original
-//   let count = 0
-//   let cutIndex = text.length
-//   for (let i = 0; i < text.length; i++) {
-//     const ch = text[i]
-//     // Skip over HTML tags
-//     if (ch === "<") {
-//       while (i < text.length && text[i] !== ">") i++
-//       continue
-//     }
-//     if (/[.!?]/.test(ch)) {
-//       count++
-//       if (count === 2) {
-//         cutIndex = i + 1
-//         break
-//       }
-//     }
-//   }
-//   return text.slice(0, cutIndex).trim()
-// }
-
-// function repairBullet(raw: string): string {
-//   let bullet = raw.trim()
-//   if (!bullet.startsWith("- ")) {
-//     bullet = `- ${bullet}`
-//   }
-//   bullet = wrapWithStrongIfMissing(bullet)
-//   bullet = normalizeTwoSentences(bullet)
-//   if (!bullet.includes("?")) {
-//     bullet = `${bullet}${bullet.endsWith(".") ? "" : "."} How could you strengthen this?`
-//   }
-//   return bullet
-// }
-
-// function normalizeRow(rawRow: unknown, elementName?: string): string[] {
-//   const row = Array.isArray(rawRow) 
-//     ? rawRow.filter((item): item is string => typeof item === "string") 
-//     : []
-//   const repaired = row.map(repairBullet)
-
-//   // Deduplicate — remove bullets that are too similar to a previous one
-//   const deduped: string[] = []
-//   for (const bullet of repaired) {
-//     const stripped = bullet.replace(/<[^>]+>/g, "").toLowerCase().trim()
-//     const isDuplicate = deduped.some(existing => {
-//       const existingStripped = existing.replace(/<[^>]+>/g, "").toLowerCase().trim()
-//       // Consider duplicate if >60% of words overlap
-//       const aWords = new Set(stripped.split(/\s+/))
-//       const bWords = existingStripped.split(/\s+/)
-//       const overlap = bWords.filter(w => aWords.has(w)).length
-//       return overlap / Math.max(aWords.size, bWords.length) > 0.6
-//     })
-//     if (!isDuplicate) deduped.push(bullet)
-//   }
-
-//   const name = elementName ?? "element"
-//   const fallbacks = [
-//     `- What <strong>specific detail</strong> could you add to make this ${name} more convincing?`,
-//     `- Consider whether your <strong>reasoning</strong> is clear to a reader who disagrees with you — what would they need to be persuaded?`,
-//     `- How does this ${name} connect to your <strong>overall argument</strong>? Making that link explicit would strengthen your essay.`,
-//   ]
-
-//   // Fill with distinct fallbacks rather than clones
-//   let fallbackIndex = 0
-//   while (deduped.length < 3) {
-//     const fb = fallbacks[fallbackIndex % fallbacks.length]
-//     if (!deduped.includes(fb)) deduped.push(fb)
-//     fallbackIndex++
-//   }
-
-//   return deduped.slice(0, 4)
-// }
-
-// function repairFeedbackMatrix(matrix: unknown, expectedLength: number): string[][] {
-//   const rows = Array.isArray(matrix) ? matrix : []
-//   const normalized = rows.map((row, i) => normalizeRow(row))
-
-//   if (normalized.length === 0) {
-//     normalized.push(normalizeRow(["- <strong>Element diagnosis</strong> needs revision. How could you strengthen this?"]))
-//   }
-//   while (normalized.length < expectedLength) {
-//     normalized.push([...normalized[normalized.length - 1]])
-//   }
-//   return normalized.slice(0, expectedLength)
-// }
-
 // // ============================================================================
 // // ✅ OPTIMIZED 4-STEP LLM CHAIN - Works with Fine-Tuned Model Output
 // // ============================================================================
@@ -938,6 +653,7 @@ export async function POST(request: NextRequest) {
 //   elements: Array<{element: any, name: string, index?: number}>,
 //   diagnoses: string[]
 // ): Promise<string[][]> {
+  
 //   const elementsList = elements.map((e, i) => {
 //     const displayName = e.index !== undefined 
 //       ? `${e.name} #${e.index + 1}` 
@@ -948,75 +664,43 @@ export async function POST(request: NextRequest) {
 //    Diagnosis: ${diagnoses[i]}`
 //   }).join('\n\n')
 
-//   //this is chinese public school year 1 feedback, use chinese also? refined prompt. 
+//   const completion = await openai.chat.completions.create({
+//     model: "gpt-4o",
+//     response_format: { type: "json_object" },
+//     messages: [
+//       {
+//         role: "system",
+//         content: `You are an expert writing coach providing constructive feedback.
 
-//   const systemPrompt = `
-//   You are a thoughtful, experienced writing coach giving personalised feedback on a student’s argumentative essay. Your tone is encouraging but honest — like a teacher who knows the student's work well.
+// For EACH element below, provide 3-4 bullet points of indirect feedback.
 
-// Return STRICT JSON only:
-// {"feedback":[["point1","point2","point3"], ...]}
-// One array per element. Each array must contain exactly 3 feedback points.
+// Rules:
+// - If effectiveness is "Effective": 
+//   * Give positive reinforcement
+//   * Explain why the element is strong (clarity, persuasiveness, alignment)
+//   * Include suggestions to improve even further
+  
+// - If "Adequate", "Ineffective", or "Missing": 
+//   * Provide guidance for improvement
+//   * Use <strong>...</strong> tags to highlight important concepts
+//   * Be encouraging but specific
+//   * Give reflective prompts that guide the student to revise
+//   * Do NOT supply exact rewritten sentences or replacement words
 
-// Global Rules:
-// - Each of the 3 points MUST address a different dimension (e.g., reasoning depth, evidence strength, specificity, warrant logic, structure, nuance, counterargument quality).
-// - Each point must clearly reference something specific from the student's actual text.
-// - Do NOT rewrite the student's sentences.
-// - Do NOT repeat the same idea in different wording.
-// - No prose outside JSON.
+// Example feedback point:
+// "Your <strong>claim is clear</strong>, but instead of <strong>repeating it</strong> in every paragraph, state it once strongly in the introduction and let each body paragraph focus on <strong>one reason</strong>."
 
-// If effectiveness is "Effective":
-// - Provide specific reinforcement.
-// - Explain why the element works rhetorically.
-// - At least one point must identify a subtle limitation or missed opportunity for refinement.
-
-// If effectiveness is "Adequate", "Ineffective", or "Missing":
-// - Provide actionable guidance.
-// - Use <strong>...</strong> tags around the key concept being discussed.
-// - Include at least one reflective question.
-// - Do NOT supply rewritten sentences or replacement wording.
-
-// Avoid generic phrases like:
-// - "add more detail"
-// - "improve persuasiveness"
-// - "develop this further"
-// `
-
-//   const runFeedbackRequest = async (repairInstruction?: string) => {
-//     const completion = await openai.chat.completions.create({
-//       model: "gpt-4o",
-//       response_format: { type: "json_object" },
-//       messages: [
-//         {
-//           role: "system",
-//           content: systemPrompt,
-//         },
-//         {
-//           role: "user",
-//           content: `Elements with diagnoses:\n\n${elementsList}\n\nProvide feedback for each element in order.${repairInstruction ? `\n\nRepair note: ${repairInstruction}` : ""}`,
-//         },
-//       ],
-//     })
-
-//     const parsed = JSON.parse(completion.choices[0].message.content || '{"feedback": []}')
-//     return parsed.feedback
-//   }
-
-//   try {
-//     const rawFeedback = await runFeedbackRequest()
-
-//     const normalized = elements.map((_, i) => {
-//       const item = rawFeedback?.[i]
-//       if (!Array.isArray(item)) {
-//         return []
+// Return JSON: {"feedback": [["point1", "point2", "point3"], ["point1", "point2", "point3"], ...]}`
+//       },
+//       {
+//         role: "user",
+//         content: `Elements with diagnoses:\n\n${elementsList}\n\nProvide feedback for each element in order:`
 //       }
-//       return item.map((point: unknown) => String(point))
-//     })
-
-//     return normalized
-//   } catch (error) {
-//     console.error("Error while generating batch feedback:", error)
-//     return elements.map(() => [])
-//   }
+//     ]
+//   })
+  
+//   const result = JSON.parse(completion.choices[0].message.content || '{"feedback": []}')
+//   return result.feedback || []
 // }
 
 // // STEP 3: Generate suggestions for ALL non-effective elements in ONE call
@@ -1164,9 +848,6 @@ export async function POST(request: NextRequest) {
 //   // STEP 2: Feedback for ALL (1 API call)
 //   console.log('📍 Step 2/4: Generating feedback for ALL elements...')
 //   const feedbacks = await batchFeedbackAll(elements, diagnoses)
-// // ensure every element has at least an empty array
-//   const safeFeedbacks = elements.map((_, i) => feedbacks[i] ?? [])
-
 //   console.log(`✅ Step 2/4 complete (${Date.now() - startTime}ms)`)
   
 //   // STEP 3: Suggestions for ALL non-effective (1 API call)
@@ -1186,7 +867,7 @@ export async function POST(request: NextRequest) {
 //   return elements.map((e, i) => ({
 //     ...e.element,
 //     diagnosis: diagnoses[i] || "",
-//     feedback: safeFeedbacks[i] || [],
+//     feedback: feedbacks[i] || [],
 //     suggestion: suggestions[i] || "",
 //     reason: reasons[i] || ""
 //   }))

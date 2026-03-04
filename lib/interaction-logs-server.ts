@@ -1,7 +1,6 @@
 export type InteractionEventType =
   | "initial_draft"
   | "analyze_clicked"
-  | "issue_flagged"
   | "level_viewed"
   | "suggestion_revealed"
   | "edit_detected"
@@ -78,8 +77,15 @@ function getSupabaseConfig() {
   const supabaseUrl = process.env.SUPABASE_URL
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
+  console.log("🔎 Supabase Config Check")
+  console.log("SUPABASE_URL exists:", !!supabaseUrl)
+  console.log("SERVICE_ROLE_KEY exists:", !!serviceRoleKey)
+
   if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error("Supabase environment is missing. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.")
+    console.error("❌ Missing Supabase environment variables")
+    throw new Error(
+      "Supabase environment is missing. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY."
+    )
   }
 
   return { supabaseUrl, serviceRoleKey }
@@ -168,6 +174,9 @@ export async function insertIssues(inputs: InsertIssueInput[]): Promise<IssueRow
 
   const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
 
+  console.log("🚀 Inserting issues")
+  console.log("Payload:", inputs)
+
   const response = await fetch(`${supabaseUrl}/rest/v1/issues`, {
     method: "POST",
     headers: {
@@ -179,41 +188,80 @@ export async function insertIssues(inputs: InsertIssueInput[]): Promise<IssueRow
     body: JSON.stringify(inputs),
   })
 
+  console.log("📡 Response status:", response.status)
+
+  const text = await response.text()
+  console.log("📦 Raw response body:", text)
+
   if (!response.ok) {
-    const body = await response.text()
-    throw new Error(`Failed to insert issues: ${response.status} ${body}`)
+    console.error("❌ Insert issues failed")
+    throw new Error(`Failed to insert issues: ${response.status} ${text}`)
   }
 
-  return (await response.json()) as IssueRow[]
+  const rows = JSON.parse(text) as IssueRow[]
+  console.log("✅ Insert success:", rows)
+
+  return rows
 }
 
-export async function insertInteractionLog(input: InsertInteractionLogInput): Promise<InteractionLogRow> {
+export async function insertInteractionLog(
+  input: InsertInteractionLogInput
+): Promise<InteractionLogRow> {
   const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/interaction_logs`, {
-    method: "POST",
-    headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=representation",
-    },
-    body: JSON.stringify({
-      session_id: input.session_id,
-      issue_id: input.issue_id ?? null,
-      event_type: input.event_type,
-      feedback_level: input.feedback_level ?? null,
-      metadata: input.metadata ?? null,
-      timestamp: input.timestamp ?? new Date().toISOString(),
-    }),
-  })
-
-  if (!response.ok) {
-    const body = await response.text()
-    throw new Error(`Failed to insert interaction log: ${response.status} ${body}`)
+  const eventToFeedbackLevel: Partial<Record<InteractionEventType, FeedbackLevel>> = {
+    initial_draft: 1,
+    level_viewed: 2,
+    suggestion_revealed: 3,
   }
 
-  const rows = (await response.json()) as InteractionLogRow[]
+  const computedFeedbackLevel =
+    eventToFeedbackLevel[input.event_type] ??
+    input.feedback_level ??
+    null
+
+  const payload = {
+    session_id: input.session_id,
+    issue_id: input.issue_id ?? null,
+    event_type: input.event_type,
+    feedback_level: computedFeedbackLevel,
+    metadata: input.metadata ?? null,
+    timestamp: input.timestamp ?? new Date().toISOString(),
+  }
+
+  console.log("🚀 Inserting interaction log")
+  console.log("URL:", `${supabaseUrl}/rest/v1/interaction_logs`)
+  console.log("Payload:", payload)
+
+  const response = await fetch(
+    `${supabaseUrl}/rest/v1/interaction_logs`,
+    {
+      method: "POST",
+      headers: {
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify(payload),
+    }
+  )
+
+  console.log("📡 Response status:", response.status)
+
+  const text = await response.text()
+  console.log("📦 Raw response body:", text)
+
+  if (!response.ok) {
+    console.error("❌ Insert failed")
+    throw new Error(
+      `Failed to insert interaction log: ${response.status} ${text}`
+    )
+  }
+
+  const rows = JSON.parse(text) as InteractionLogRow[]
+  console.log("✅ Insert success:", rows[0])
+
   return rows[0]
 }
 
@@ -354,9 +402,9 @@ export function buildRevisionBehaviorData(logs: InteractionLogRow[], snapshots: 
   )
 
   const feedbackLevelCounts = {
-    level1: logsInWindow.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 1).length,
-    level2: logsInWindow.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 2).length,
-    level3: logsInWindow.filter((log) => log.event_type === "level_viewed" && log.feedback_level === 3).length,
+    level1: logsInWindow.filter((log) => log.feedback_level === 1).length,
+    level2: logsInWindow.filter((log) => log.feedback_level === 2).length,
+    level3: logsInWindow.filter((log) => log.feedback_level === 3).length,
   }
 
   const firstDraftText = initialDraftSnapshot?.draft_text ?? ""

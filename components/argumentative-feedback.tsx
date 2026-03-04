@@ -331,7 +331,7 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                           currentElement.suggestion && (
                             <div className="mt-3 p-3 rounded-lg bg-red-50 border border-red-200 animate-in slide-in-from-top-2 duration-200">
                               <h5 className="font-medium mb-2 text-red-800">
-                                Suggested Correction:
+                                优化表达示例:
                               </h5>
                               <p className="text-sm text-red-700">
                                 {currentElement.suggestion}
@@ -341,7 +341,7 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
 
                         {showCorrections.has(selectedElement) && currentElement.reason && (
                           <div className="mt-3 p-3 rounded-lg bg-amber-50 border border-amber-200 animate-in slide-in-from-top-2 duration-200">
-                            <h5 className="font-medium mb-2 text-amber-800">Reason:</h5>
+                            <h5 className="font-medium mb-2 text-amber-800">优化说明:</h5>
                             <p className="text-sm text-amber-700">{currentElement.reason}</p>
                           </div>
                         )}
