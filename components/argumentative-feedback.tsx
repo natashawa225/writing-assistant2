@@ -277,16 +277,32 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                                 </h5>
                                 <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
                                 {Array.isArray(currentElement.feedback) ? (
-                                  <ul className="list-disc pl-5 text-sm text-gray-700 mt-1 space-y-1">
-                                    {currentElement.feedback.map((item: string, i: number) => (
-                                      <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
-                                    ))}
-                                  </ul>
+                                  currentElement.feedback.length === 1 ? (
+                                    // single string in array — treat like a string
+                                    <div className="text-sm text-gray-700 mt-1 space-y-2">
+                                      {currentElement.feedback[0]
+                                        .split(/(?=Issue:|Reflection:|Hint:)/)
+                                        .filter(Boolean)
+                                        .map((line: string, i: number) => (
+                                          <p key={i} dangerouslySetInnerHTML={{ __html: line.trim().replace(/^(Issue:|Reflection:|Hint:)/, '<strong>$1</strong>') }} />
+                                        ))}
+                                    </div>
+                                  ) : (
+                                    <ul className="list-disc pl-5 text-sm text-gray-700 mt-1 space-y-1">
+                                      {currentElement.feedback.map((item: string, i: number) => (
+                                        <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+                                      ))}
+                                    </ul>
+                                  )
                                 ) : (
-                                  <p
-                                    className="text-sm text-gray-700 mt-1"
-                                    dangerouslySetInnerHTML={{ __html: currentElement.feedback }}
-                                  />
+                                  <div className="text-sm text-gray-700 mt-1 space-y-2">
+                                    {currentElement.feedback
+                                      .split(/(?=Issue:|Reflection:|Hint:)/)
+                                      .filter(Boolean)
+                                      .map((line: string, i: number) => (
+                                        <p key={i} dangerouslySetInnerHTML={{ __html: line.trim().replace(/^(Issue:|Reflection:|Hint:)/, '<strong>$1</strong>') }} />
+                                      ))}
+                                  </div>
                                 )}
                                 </div>
                               </div>
