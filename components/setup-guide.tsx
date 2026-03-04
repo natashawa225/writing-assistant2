@@ -73,7 +73,7 @@ export function SetupGuide() {
                 <li><strong>Counterclaim（反方观点）:</strong>与您立场相反的观点。应该合理，并对你的立场提出挑战。</li>
                 <li><strong>Rebuttal（反驳）:</strong> 你对反方观点的回应。应该清楚说明为什么对方观点不正确。</li>
                 <li><strong>Evidence（证据）:</strong>支持论点的事实、例子或数据。应该相关、客观。</li>
-                <li><strong>Conclusion（结论）:</strong> 总结主要观点，并再次有力地重申你的立场。</li>y.
+                <li><strong>Conclusion（结论）:</strong> 总结主要观点，并再次有力地重申你的立场。</li>
             </ul>
             </div>
 

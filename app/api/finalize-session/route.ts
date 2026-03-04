@@ -78,20 +78,34 @@ Suggested Focus for Future Revision
           },
           {
             role: "user",
-            content: `Generate a structured report with the exact heading \"Revision Insights\".
+            content: `
+            Generate a report titled \"Revision Insights\".
 
-Requirements:
-- Do NOT summarize essay content.
-- Use revision-behavior data only.
-- Include these sections in order:
-  1) Revision Activity Overview
-  2) Feedback Escalation Pattern
-  3) Structural Changes Observed
-  4) Suggested Focus for Future Revision
-- Be specific and actionable.
+            Use ONLY the revision behavior data provided.
 
-Revision behavior data:
-${JSON.stringify(revisionData, null, 2)}`,
+            Structure the report using these sections:
+
+            1) How You Revised
+              - Describe what the student’s revision behavior suggests about their writing process.
+              - Explain how their time use and edit pattern likely influenced essay quality.
+
+            2) What Improved
+              - Identify signs of growth or stability in their argument or structure.
+              - Explain what their behavior suggests about developing writing control.
+
+            3) Revision Habits to Strengthen
+              - Identify one helpful habit shown in the data.
+              - Identify one limiting habit shown in the data.
+
+            4) What to Try Next Time
+              - Give 2–4 specific, practical revision strategies.
+              - Suggestions must be concrete (e.g., “revise one paragraph deeply” instead of “improve structure”).
+
+            Avoid technical language like "Level 2 feedback frequency".
+            Translate feedback patterns into meaningful explanations.
+
+            Revision behavior data:
+            ${JSON.stringify(revisionData, null, 2)}`,
           },
         ],
       })

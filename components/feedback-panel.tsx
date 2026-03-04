@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ChevronLeft, X, GripVertical, Eye, BookOpen } from "lucide-react"
-import { ArgumentativeFeedback } from "./argumentative-feedback"
+import { ArgumentativeFeedback } from "@/components/argumentative-feedback"
 import type { AnalysisResult, LexicalAnalysis } from "@/lib/types"
 
 interface FeedbackPanelProps {

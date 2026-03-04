@@ -1,4 +1,6 @@
 export interface ArgumentElement {
+  id?: string
+  parentClaimId?: string
   text: string
   effectiveness: "Effective" | "Adequate" | "Ineffective" | "Missing"
   feedback: string

@@ -1,8 +1,8 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, XCircle, AlertTriangle, Info, Eye, Sparkles } from "lucide-react"
@@ -16,6 +16,64 @@ interface ArgumentDiagramProps {
 
 export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDiagramProps) {
   const [selectedElement, setSelectedElement] = useState<string | null>(null)
+  type EvidenceNode = ArgumentElement & { id?: string; parentClaimId?: string }
+  type ClaimNode = ArgumentElement & { id?: string }
+  const CLAIM_TOP = 250
+  const EVIDENCE_TOP = 360
+  const CLAIM_LEFT_START = 54
+  const CLAIM_GAP = 240
+  const CLAIM_WIDTH = 170
+  const EVIDENCE_GAP = 148
+  const EVIDENCE_WIDTH = 100
+
+  const claims = (analysis.elements.claims ?? []) as ClaimNode[]
+  const allEvidence = (analysis.elements.evidence ?? []) as EvidenceNode[]
+  const evidenceByClaimId = useMemo(() => {
+    const map = new Map<string, Array<{ ev: EvidenceNode; globalIndex: number }>>()
+    claims.forEach((c, i) => map.set(c.id ?? `claim-${i + 1}`, []))
+
+    allEvidence.forEach((ev, globalIndex) => {
+      if (!ev.parentClaimId) return
+      const bucket = map.get(ev.parentClaimId)
+      if (bucket) bucket.push({ ev, globalIndex })
+    })
+
+    return map
+  }, [claims, allEvidence])
+
+  const evidenceArrowLines = useMemo(() => {
+    const lines: Array<{ x: number; y1: number; y2: number }> = []
+
+    claims.forEach((claim, claimIndex) => {
+      const claimId = claim.id ?? `claim-${claimIndex + 1}`
+      const claimLeft = CLAIM_LEFT_START + claimIndex * CLAIM_GAP
+      const claimCenter = claimLeft + CLAIM_WIDTH / 2
+      const evs = evidenceByClaimId.get(claimId) ?? []
+
+      if (evs.length === 0) return
+
+      if (evs.length === 1) {
+        lines.push({
+          x: claimCenter,
+          y1: EVIDENCE_TOP + 10,
+          y2: CLAIM_TOP + 70,
+        })
+        return
+      }
+
+      evs.forEach((_, localIndex) => {
+        const clusterWidth = (evs.length - 1) * EVIDENCE_GAP
+        const evCenter = claimCenter - clusterWidth / 2 + localIndex * EVIDENCE_GAP
+        lines.push({
+          x: evCenter,
+          y1: EVIDENCE_TOP + 10,
+          y2: CLAIM_TOP + 70,
+        })
+      })
+    })
+
+    return lines
+  }, [claims, evidenceByClaimId])
 
   const getElementStyle = (effectiveness: string, found: boolean) => {
     if (!found) {
@@ -133,10 +191,19 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
             <line x1="365" y1="260" x2="365" y2="202" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
             <line x1="580" y1="260" x2="580" y2="202" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
 
-            {/* Evidence to Claims */}
-            <line x1="85" y1="370" x2="85" y2="320" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
-            <line x1="190" y1="370" x2="190" y2="320" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
-            <line x1="365" y1="370" x2="365" y2="320" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            {/* Evidence to Claims (dynamic) */}
+            {evidenceArrowLines.map((line, index) => (
+              <line
+                key={`ev-claim-arrow-${index}`}
+                x1={line.x}
+                y1={line.y1}
+                x2={line.x}
+                y2={line.y2}
+                stroke="#6b7280"
+                strokeWidth="3"
+                markerEnd="url(#arrowhead)"
+              />
+            ))}
 
             {/* Counterclaim to Rebuttal/Evidence */}
             <line x1="540" y1="370" x2="540" y2="320" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
@@ -217,48 +284,39 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               style={{ top: "250px", left: "510px", minWidth: "170px" }}
             />
 
-            {/* Evidence blocks - Fourth level */}
-            {/* {Array.isArray(analysis.elements.evidence) &&
-              analysis.elements.evidence.map((evidence, index) => (
-                <DiagramElement
-                  key={`evidence-${index}`}
-                  id={`evidence-${index}`}
-                  label={`Evidence ${index + 1}`}
-                  element={evidence}
-                  style={{ top: `390px`, left: `${65 + index * 175}px` }}
-                />
-              ))} */}
+            {claims.map((claim, claimIndex) => {
+              const claimId = claim.id ?? `claim-${claimIndex + 1}`
+              const claimLeft = CLAIM_LEFT_START + claimIndex * CLAIM_GAP
+              const claimCenter = claimLeft + CLAIM_WIDTH / 2
+              const evs = evidenceByClaimId.get(claimId) ?? []
 
-            {Array.from({ length: 2 }).map((_, index) => {
-              const claim = analysis.elements.claims?.[index] || { text: "", missing: true }
               return (
-                <DiagramElement
-                  key={`claim-${index}`}
-                  id={`claim-${index}`}
-                  label={`Claim ${index + 1}`}
-                  element={claim}
-                  style={{
-                    top: "250px",
-                    left: `${54 + index * 240}px`,
-                    minWidth: "170px",
-                  }}
-                />
-              )
-            })}
+                <React.Fragment key={claimId}>
+                  <DiagramElement
+                    id={`claim-${claimIndex}`}
+                    label={`Claim ${claimIndex + 1}`}
+                    element={claim}
+                    style={{ top: `${CLAIM_TOP}px`, left: `${claimLeft}px`, minWidth: `${CLAIM_WIDTH}px` }}
+                  />
 
-            {Array.from({ length: 3 }).map((_, index) => {
-              const evidence = analysis.elements.evidence?.[index] || { text: "", missing: true }
-              return (
-                <DiagramElement
-                  key={`evidence-${index}`}
-                  id={`evidence-${index}`}
-                  label={`Evidence ${index + 1}`}
-                  element={evidence}
-                  style={{
-                    top: "360px",
-                    left: `${18 + index * 148}px`,
-                  }}
-                />
+                  {evs.map(({ ev, globalIndex }, localIndex) => {
+                    const clusterWidth = (evs.length - 1) * EVIDENCE_GAP
+                    const evCenter = claimCenter - clusterWidth / 2 + localIndex * EVIDENCE_GAP
+                    const isClaim1SingleEvidence = claimIndex === 0 && evs.length === 1
+                    const evidenceWidth = isClaim1SingleEvidence ? EVIDENCE_WIDTH : EVIDENCE_WIDTH
+                    const evLeft = evCenter - evidenceWidth / 2
+
+                    return (
+                      <DiagramElement
+                        key={ev.id ?? `evidence-${globalIndex}`}
+                        id={`evidence-${globalIndex}`}
+                        label={`Evidence ${localIndex + 1}`}
+                        element={ev}
+                        style={{ top: `${EVIDENCE_TOP}px`, left: `${evLeft}px`, minWidth: `${evidenceWidth}px` }}
+                      />
+                    )
+                  })}
+                </React.Fragment>
               )
             })}
 
@@ -325,21 +383,21 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
           <div className="mt-4 p-4 bg-gradient-to-br from-red-50 to-pink-50 border-2 border-red-200 rounded-lg">
             <h4 className="font-medium text-red-800 mb-2 flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
-              可以补充的论证要素
+              可以进一步完善你的论证
             </h4>
             <p className="text-red-700 text-sm mb-2">
-            你的文章中暂未体现以下论证要素:
+            尝试思考如何让每个论证要素更清晰、有力，以增强的完整性和说服力。
             </p>
-            <div className="flex flex-wrap gap-2">
+            {/* <div className="flex flex-wrap gap-2">
               {missingElements.map((element) => (
                 <Badge key={element} variant="destructive" className="text-xs">
                   {element.charAt(0).toUpperCase() + element.slice(1)}
                 </Badge>
               ))}
-            </div>
-            <p className="text-red-700 text-sm mt-2">
+            </div> */}
+            {/* <p className="text-red-700 text-sm mt-2">
             建议补充这些要素，以增强论证的完整性与说服力。 
-            </p>
+            </p> */}
           </div>
         )}
 

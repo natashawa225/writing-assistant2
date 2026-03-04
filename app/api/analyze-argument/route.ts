@@ -16,6 +16,8 @@ const ReasonSchema = z.union([
 ]).default("")
 
 const ArgumentElementSchema = z.object({
+  id: z.string().optional(),
+  parentClaimId: z.string().optional(),
   text: z.string().default(""),
   effectiveness: z.enum(["Effective", "Adequate", "Ineffective", "Missing"]).default("Missing"),
   feedback: z.array(z.string()).default([]),
@@ -55,7 +57,7 @@ const TAG_MAP: Record<string, string> = {
   S1:   "conclusion",
 }
 
-type ParsedElement = { text: string; effectiveness: string }
+type ParsedElement = { text: string; effectiveness: string; id?: string; parentClaimId?: string }
 type ParsedXML = {
   lead?: ParsedElement
   position?: ParsedElement
@@ -78,17 +80,22 @@ function parseXMLOutput(xml: string): ParsedXML {
     rebuttal_evidence: [],
   }
 
-  const tagPattern = /<(L1|P1|C1|D1|CT1|CD1|R1|RD1|S1)\s+effectiveness="([^"]+)">([\s\S]*?)<\/\1>/g
+  const tagPattern = /<(L1|P1|C1|D1|CT1|CD1|R1|RD1|S1)([^>]*)>([\s\S]*?)<\/\1>/g
   let match: RegExpExecArray | null
 
   while ((match = tagPattern.exec(xml)) !== null) {
-    const [, tag, effectiveness, rawText] = match
+    const [, tag, attributes, rawText] = match
     const key = TAG_MAP[tag]
     if (!key) continue
+    const effectiveness = attributes.match(/effectiveness="([^"]+)"/i)?.[1] ?? "Adequate"
+    const parentClaimId = attributes.match(/parent(?:ClaimId)?="([^"]+)"/i)?.[1]
+    const id = attributes.match(/id="([^"]+)"/i)?.[1]
 
     const element: ParsedElement = {
       text: rawText.trim(),
       effectiveness: normalizeEffectiveness(effectiveness),
+      ...(id ? { id } : {}),
+      ...(parentClaimId ? { parentClaimId } : {}),
     }
 
     const arrayKeys = ["claims", "evidence", "counterclaims", "counterclaim_evidence", "rebuttals", "rebuttal_evidence"]
@@ -117,12 +124,28 @@ function normalizeEffectiveness(raw: string): "Effective" | "Adequate" | "Ineffe
 // ============================================================================
 
 function makeEmpty() {
-  return { text: "", effectiveness: "Missing" as const, feedback: [], suggestion: "", reason: "" }
+  return {
+    id: undefined,
+    parentClaimId: undefined,
+    text: "",
+    effectiveness: "Missing" as const,
+    feedback: [],
+    suggestion: "",
+    reason: "",
+  }
 }
 
-function toElement(el: ParsedElement | undefined) {
+function toElement(el: ParsedElement | undefined, id?: string, parentClaimId?: string) {
   if (!el) return makeEmpty()
-  return { text: el.text, effectiveness: el.effectiveness as any, feedback: [], suggestion: "", reason: "" }
+  return {
+    id: id ?? (el as any).id,
+    parentClaimId: parentClaimId ?? (el as any).parentClaimId,
+    text: el.text,
+    effectiveness: el.effectiveness as any,
+    feedback: [],
+    suggestion: "",
+    reason: "",
+  }
 }
 
 function padArray<T>(arr: T[], target: number, fill: () => T): T[] {
@@ -132,18 +155,126 @@ function padArray<T>(arr: T[], target: number, fill: () => T): T[] {
 }
 
 function enrichElements(parsed: ParsedXML) {
+  const claimIds = parsed.claims.map((claim, i) => (claim as any).id ?? `claim-${i + 1}`)
+  const defaultClaimId = claimIds[0] ?? "claim-1"
   return {
     elements: {
-      lead:                 toElement(parsed.lead),
-      position:             toElement(parsed.position),
-      claims:               padArray(parsed.claims.map(toElement), 2, makeEmpty),
-      counterclaim:         toElement(parsed.counterclaims[0]),
-      counterclaim_evidence:toElement(parsed.counterclaim_evidence[0]),
-      rebuttal:             toElement(parsed.rebuttals[0]),
-      rebuttal_evidence:    toElement(parsed.rebuttal_evidence[0]),
-      evidence:             padArray(parsed.evidence.map(toElement), 3, makeEmpty),
-      conclusion:           toElement(parsed.conclusion),
+      lead:                 toElement(parsed.lead, "lead-1"),
+      position:             toElement(parsed.position, "position-1"),
+      claims:               padArray(parsed.claims.map((claim, i) => toElement(claim, claimIds[i])), 2, makeEmpty),
+      counterclaim:         toElement(parsed.counterclaims[0], "counterclaim-1"),
+      counterclaim_evidence:toElement(parsed.counterclaim_evidence[0], "counterclaim-evidence-1"),
+      rebuttal:             toElement(parsed.rebuttals[0], "rebuttal-1"),
+      rebuttal_evidence:    toElement(parsed.rebuttal_evidence[0], "rebuttal-evidence-1"),
+      evidence:             padArray(
+        parsed.evidence.map((ev, i) => {
+          const parsedParent = (ev as any).parentClaimId
+          const fallbackParent = claimIds[i % Math.max(claimIds.length, 1)] ?? defaultClaimId
+          return toElement(ev, (ev as any).id ?? `evidence-${i + 1}`, parsedParent ?? fallbackParent)
+        }),
+        3,
+        makeEmpty,
+      ),
+      conclusion:           toElement(parsed.conclusion, "conclusion-1"),
     },
+  }
+}
+
+function countMatches(text: string, pattern: RegExp): number {
+  return (text.match(pattern) ?? []).length
+}
+
+function shouldSplitEvidenceCandidate(text: string): boolean {
+  const trimmed = text.trim()
+  if (!trimmed) return false
+
+  const citationSignals =
+    countMatches(trimmed, /\b\d{4}\b/g) +
+    countMatches(trimmed, /%/g) +
+    countMatches(trimmed, /\b(study|research|according to|report|survey|data|statistic)\b/gi)
+
+  const discourseSignals = countMatches(
+    trimmed,
+    /\b(first|second|third|also|moreover|however|furthermore|in addition|for example|for instance)\b|;/gi,
+  )
+
+  const isLong = trimmed.length > 220 || trimmed.split(/\s+/).length > 40
+
+  return citationSignals >= 2 || discourseSignals >= 2 || isLong
+}
+
+function dedupeEvidenceParts(parts: string[]): string[] {
+  const normalized = new Set<string>()
+  const result: string[] = []
+  for (const part of parts.map((p) => p.trim()).filter(Boolean)) {
+    const key = part.toLowerCase().replace(/\s+/g, " ")
+    if (key.length < 8) continue
+    if (normalized.has(key)) continue
+    normalized.add(key)
+    result.push(part)
+  }
+  return result
+}
+
+async function conditionalSplitEvidence(parsed: ParsedXML): Promise<ParsedXML> {
+  if (parsed.evidence.length === 0) return parsed
+
+  const firstEvidence = parsed.evidence[0]
+  if (!firstEvidence || !shouldSplitEvidenceCandidate(firstEvidence.text)) {
+    return parsed
+  }
+
+  type SplitResponse = { split: boolean; parts: string[] }
+  type LegacyChatCompletionClient = {
+    createChatCompletion: (params: {
+      model: string
+      temperature: number
+      response_format: { type: "json_object" }
+      messages: Array<{ role: "system" | "user"; content: string }>
+    }) => Promise<{
+      data: {
+        choices: Array<{ message?: { content?: string } }>
+      }
+    }>
+  }
+
+  try {
+    const client = openai as unknown as LegacyChatCompletionClient
+    const completion = await client.createChatCompletion({
+      model: "gpt-4o-mini",
+      temperature: 0,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content:
+            'Return valid json only with exact shape {"split": boolean, "parts": string[]}. If split=true, return at most 2 parts.',
+        },
+        {
+          role: "user",
+          content: `Analyze ONLY this first evidence chunk. Decide whether it should be split into at most two parts.\n\nEvidence:\n${firstEvidence.text}`,
+        },
+      ],
+    })
+
+    const raw = completion.data.choices[0]?.message?.content ?? '{"split": false, "parts": []}'
+    const parsedJson = JSON.parse(raw) as SplitResponse
+    const parts = dedupeEvidenceParts(Array.isArray(parsedJson.parts) ? parsedJson.parts : []).slice(0, 2)
+    const shouldSplit = Boolean(parsedJson.split) && parts.length === 2
+
+    if (!shouldSplit) return parsed
+
+    const replacement: ParsedElement[] = [
+      { ...firstEvidence, text: parts[0], id: `${(firstEvidence as any).id ?? "evidence-1"}-part-1` },
+      { ...firstEvidence, text: parts[1], id: `${(firstEvidence as any).id ?? "evidence-1"}-part-2` },
+    ]
+
+    return {
+      ...parsed,
+      evidence: [...replacement, ...parsed.evidence.slice(1)],
+    }
+  } catch {
+    return parsed
   }
 }
 
@@ -194,7 +325,7 @@ async function batchFeedbackAll(elements: ElementEntry[], prompt: string): Promi
     messages: [
       {
         role: "system",
-        content: `Provide indirecta and constructive feedback on argumentative essay elements.
+        content: `Provide indirect and constructive feedback on argumentative essay elements.
 
 Essay prompt: """${prompt}"""
 
@@ -205,9 +336,10 @@ Rules:
 - If "Adequate", "Ineffective", or "Missing":
   * Goal: Help the student notice the issue and reflect on how to improve it.
   * Write three short sections:
-  * Issue: 1–2 sentences describing what may be unclear, missing, or underdeveloped. Do NOT rewrite the student’s sentence.
-  * Reflection: Ask 1–2 guiding questions that encourage the student to think about how to improve it. Do NOT provide the corrected version.
-  * Hint (optional): Give one brief general hint if needed, but do not give a full example or rewrite.
+    - Issue: 1–2 sentences describing what may be unclear, missing, or underdeveloped. Do NOT rewrite the sentence.
+    - Reflection: Ask 1–2 guiding questions to help the student think about how to improve it. Do NOT give the corrected version.
+    - Hint (optional): Give one brief, general hint if needed. Do NOT rewrite or give full examples.
+  * Each section should be **on its own line**, separated by \`\n\` for better readability.
 
 Use simple, student-friendly language.
 Keep the tone supportive and encouraging.
@@ -218,13 +350,8 @@ Avoid:
 - Giving a full corrected version
 - Being overly vague
 
-Output exactly in this format:
-
-Issue: ...
-Reflection: ...
-Hint: ...
-
 {"feedback":[["paragraph1","paragraph2","paragraph3"]]}
+Return valid json only.
 `
       },
       {
@@ -271,7 +398,7 @@ async function batchSuggestionsAndReasonsAll(
         content: `You are a supportive writing teacher helping students improve their argumentative essays.
 
 For EACH element below, provide:
-1. A suggestion: Write one clear and specific revision suggestion (you may rewrite briefly).
+1. A suggestion: Write **one clear, specific revision that directly improves the sentence or element**. Prefer rewriting the sentence or a concise portion of it, rather than giving a general instruction. Focus on actionable corrections that could appear in the student’s text.
 2. A reason with three aspects:
    - Rhetorical function: What this element does in an argument and how it works
    - Reader impact: How it affects the reader's understanding or engagement, and what may happen if it is missing
@@ -294,7 +421,8 @@ Return JSON:
     {"suggestion": "...", "reason": "..."},
     ...
   ]
-}`,
+}
+Return valid json only.`,
       },
       {
         role: "user",
@@ -367,6 +495,8 @@ S1 = Concluding Statement
 
 Instructions:
 - Wrap each argumentative element in its correct XML tag and include an effectiveness attribute.
+- For each claim (C1), include id="claim-N".
+- For each evidence (D1), include id="evidence-N" and parentClaimId="claim-N" referencing the claim it supports.
 - Do not modify the original wording.
 - Output only the tagged essay.`
 
@@ -413,7 +543,8 @@ export async function POST(request: NextRequest) {
 
     // ── Parse XML → internal structure ──────────────────────────────────────
     const parsed = parseXMLOutput(rawXML)
-    const enriched = enrichElements(parsed)
+    const parsedWithConditionalEvidenceSplit = await conditionalSplitEvidence(parsed)
+    const enriched = enrichElements(parsedWithConditionalEvidenceSplit)
 
     // ── Run 2-step feedback chain ────────────────────────────────────────────
     const allElements = collectElements(enriched)
