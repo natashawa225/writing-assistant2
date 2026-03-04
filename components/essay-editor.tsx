@@ -311,7 +311,7 @@ export function EssayEditor({
         <div className="mb-4">
           <h2 className="text-xl font-semibold">Essay Editor</h2>
           <p className="text-sm text-muted-foreground">
-          Write a 200-300 word essay within 30-40 minuteson the given topic, and then revise it carefully
+          Write a 200-300 word essay within 30-40 minutes on the given topic, and then revise it carefully
           </p>
         </div>
 
