@@ -87,7 +87,7 @@ function parseXMLOutput(xml: string): ParsedXML {
     const [, tag, attributes, rawText] = match
     const key = TAG_MAP[tag]
     if (!key) continue
-    const effectiveness = attributes.match(/effectiveness="([^"]+)"/i)?.[1] ?? "Adequate"
+    const effectiveness = attributes.match(/effectiveness="([^"]+)"/i)?.[1] ?? "Missing"
     const parentClaimId = attributes.match(/parent(?:ClaimId)?="([^"]+)"/i)?.[1]
     const id = attributes.match(/id="([^"]+)"/i)?.[1]
 
@@ -116,7 +116,7 @@ function normalizeEffectiveness(raw: string): "Effective" | "Adequate" | "Ineffe
     ineffective: "Ineffective",
     missing: "Missing",
   }
-  return map[raw.toLowerCase()] ?? "Adequate"
+  return map[raw.toLowerCase()] ?? "Missing"
 }
 
 // ============================================================================
@@ -156,13 +156,13 @@ function enrichElements(parsed: ParsedXML) {
       lead:                 toElement(parsed.lead, "lead-1"),
       position:             toElement(parsed.position, "position-1"),
       // Do not pad claims; render only claims returned by parsed XML.
-      claims:               parsed.claims.map((claim, i) => toElement(claim, claimIds[i])),
+      claims:               parsed.claims.slice(0,2).map((claim, i) => toElement(claim, claimIds[i])),
       counterclaim:         toElement(parsed.counterclaims[0], "counterclaim-1"),
       counterclaim_evidence:toElement(parsed.counterclaim_evidence[0], "counterclaim-evidence-1"),
       rebuttal:             toElement(parsed.rebuttals[0], "rebuttal-1"),
       rebuttal_evidence:    toElement(parsed.rebuttal_evidence[0], "rebuttal-evidence-1"),
       // Do not pad evidence; preserve only parsed XML evidence nodes.
-      evidence:             parsed.evidence.map((ev, i) => {
+      evidence:             parsed.evidence.slice(0,2).map((ev, i) => {
         const parsedParent = (ev as any).parentClaimId
         const fallbackParent = claimIds[i % Math.max(claimIds.length, 1)] ?? defaultClaimId
         return toElement(ev, (ev as any).id ?? `evidence-${i + 1}`, parsedParent ?? fallbackParent)
@@ -209,7 +209,7 @@ function dedupeEvidenceParts(parts: string[]): string[] {
 }
 
 async function conditionalSplitEvidence(parsed: ParsedXML): Promise<ParsedXML> {
-  if (parsed.evidence.length === 0) return parsed
+  if (parsed.evidence.length >= 2) return parsed
 
   const firstEvidence = parsed.evidence[0]
   if (!firstEvidence || !shouldSplitEvidenceCandidate(firstEvidence.text)) {
