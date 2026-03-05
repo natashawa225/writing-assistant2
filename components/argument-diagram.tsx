@@ -18,6 +18,11 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
   const [selectedElement, setSelectedElement] = useState<string | null>(null)
   type EvidenceNode = ArgumentElement & { id?: string; parentClaimId?: string }
   type ClaimNode = ArgumentElement & { id?: string }
+  type VisibleClaim = {
+    claim: ClaimNode
+    originalIndex: number
+    canonicalKeys: Set<string>
+  }
   const CLAIM_TOP = 250
   const EVIDENCE_TOP = 360
   const CLAIM_LEFT_START = 54
@@ -25,30 +30,74 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
   const CLAIM_WIDTH = 170
   const EVIDENCE_GAP = 148
   const EVIDENCE_WIDTH = 100
+  const MAX_VISIBLE_CLAIMS = 2
 
   const claims = (analysis.elements.claims ?? []) as ClaimNode[]
   const allEvidence = (analysis.elements.evidence ?? []) as EvidenceNode[]
-  const evidenceByClaimId = useMemo(() => {
-    const map = new Map<string, Array<{ ev: EvidenceNode; globalIndex: number }>>()
-    claims.forEach((c, i) => map.set(c.id ?? `claim-${i + 1}`, []))
+  const toCanonicalClaimKey = (value: string) => value.trim().toLowerCase().replace(/[\s_]+/g, "-")
+  const parseClaimNumber = (value?: string): number | null => {
+    if (!value) return null
+    const match = value.match(/claim[\s_-]*(\d+)/i)
+    if (!match) return null
+    const parsed = Number.parseInt(match[1], 10)
+    return Number.isNaN(parsed) ? null : parsed
+  }
+
+  const visibleClaims = useMemo<VisibleClaim[]>(() => {
+    return claims
+      .map((claim, originalIndex) => {
+        const canonicalKeys = new Set<string>()
+        if (claim.id) canonicalKeys.add(toCanonicalClaimKey(claim.id))
+        canonicalKeys.add(`claim-${originalIndex}`)
+        canonicalKeys.add(`claim-${originalIndex + 1}`)
+        return { claim, originalIndex, canonicalKeys }
+      })
+      .slice(0, MAX_VISIBLE_CLAIMS)
+  }, [claims])
+
+  const evidenceByClaimIndex = useMemo(() => {
+    const map = new Map<number, Array<{ ev: EvidenceNode; globalIndex: number }>>()
+    visibleClaims.forEach((meta) => map.set(meta.originalIndex, []))
 
     allEvidence.forEach((ev, globalIndex) => {
-      if (!ev.parentClaimId) return
-      const bucket = map.get(ev.parentClaimId)
-      if (bucket) bucket.push({ ev, globalIndex })
+      let targetClaimIndex: number | null = null
+      const parent = ev.parentClaimId
+
+      if (parent) {
+        const canonicalParent = toCanonicalClaimKey(parent)
+        const byCanonical = visibleClaims.find((meta) => meta.canonicalKeys.has(canonicalParent))
+        if (byCanonical) {
+          targetClaimIndex = byCanonical.originalIndex
+        } else {
+          const parsed = parseClaimNumber(parent)
+          if (parsed !== null) {
+            const candidates = [parsed - 1, parsed].filter((idx) => idx >= 0)
+            const byNumber = candidates.find((idx) => visibleClaims.some((meta) => meta.originalIndex === idx))
+            if (byNumber !== undefined) {
+              targetClaimIndex = byNumber
+            }
+          }
+        }
+      }
+
+      if (targetClaimIndex === null) {
+        if (visibleClaims.length === 0) return
+        targetClaimIndex = visibleClaims[globalIndex % visibleClaims.length].originalIndex
+      }
+
+      map.get(targetClaimIndex)?.push({ ev, globalIndex })
     })
 
     return map
-  }, [claims, allEvidence])
+  }, [visibleClaims, allEvidence])
 
   const evidenceArrowLines = useMemo(() => {
     const lines: Array<{ x: number; y1: number; y2: number }> = []
 
-    claims.forEach((claim, claimIndex) => {
-      const claimId = claim.id ?? `claim-${claimIndex + 1}`
-      const claimLeft = CLAIM_LEFT_START + claimIndex * CLAIM_GAP
+    visibleClaims.forEach((meta, visualIndex) => {
+      const claimLeft = CLAIM_LEFT_START + visualIndex * CLAIM_GAP
       const claimCenter = claimLeft + CLAIM_WIDTH / 2
-      const evs = evidenceByClaimId.get(claimId) ?? []
+      const evs = evidenceByClaimIndex.get(meta.originalIndex) ?? []
 
       if (evs.length === 0) return
 
@@ -73,7 +122,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
     })
 
     return lines
-  }, [claims, evidenceByClaimId])
+  }, [visibleClaims, evidenceByClaimIndex])
 
   const getElementStyle = (effectiveness: string, found: boolean) => {
     if (!found) {
@@ -150,13 +199,39 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
     )
   }
 
-  const missingElements = Object.entries(analysis.elements)
-    .filter(([_, element]) =>
-      Array.isArray(element)
-        ? element.some((el) => el.effectiveness === "Missing")
-        : element.effectiveness === "Missing",
+  const displayedElements = useMemo(() => {
+    const visibleEvidence = visibleClaims.flatMap(
+      (meta) => evidenceByClaimIndex.get(meta.originalIndex)?.map(({ ev }) => ev) ?? [],
     )
-    .map(([key, _]) => key)
+    return [
+      analysis.elements.lead,
+      analysis.elements.position,
+      ...visibleClaims.map((meta) => meta.claim),
+      analysis.elements.counterclaim,
+      ...visibleEvidence,
+      analysis.elements.rebuttal,
+      analysis.elements.counterclaim_evidence,
+      analysis.elements.rebuttal_evidence,
+      analysis.elements.conclusion,
+    ]
+  }, [analysis, visibleClaims, evidenceByClaimIndex])
+
+  const effectivenessCounts = useMemo(() => {
+    return displayedElements.reduce(
+      (acc, element) => {
+        acc[element.effectiveness] += 1
+        return acc
+      },
+      {
+        Effective: 0,
+        Adequate: 0,
+        Ineffective: 0,
+        Missing: 0,
+      } as Record<ArgumentElement["effectiveness"], number>,
+    )
+  }, [displayedElements])
+
+  const missingElements = displayedElements.filter((element) => element.effectiveness === "Missing")
 
   return (
     <Card>
@@ -284,17 +359,17 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               style={{ top: "250px", left: "510px", minWidth: "170px" }}
             />
 
-            {claims.map((claim, claimIndex) => {
-              const claimId = claim.id ?? `claim-${claimIndex + 1}`
-              const claimLeft = CLAIM_LEFT_START + claimIndex * CLAIM_GAP
+            {visibleClaims.map((meta, visualIndex) => {
+              const claim = meta.claim
+              const claimLeft = CLAIM_LEFT_START + visualIndex * CLAIM_GAP
               const claimCenter = claimLeft + CLAIM_WIDTH / 2
-              const evs = evidenceByClaimId.get(claimId) ?? []
+              const evs = evidenceByClaimIndex.get(meta.originalIndex) ?? []
 
               return (
-                <React.Fragment key={claimId}>
+                <React.Fragment key={claim.id ?? `claim-${meta.originalIndex}`}>
                   <DiagramElement
-                    id={`claim-${claimIndex}`}
-                    label={`Claim ${claimIndex + 1}`}
+                    id={`claim-${meta.originalIndex}`}
+                    label={`Claim ${visualIndex + 1}`}
                     element={claim}
                     style={{ top: `${CLAIM_TOP}px`, left: `${claimLeft}px`, minWidth: `${CLAIM_WIDTH}px` }}
                   />
@@ -302,7 +377,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
                   {evs.map(({ ev, globalIndex }, localIndex) => {
                     const clusterWidth = (evs.length - 1) * EVIDENCE_GAP
                     const evCenter = claimCenter - clusterWidth / 2 + localIndex * EVIDENCE_GAP
-                    const isClaim1SingleEvidence = claimIndex === 0 && evs.length === 1
+                    const isClaim1SingleEvidence = visualIndex === 0 && evs.length === 1
                     const evidenceWidth = isClaim1SingleEvidence ? EVIDENCE_WIDTH : EVIDENCE_WIDTH
                     const evLeft = evCenter - evidenceWidth / 2
 
@@ -388,16 +463,6 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
             <p className="text-red-700 text-sm mb-2">
             尝试思考如何让每个论证要素更清晰、有力，以增强的完整性和说服力。
             </p>
-            {/* <div className="flex flex-wrap gap-2">
-              {missingElements.map((element) => (
-                <Badge key={element} variant="destructive" className="text-xs">
-                  {element.charAt(0).toUpperCase() + element.slice(1)}
-                </Badge>
-              ))}
-            </div> */}
-            {/* <p className="text-red-700 text-sm mt-2">
-            建议补充这些要素，以增强论证的完整性与说服力。 
-            </p> */}
           </div>
         )}
 
@@ -406,46 +471,22 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
           <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200 text-center shadow-md">
               {/* effective */}
               <h4 className="font-medium text-green-800 mb-1">表现优秀</h4>            
-              <p className="text-3xl font-bold text-green-600">
-              {
-                Object.values(analysis.elements)
-                  .flatMap((e) => (Array.isArray(e) ? e : [e]))
-                  .filter((el) => el.effectiveness === "Effective").length
-              }
-            </p>
+              <p className="text-3xl font-bold text-green-600">{effectivenessCounts.Effective}</p>
             <p className="text-xs text-green-700">清晰且论述充分</p>
           </div>
           <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-lg border-2 border-yellow-200 text-center shadow-md">
             <h4 className="font-medium text-yellow-800 mb-1">基本达标</h4>
-            <p className="text-3xl font-bold text-yellow-600">
-              {
-                Object.values(analysis.elements)
-                  .flatMap((e) => (Array.isArray(e) ? e : [e]))
-                  .filter((el) => el.effectiveness === "Adequate").length
-              }
-            </p>
+            <p className="text-3xl font-bold text-yellow-600">{effectivenessCounts.Adequate}</p>
             <p className="text-xs text-yellow-700">内容合适，但仍有提升空间</p>
           </div>
           <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-lg border-2 border-red-200 text-center shadow-md">
             <h4 className="font-medium text-red-800 mb-1">需要加强</h4>
-            <p className="text-3xl font-bold text-red-600">
-              {
-                Object.values(analysis.elements)
-                  .flatMap((e) => (Array.isArray(e) ? e : [e]))
-                  .filter((el) => el.effectiveness === "Ineffective").length
-              }
-            </p>
+            <p className="text-3xl font-bold text-red-600">{effectivenessCounts.Ineffective}</p>
             <p className="text-xs text-red-700">表达不够清晰和论述较弱</p>
           </div>
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border-2 border-gray-200 text-center shadow-md">
             <h4 className="font-medium text-gray-800 mb-1">尚未体现</h4>
-            <p className="text-3xl font-bold text-gray-600">
-              {
-                Object.values(analysis.elements)
-                  .flatMap((e) => (Array.isArray(e) ? e : [e]))
-                  .filter((el) => el.effectiveness === "Missing").length
-              }
-            </p>
+            <p className="text-3xl font-bold text-gray-600">{effectivenessCounts.Missing}</p>
             <p className="text-xs text-gray-700">文中暂未看到相关内容</p>
           </div>
         </div>

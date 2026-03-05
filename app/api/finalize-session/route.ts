@@ -3,10 +3,13 @@ import { z } from "zod"
 import { openai } from "@/lib/openai"
 import {
   buildRevisionBehaviorData,
+  getDraftSnapshotBySessionAndStage,
+  getInteractionLogBySessionAndEvent,
   getSessionDraftSnapshots,
   getSessionLogs,
   insertDraftSnapshot,
   insertInteractionLog,
+  updateDraftSnapshotById,
   updateSessionReflectiveSummary,
   updateSessionSubmittedAt,
 } from "@/lib/interaction-logs-server"
@@ -26,24 +29,40 @@ export async function POST(request: Request) {
 
     const { session_id, final_essay_text } = parsed.data
 
-    const finalLog = await insertInteractionLog({
-      session_id,
-      event_type: "final_submission",
-      metadata: { source: "submit_button" },
-    })
+    const finalLog =
+      (await getInteractionLogBySessionAndEvent(session_id, "final_submission")) ??
+      (await insertInteractionLog({
+        session_id,
+        event_type: "final_submission",
+        metadata: { source: "submit_button" },
+      }))
 
-    await insertDraftSnapshot({
-      session_id,
-      issue_id: null,
-      stage: "final",
-      draft_text: final_essay_text,
-    })
+    const existingFinalSnapshot = await getDraftSnapshotBySessionAndStage(session_id, "final")
+    if (!existingFinalSnapshot) {
+      await insertDraftSnapshot({
+        session_id,
+        issue_id: null,
+        stage: "final",
+        draft_text: final_essay_text,
+      })
+    } else {
+      await updateDraftSnapshotById(existingFinalSnapshot.id, {
+        draft_text: final_essay_text,
+        issue_id: null,
+        stage: "final",
+      })
+    }
 
     const sessionRow = await updateSessionSubmittedAt(session_id)
 
     const allLogs = await getSessionLogs(session_id)
     const allSnapshots = await getSessionDraftSnapshots(session_id)
     const revisionData = buildRevisionBehaviorData(allLogs, allSnapshots)
+    const initialSnapshot = allSnapshots.find((snapshot) => snapshot.stage === "initial")
+    const latestFinalSnapshot = [...allSnapshots].reverse().find((snapshot) => snapshot.stage === "final")
+    const latestSnapshot = allSnapshots[allSnapshots.length - 1]
+    const initialDraft = initialSnapshot?.draft_text ?? allSnapshots[0]?.draft_text ?? ""
+    const revisedDraft = latestFinalSnapshot?.draft_text ?? latestSnapshot?.draft_text ?? final_essay_text
 
     const fallbackSummary = `Revision Insights
 
@@ -74,38 +93,38 @@ Suggested Focus for Future Revision
           {
             role: "system",
             content:
-              "You are an expert writing process analyst. Do NOT summarize essay content. Summarize revision behavior only and provide reflective insights about decision-making.",
+            "You are an expert writing tutor. Focus on providing **clear, student-friendly revision insights**. Do NOT discuss internal revision logs or technical feedback data. Only analyze the essay itself. Provide actionable advice students can use to improve their writing."
           },
           {
-            role: "user",
-            content: `
-            Generate a report titled \"Revision Insights\".
+            role: "user",       content: `
 
-            Use ONLY the revision behavior data provided.
+Generate a \"Revision Insights\" report for a student. Use ONLY the initial and revised drafts provided below.
 
-            Structure the report using these sections:
+Structure the report with these sections:
 
-            1) How You Revised
-              - Describe what the student’s revision behavior suggests about their writing process.
-              - Explain how their time use and edit pattern likely influenced essay quality.
+1) Overall Writing Improvement
+- Highlight how the essay improved after revision (clarity, flow, structure).
 
-            2) What Improved
-              - Identify signs of growth or stability in their argument or structure.
-              - Explain what their behavior suggests about developing writing control.
+2) Argument Element Performance
+- Note which claims, evidence, or counterarguments improved or still need work.
 
-            3) Revision Habits to Strengthen
-              - Identify one helpful habit shown in the data.
-              - Identify one limiting habit shown in the data.
+3) Revision Changes
+- Summarize the main additions or improvements made in this revision.
 
-            4) What to Try Next Time
-              - Give 2–4 specific, practical revision strategies.
-              - Suggestions must be concrete (e.g., “revise one paragraph deeply” instead of “improve structure”).
+4) Next Revision Suggestions
+- Give 2–4 concrete steps for the student’s next revision.
+- Use clear, actionable advice (e.g., "add a rebuttal to the counterargument" instead of "improve argument").
 
-            Avoid technical language like "Level 2 feedback frequency".
-            Translate feedback patterns into meaningful explanations.
+5) Learning Insight
+- One short reflection on what this revision shows about the student’s developing writing skills.
 
-            Revision behavior data:
-            ${JSON.stringify(revisionData, null, 2)}`,
+Initial Draft:
+${initialDraft}
+
+Revised Draft:
+${revisedDraft}
+`
+            ,
           },
         ],
       })
@@ -132,3 +151,6 @@ Suggested Focus for Future Revision
     return NextResponse.json({ error: "Failed to finalize session" }, { status: 500 })
   }
 }
+
+// Revision behavior data:
+// ${JSON.stringify(revisionData, null, 2)}

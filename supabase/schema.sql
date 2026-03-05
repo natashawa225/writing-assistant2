@@ -79,3 +79,27 @@ create index if not exists idx_snapshots_session_id
 
 create index if not exists idx_snapshots_issue_id
   on public.draft_snapshots(issue_id);
+
+ALTER TABLE public.draft_snapshots
+  DROP CONSTRAINT IF EXISTS draft_snapshots_stage_check;
+
+ALTER TABLE public.draft_snapshots
+  ADD CONSTRAINT draft_snapshots_stage_check
+  CHECK (stage IN ('initial', 'after_edit', 'final'));
+
+ALTER TABLE public.draft_snapshots
+  ALTER COLUMN stage SET DEFAULT 'after_edit';
+
+-- one initial snapshot per session
+create unique index if not exists uniq_snapshots_initial_per_session
+  on public.draft_snapshots(session_id)
+  where stage = 'initial';
+
+-- one final snapshot per session
+create unique index if not exists uniq_snapshots_final_per_session
+  on public.draft_snapshots(session_id)
+  where stage = 'final';
+
+-- useful for reads
+create index if not exists idx_snapshots_session_stage_ts
+  on public.draft_snapshots(session_id, stage, "timestamp" desc);

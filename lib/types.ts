@@ -3,7 +3,8 @@ export interface ArgumentElement {
   parentClaimId?: string
   text: string
   effectiveness: "Effective" | "Adequate" | "Ineffective" | "Missing"
-  feedback: string
+  // Server returns feedback as a string array; keep it flexible on the client.
+  feedback: string[] | string | Record<string, unknown> | Array<unknown>
   suggestion?: string
   reason?: string
 }

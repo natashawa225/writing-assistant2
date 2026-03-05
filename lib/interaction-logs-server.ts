@@ -294,6 +294,45 @@ export async function insertDraftSnapshot(input: InsertDraftSnapshotInput): Prom
   return rows[0]
 }
 
+export async function updateDraftSnapshotById(
+  id: string,
+  input: {
+    draft_text?: string
+    issue_id?: string | null
+    stage?: DraftStage
+    timestamp?: string
+  },
+): Promise<DraftSnapshotRow> {
+  const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
+
+  const url = new URL(`${supabaseUrl}/rest/v1/draft_snapshots`)
+  url.searchParams.set("id", `eq.${id}`)
+
+  const response = await fetch(url.toString(), {
+    method: "PATCH",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify({
+      draft_text: input.draft_text,
+      issue_id: input.issue_id ?? null,
+      stage: input.stage,
+      timestamp: input.timestamp ?? new Date().toISOString(),
+    }),
+  })
+
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`Failed to update draft snapshot: ${response.status} ${body}`)
+  }
+
+  const rows = (await response.json()) as DraftSnapshotRow[]
+  return rows[0]
+}
+
 export async function getSessionLogs(sessionId: string): Promise<InteractionLogRow[]> {
   const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
 
@@ -319,6 +358,37 @@ export async function getSessionLogs(sessionId: string): Promise<InteractionLogR
   return (await response.json()) as InteractionLogRow[]
 }
 
+export async function getInteractionLogBySessionAndEvent(
+  sessionId: string,
+  eventType: InteractionEventType,
+): Promise<InteractionLogRow | null> {
+  const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
+
+  const url = new URL(`${supabaseUrl}/rest/v1/interaction_logs`)
+  url.searchParams.set("session_id", `eq.${sessionId}`)
+  url.searchParams.set("event_type", `eq.${eventType}`)
+  url.searchParams.set("select", "id,session_id,issue_id,event_type,feedback_level,timestamp,metadata")
+  url.searchParams.set("order", "timestamp.asc")
+  url.searchParams.set("limit", "1")
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+    },
+  })
+
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`Failed to fetch interaction log by event: ${response.status} ${body}`)
+  }
+
+  const rows = (await response.json()) as InteractionLogRow[]
+  return rows[0] ?? null
+}
+
 export async function getSessionDraftSnapshots(sessionId: string): Promise<DraftSnapshotRow[]> {
   const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
 
@@ -342,6 +412,37 @@ export async function getSessionDraftSnapshots(sessionId: string): Promise<Draft
   }
 
   return (await response.json()) as DraftSnapshotRow[]
+}
+
+export async function getDraftSnapshotBySessionAndStage(
+  sessionId: string,
+  stage: DraftStage,
+): Promise<DraftSnapshotRow | null> {
+  const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
+
+  const url = new URL(`${supabaseUrl}/rest/v1/draft_snapshots`)
+  url.searchParams.set("session_id", `eq.${sessionId}`)
+  url.searchParams.set("stage", `eq.${stage}`)
+  url.searchParams.set("select", "id,session_id,issue_id,stage,draft_text,timestamp")
+  url.searchParams.set("order", "timestamp.asc")
+  url.searchParams.set("limit", "1")
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+    },
+  })
+
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`Failed to fetch draft snapshot by stage: ${response.status} ${body}`)
+  }
+
+  const rows = (await response.json()) as DraftSnapshotRow[]
+  return rows[0] ?? null
 }
 
 function wordCount(text: string): number {

@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
-import { insertInteractionLog, type FeedbackLevel, type InteractionEventType } from "@/lib/interaction-logs-server"
+import {
+  getInteractionLogBySessionAndEvent,
+  insertInteractionLog,
+  type FeedbackLevel,
+  type InteractionEventType,
+} from "@/lib/interaction-logs-server"
 
 const interactionEvents = [
   "initial_draft",
@@ -44,14 +49,23 @@ export async function POST(request: Request) {
       enforcedFeedbackLevel = 3
     }
 
-    const row = await insertInteractionLog({
-      session_id: parsed.data.session_id,
-      issue_id: parsed.data.issue_id ?? null,
-      event_type: event_type as InteractionEventType,
-      feedback_level: enforcedFeedbackLevel,
-      metadata: parsed.data.metadata ?? null,
-      timestamp: parsed.data.timestamp,
-    })
+    const sessionId = parsed.data.session_id
+    const dedupeEvent = event_type === "initial_draft" || event_type === "final_submission"
+    let row =
+      dedupeEvent
+        ? await getInteractionLogBySessionAndEvent(sessionId, event_type as InteractionEventType)
+        : null
+
+    if (!row) {
+      row = await insertInteractionLog({
+        session_id: sessionId,
+        issue_id: parsed.data.issue_id ?? null,
+        event_type: event_type as InteractionEventType,
+        feedback_level: enforcedFeedbackLevel,
+        metadata: parsed.data.metadata ?? null,
+        timestamp: parsed.data.timestamp,
+      })
+    }
 
     return NextResponse.json({ success: true, row })
   } catch (error) {

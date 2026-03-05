@@ -148,12 +148,6 @@ function toElement(el: ParsedElement | undefined, id?: string, parentClaimId?: s
   }
 }
 
-function padArray<T>(arr: T[], target: number, fill: () => T): T[] {
-  const out = [...arr]
-  while (out.length < target) out.push(fill())
-  return out
-}
-
 function enrichElements(parsed: ParsedXML) {
   const claimIds = parsed.claims.map((claim, i) => (claim as any).id ?? `claim-${i + 1}`)
   const defaultClaimId = claimIds[0] ?? "claim-1"
@@ -161,20 +155,18 @@ function enrichElements(parsed: ParsedXML) {
     elements: {
       lead:                 toElement(parsed.lead, "lead-1"),
       position:             toElement(parsed.position, "position-1"),
-      claims:               padArray(parsed.claims.map((claim, i) => toElement(claim, claimIds[i])), 2, makeEmpty),
+      // Do not pad claims; render only claims returned by parsed XML.
+      claims:               parsed.claims.map((claim, i) => toElement(claim, claimIds[i])),
       counterclaim:         toElement(parsed.counterclaims[0], "counterclaim-1"),
       counterclaim_evidence:toElement(parsed.counterclaim_evidence[0], "counterclaim-evidence-1"),
       rebuttal:             toElement(parsed.rebuttals[0], "rebuttal-1"),
       rebuttal_evidence:    toElement(parsed.rebuttal_evidence[0], "rebuttal-evidence-1"),
-      evidence:             padArray(
-        parsed.evidence.map((ev, i) => {
-          const parsedParent = (ev as any).parentClaimId
-          const fallbackParent = claimIds[i % Math.max(claimIds.length, 1)] ?? defaultClaimId
-          return toElement(ev, (ev as any).id ?? `evidence-${i + 1}`, parsedParent ?? fallbackParent)
-        }),
-        3,
-        makeEmpty,
-      ),
+      // Do not pad evidence; preserve only parsed XML evidence nodes.
+      evidence:             parsed.evidence.map((ev, i) => {
+        const parsedParent = (ev as any).parentClaimId
+        const fallbackParent = claimIds[i % Math.max(claimIds.length, 1)] ?? defaultClaimId
+        return toElement(ev, (ev as any).id ?? `evidence-${i + 1}`, parsedParent ?? fallbackParent)
+      }),
       conclusion:           toElement(parsed.conclusion, "conclusion-1"),
     },
   }
@@ -313,56 +305,314 @@ function reconstructStructure(enriched: ReturnType<typeof enrichElements>, proce
 // STEP 1 — Feedback for ALL elements (one call)
 // ============================================================================
 
-async function batchFeedbackAll(elements: ElementEntry[], prompt: string): Promise<string[][]> {
+function normalizeFeedbackEntry(raw: unknown): string[] {
+  const normalizeText = (value: unknown) =>
+    String(value ?? "")
+      .replace(/\r\n?/g, "\n")
+      .trim()
+
+  const sectionLabelMap: Record<string, string> = {
+    effective: "Effective",
+    positive_reinforcement: "Positive Reinforcement",
+    positivereinforcement: "Positive Reinforcement",
+    development: "Development",
+    issue: "Issue",
+    reflection: "Reflection",
+    hint: "Hint",
+  }
+
+  const withLabel = (key: string, value: string) => {
+    const normalizedKey = key.toLowerCase().replace(/[\s-]+/g, "_")
+    const label = sectionLabelMap[normalizedKey]
+    if (!label) return value
+    const hasLabel = new RegExp(`^\\s*${label}\\s*:`, "i").test(value)
+    return hasLabel ? value : `${label}: ${value}`
+  }
+
+  const collect = (value: unknown, sectionKey?: string): string[] => {
+    if (value == null) return []
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+      const text = normalizeText(value)
+      if (!text) return []
+      return [sectionKey ? withLabel(sectionKey, text) : text]
+    }
+    if (Array.isArray(value)) {
+      return value.flatMap((item) => collect(item, sectionKey))
+    }
+    if (typeof value === "object") {
+      const obj = value as Record<string, unknown>
+      const priorityKeys = ["effective", "positive_reinforcement", "development", "issue", "reflection", "hint"]
+      const output: string[] = []
+      const handled = new Set<string>()
+      priorityKeys.forEach((key) => {
+        if (!(key in obj)) return
+        handled.add(key)
+        output.push(...collect(obj[key], key))
+      })
+      Object.entries(obj).forEach(([key, nested]) => {
+        if (handled.has(key)) return
+        output.push(...collect(nested, key))
+      })
+      return output
+    }
+    return []
+  }
+
+  const normalized = collect(raw)
+  if (normalized.length > 0) return normalized
+
+  try {
+    const fallback = normalizeText(JSON.stringify(raw))
+    return fallback ? [fallback] : []
+  } catch {
+    return []
+  }
+}
+
+async function batchFeedbackAll(elements: ElementEntry[], prompt: string): Promise<Record<string, unknown>> {
+  const canonicalizeKey = (key: string) => key.toLowerCase().replace(/[^a-z0-9]/g, "")
+  const toCamelCase = (input: string) => input.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase())
+  const buildPathAliases = (path: string): string[] => {
+    const aliases = new Set<string>([path, path.replace(/\[(\d+)\]/g, ".$1")])
+    const claimMatch = path.match(/^elements\.claims\[(\d+)\]$/)
+    if (claimMatch) {
+      const idx = Number.parseInt(claimMatch[1], 10)
+      const oneBased = idx + 1
+      aliases.add(`claims[${idx}]`)
+      aliases.add(`claims.${idx}`)
+      aliases.add(`claim-${idx}`)
+      aliases.add(`claim_${idx}`)
+      aliases.add(`claim${idx}`)
+      aliases.add(`claim-${oneBased}`)
+      aliases.add(`claim_${oneBased}`)
+      aliases.add(`claim${oneBased}`)
+      return [...aliases]
+    }
+
+    const evidenceMatch = path.match(/^elements\.evidence\[(\d+)\]$/)
+    if (evidenceMatch) {
+      const idx = Number.parseInt(evidenceMatch[1], 10)
+      const oneBased = idx + 1
+      aliases.add(`evidence[${idx}]`)
+      aliases.add(`evidence.${idx}`)
+      aliases.add(`evidence-${idx}`)
+      aliases.add(`evidence_${idx}`)
+      aliases.add(`evidence${idx}`)
+      aliases.add(`evidence-${oneBased}`)
+      aliases.add(`evidence_${oneBased}`)
+      aliases.add(`evidence${oneBased}`)
+      return [...aliases]
+    }
+
+    const singleName = path.replace(/^elements\./, "")
+    aliases.add(singleName)
+    aliases.add(singleName.replace(/_/g, "-"))
+    aliases.add(toCamelCase(singleName))
+    return [...aliases]
+  }
+
   const list = elements.map((e, i) => {
     const label = e.index !== undefined ? `${e.name} #${e.index + 1}` : e.name
-    return `${i}. ${label}\n   Text: "${e.element.text}"\n   Effectiveness: ${e.element.effectiveness}`
+    return `${i}. key=${e.path}\n   Label: ${label}\n   Text: "${e.element.text}"\n   Effectiveness: ${e.element.effectiveness}`
   }).join("\n\n")
+  const expectedKeys = elements.map((e) => e.path)
+  const expectedKeysBlock = expectedKeys.map((key) => `- ${key}`).join("\n")
+  const expectedJsonLines = expectedKeys.map((key) => `    "${key}": ["..."]`).join(",\n")
+  const maxAttempts = 3
+  let lastFeedbackByKey: Record<string, unknown> = {}
+  let lastMappedSummary: Record<string, number> = {}
 
-  const completion = await openai.chat.completions.create({
-    model: "gpt-4o",
-    response_format: { type: "json_object" },
-    messages: [
-      {
-        role: "system",
-        content: `Provide indirect and constructive feedback on argumentative essay elements.
+  const mapResultToFeedbackByKey = (result: unknown) => {
+    const feedbackByKey: Record<string, unknown> = {}
+    const setIfAbsent = (path: string, value: unknown) => {
+      if (feedbackByKey[path] === undefined && value !== undefined) {
+        feedbackByKey[path] = value
+      }
+    }
+    const normalizedLookup = new Map<string, unknown>()
+    const addLookupEntries = (source: Record<string, unknown>) => {
+      Object.entries(source).forEach(([key, value]) => {
+        const canonical = canonicalizeKey(key)
+        if (canonical && !normalizedLookup.has(canonical)) {
+          normalizedLookup.set(canonical, value)
+        }
+      })
+    }
+
+    if (result && typeof result === "object") {
+      const resultObj = result as Record<string, unknown>
+      const byKey = resultObj.feedback_by_key
+      if (byKey && typeof byKey === "object" && !Array.isArray(byKey)) {
+        Object.assign(feedbackByKey, byKey as Record<string, unknown>)
+        addLookupEntries(byKey as Record<string, unknown>)
+      }
+
+      const feedbackObject = resultObj.feedback
+      if (feedbackObject && typeof feedbackObject === "object" && !Array.isArray(feedbackObject)) {
+        addLookupEntries(feedbackObject as Record<string, unknown>)
+      }
+
+      addLookupEntries(resultObj)
+
+      const orderedFeedback = [resultObj.feedback_in_order, resultObj.feedback, resultObj.items].find((entry) =>
+        Array.isArray(entry),
+      )
+      if (Array.isArray(orderedFeedback)) {
+        orderedFeedback.forEach((entry, index) => {
+          const path = elements[index]?.path
+          if (!path) return
+          if (entry && typeof entry === "object" && !Array.isArray(entry) && "feedback" in (entry as Record<string, unknown>)) {
+            setIfAbsent(path, (entry as Record<string, unknown>).feedback)
+            return
+          }
+          setIfAbsent(path, entry)
+        })
+      }
+
+      const legacyFeedback = resultObj.feedback
+      if (Array.isArray(legacyFeedback)) {
+        legacyFeedback.forEach((entry, index) => {
+          const path = elements[index]?.path
+          if (path) {
+            setIfAbsent(path, entry)
+          }
+        })
+      }
+
+      const elementsObject = resultObj.elements
+      if (elementsObject && typeof elementsObject === "object" && !Array.isArray(elementsObject)) {
+        const data = elementsObject as Record<string, unknown>
+        ;(["lead", "position", "counterclaim", "counterclaim_evidence", "rebuttal", "rebuttal_evidence", "conclusion"] as const).forEach((name) => {
+          const value = data[name]
+          if (!value || typeof value !== "object" || Array.isArray(value)) return
+          const feedback = (value as Record<string, unknown>).feedback
+          setIfAbsent(`elements.${name}`, feedback)
+        })
+
+        const claims = data.claims
+        if (Array.isArray(claims)) {
+          claims.forEach((claim, index) => {
+            if (!claim || typeof claim !== "object" || Array.isArray(claim)) return
+            setIfAbsent(`elements.claims[${index}]`, (claim as Record<string, unknown>).feedback)
+          })
+        }
+
+        const evidence = data.evidence
+        if (Array.isArray(evidence)) {
+          evidence.forEach((item, index) => {
+            if (!item || typeof item !== "object" || Array.isArray(item)) return
+            setIfAbsent(`elements.evidence[${index}]`, (item as Record<string, unknown>).feedback)
+          })
+        }
+      }
+    }
+
+    elements.forEach((element) => {
+      if (feedbackByKey[element.path] !== undefined) return
+      const matched = buildPathAliases(element.path)
+        .map((alias) => normalizedLookup.get(canonicalizeKey(alias)))
+        .find((value) => value !== undefined)
+      if (matched !== undefined) {
+        feedbackByKey[element.path] = matched
+      }
+    })
+
+    return { feedbackByKey, normalizedLookup }
+  }
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const retryInstruction =
+      attempt > 1
+        ? `\n\nRetry ${attempt}/${maxAttempts}. Missing keys from previous attempt:\n${expectedKeys
+            .filter((key) => (lastMappedSummary[key] ?? 0) === 0)
+            .map((key) => `- ${key}`)
+            .join("\n")}\nReturn all keys now.`
+        : ""
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `Provide indirect and constructive feedback on argumentative essay elements.
 
 Essay prompt: """${prompt}"""
 
+You MUST generate feedback for every element listed below.
+Do not skip any element.
+Even if an element is Effective or Adequate, provide short constructive feedback.
+Return feedback for all keys exactly as given.
+
+Required keys:
+${expectedKeysBlock}
+
 Rules:
 - If effectiveness is "Effective":
-  * Give positive reinforcement and explain what makes it strong
-  * Suggest how it could be developed further.
+  * Give positive reinforcement and explain what makes it strong.
+  * Suggest one development direction.
 - If "Adequate", "Ineffective", or "Missing":
   * Goal: Help the student notice the issue and reflect on how to improve it.
-  * Write three short sections:
-    - Issue: 1–2 sentences describing what may be unclear, missing, or underdeveloped. Do NOT rewrite the sentence.
-    - Reflection: Ask 1–2 guiding questions to help the student think about how to improve it. Do NOT give the corrected version.
-    - Hint (optional): Give one brief, general hint if needed. Do NOT rewrite or give full examples.
-  * Each section should be **on its own line**, separated by \`\n\` for better readability.
-
-Use simple, student-friendly language.
-Keep the tone supportive and encouraging.
-Focus only on the selected element.
+  * Write short sections:
+    - Issue
+    - Reflection
+    - Hint (optional)
+  * Keep each section concise.
 
 Avoid:
 - Rewriting the student’s sentence
 - Giving a full corrected version
 - Being overly vague
 
-{"feedback":[["paragraph1","paragraph2","paragraph3"]]}
-Return valid json only.
-`
-      },
-      {
-        role: "user",
-        content: `Elements:\n\n${list}\n\nProvide feedback for each element in order:`,
-      },
-    ],
-  })
+Return JSON with this exact shape:
+{
+  "feedback_by_key": {
+${expectedJsonLines}
+  }
+}
+Every required key must be present exactly once. Return valid json only.`,
+        },
+        {
+          role: "user",
+          content: `Elements:\n\n${list}\n\nProvide feedback for each element key listed above.${retryInstruction}`,
+        },
+      ],
+    })
 
-  const result = JSON.parse(completion.choices[0].message.content || '{"feedback":[]}')
-  return result.feedback || []
+    const rawContent = completion.choices[0].message.content || "{}"
+    console.log(`🧾 Step 1 feedback raw JSON (attempt ${attempt}/${maxAttempts}):\n`, rawContent)
+
+    let result: unknown
+    try {
+      result = JSON.parse(rawContent)
+    } catch {
+      result = {}
+    }
+
+    const { feedbackByKey, normalizedLookup } = mapResultToFeedbackByKey(result)
+    const mappedSummary = elements.reduce(
+      (acc, element) => {
+        acc[element.path] = normalizeFeedbackEntry(feedbackByKey[element.path]).length
+        return acc
+      },
+      {} as Record<string, number>,
+    )
+    console.log(`🧭 Step 1 mapped feedback counts by element path (attempt ${attempt}/${maxAttempts}):`, mappedSummary)
+
+    const missing = expectedKeys.filter((key) => (mappedSummary[key] ?? 0) === 0)
+    if (missing.length > 0) {
+      console.warn(`⚠️ Missing feedback for attempt ${attempt}/${maxAttempts}:`, missing)
+      console.warn("⚠️ Raw keys seen:", Object.keys(normalizedLookup))
+      lastFeedbackByKey = feedbackByKey
+      lastMappedSummary = mappedSummary
+      if (attempt < maxAttempts) continue
+    }
+
+    return feedbackByKey
+  }
+
+  console.warn("⚠️ Returning last Step 1 mapping after retries exhausted.")
+  return lastFeedbackByKey
 }
 
 // ============================================================================
@@ -458,7 +708,7 @@ async function runFeedbackChain(elements: ElementEntry[], prompt: string): Promi
 
   // STEP 1: Feedback for ALL (1 call)
   console.log("\n📍 Step 1/2: Generating feedback for ALL elements...")
-  const feedbacks = await batchFeedbackAll(elements, prompt)
+  const feedbackByKey = await batchFeedbackAll(elements, prompt)
   console.log(`✅ Step 1/2 complete (${Date.now() - start}ms)`)
 
   // STEP 2: Suggestions + Reasons for non-Effective (1 call)
@@ -470,7 +720,7 @@ async function runFeedbackChain(elements: ElementEntry[], prompt: string): Promi
 
   return elements.map((e, i) => ({
     ...e.element,
-    feedback: Array.isArray(feedbacks[i]) ? feedbacks[i] : [],
+    feedback: normalizeFeedbackEntry(feedbackByKey[e.path]),
     suggestion: suggestions[i] || "",
     reason: reasons[i] || "",
   }))
@@ -561,6 +811,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    console.log("🧾 /api/analyze-argument response JSON:\n", JSON.stringify(validated.data, null, 2))
     console.log(`🎉 TOTAL TIME: ${Date.now() - totalStart}ms`)
     return NextResponse.json(validated.data)
   } catch (error) {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, type ComponentProps } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -11,7 +11,6 @@ import { ArgumentDiagram } from "./argument-diagram"
 import type { AnalysisResult, ArgumentElement } from "@/lib/types"
 import { SetupGuide } from "@/components/setup-guide"
 import ReactMarkdown from "react-markdown"
-import rehypeRaw from 'rehype-raw';
 
 interface ArgumentativeFeedbackProps {
   analysis: AnalysisResult | null
@@ -166,6 +165,196 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
     () => (selectedParsed ? getElement(selectedParsed) : null),
     [selectedParsed, analysis],
   )
+  const normalizedFeedbackItems = useMemo(() => {
+    const raw = (currentElement as { feedback?: unknown } | null)?.feedback
+    if (raw == null) return []
+
+    const SECTION_ORDER = ["effective", "positive_reinforcement", "development", "issue", "reflection", "hint"] as const
+    const SECTION_LABELS: Record<string, string> = {
+      effective: "Effective",
+      positive_reinforcement: "Positive Reinforcement",
+      development: "Development",
+      issue: "Issue",
+      reflection: "Reflection",
+      hint: "Hint",
+    }
+
+    const normalizeText = (value: unknown) =>
+      String(value ?? "")
+        .replace(/\r\n?/g, "\n")
+        .trim()
+
+    const normalizeSectionKey = (value: string): string | undefined => {
+      const normalized = value.toLowerCase().replace(/[\s-]+/g, "_").trim()
+      if (normalized.includes("positive") && normalized.includes("reinforcement")) return "positive_reinforcement"
+      if (normalized.startsWith("effective")) return "effective"
+      if (normalized.startsWith("development")) return "development"
+      if (normalized.startsWith("hint")) return "hint"
+      if (normalized.startsWith("reflection")) return "reflection"
+      if (normalized.startsWith("issue")) return "issue"
+      return undefined
+    }
+
+    const splitBulletedLines = (value: string): string[] => {
+      const lines = value
+        .split("\n")
+        .map((line) => line.trim())
+        .filter(Boolean)
+      const bulletLikeCount = lines.filter((line) => /^([-*•]|\d+[.)])\s+/.test(line)).length
+      return bulletLikeCount >= 2 ? lines : [value]
+    }
+
+    const splitBySectionLabels = (
+      text: string,
+      inheritedSection?: string,
+    ): Array<{ section?: string; content: string }> => {
+      const matches = [...text.matchAll(/(?:^|\n)\s*(effective|positive[\s_-]*reinforcement|development|hint|reflection|issue)\s*:/gim)]
+      if (matches.length === 0) return [{ section: inheritedSection, content: text }]
+
+      const result: Array<{ section?: string; content: string }> = []
+      const firstStart = matches[0].index ?? 0
+      const leading = text.slice(0, firstStart).trim()
+      if (leading) result.push({ section: inheritedSection, content: leading })
+
+      for (let i = 0; i < matches.length; i++) {
+        const current = matches[i]
+        const start = current.index ?? 0
+        const end = i + 1 < matches.length ? (matches[i + 1].index ?? text.length) : text.length
+        const section = normalizeSectionKey(current[1]) ?? inheritedSection
+        const chunk = text
+          .slice(start + current[0].length, end)
+          .trim()
+        if (chunk) result.push({ section, content: chunk })
+      }
+
+      return result
+    }
+
+    const collected: Array<{ section?: string; content: string }> = []
+    const collect = (value: unknown, sectionHint?: string) => {
+      if (value == null) return
+
+      if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+        const text = normalizeText(value)
+        if (!text) return
+        const splitSections = splitBySectionLabels(text, sectionHint)
+        splitSections.forEach((item) => {
+          splitBulletedLines(item.content).forEach((piece) => {
+            const normalized = normalizeText(piece)
+            if (normalized) {
+              collected.push({
+                section: item.section,
+                content: normalized,
+              })
+            }
+          })
+        })
+        return
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((entry) => collect(entry, sectionHint))
+        return
+      }
+
+      if (typeof value === "object") {
+        const obj = value as Record<string, unknown>
+        const orderedKeys = [
+          "effective",
+          "positive_reinforcement",
+          "positiveReinforcement",
+          "development",
+          "issue",
+          "reflection",
+          "hint",
+        ]
+        const seen = new Set<string>()
+
+        orderedKeys.forEach((key) => {
+          if (!(key in obj)) return
+          seen.add(key)
+          collect(obj[key], normalizeSectionKey(key) ?? sectionHint)
+        })
+
+        Object.entries(obj).forEach(([key, entry]) => {
+          if (seen.has(key)) return
+          collect(entry, normalizeSectionKey(key) ?? sectionHint)
+        })
+      }
+    }
+
+    collect(raw)
+    if (collected.length === 0) return []
+
+    const orderIndex = new Map<string, number>(SECTION_ORDER.map((key, idx) => [key, idx]))
+    const ordered = collected
+      .map((entry, index) => ({ ...entry, index }))
+      .sort((a, b) => {
+        const aRank = a.section ? (orderIndex.get(a.section) ?? Number.MAX_SAFE_INTEGER) : Number.MAX_SAFE_INTEGER
+        const bRank = b.section ? (orderIndex.get(b.section) ?? Number.MAX_SAFE_INTEGER) : Number.MAX_SAFE_INTEGER
+        if (aRank !== bRank) return aRank - bRank
+        return a.index - b.index
+      })
+
+    const seen = new Map<string, number>()
+    const hash = (input: string) => {
+      let h = 0
+      for (let i = 0; i < input.length; i++) {
+        h = (h << 5) - h + input.charCodeAt(i)
+        h |= 0
+      }
+      return Math.abs(h).toString(36)
+    }
+
+    return ordered.map((entry) => {
+      const label = entry.section ? SECTION_LABELS[entry.section] : undefined
+      const signature = `${label ?? "unlabeled"}::${entry.content}`
+      const count = seen.get(signature) ?? 0
+      seen.set(signature, count + 1)
+      return {
+        id: `fb-${hash(signature)}-${count}`,
+        content: entry.content,
+        label,
+      }
+    })
+  }, [currentElement?.feedback])
+
+  const renderFeedbackContent = (textClassName: string) => {
+    const markdownComponents = {
+      strong: (props: ComponentProps<"strong">) => <strong className="font-semibold text-gray-900" {...props} />,
+    }
+
+    if (normalizedFeedbackItems.length > 1) {
+      return (
+        <ul className={`list-disc pl-5 mt-1 space-y-1 ${textClassName}`}>
+          {normalizedFeedbackItems.map((item) => (
+            <li key={item.id}>
+              <ReactMarkdown skipHtml components={markdownComponents}>
+                {item.label ? `**${item.label}:** ${item.content}` : item.content}
+              </ReactMarkdown>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    const single = normalizedFeedbackItems[0]
+    if (single) {
+      return (
+        <div className={`${textClassName} mt-1`}>
+          <ReactMarkdown skipHtml components={markdownComponents}>
+            {single.label ? `**${single.label}:** ${single.content}` : single.content}
+          </ReactMarkdown>
+        </div>
+      )
+    }
+
+    return (
+      <div className={`${textClassName} mt-1`}>
+        <ReactMarkdown skipHtml>No feedback available.</ReactMarkdown>
+      </div>
+    )
+  }
   const isOptionalCounterclaimEvidence = selectedParsed?.elementKey === "counterclaim_evidence"
 
   if (isAnalyzing) {
@@ -224,33 +413,7 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                     {currentElement.effectiveness === "Effective" ? (
                       <div className="mt-3 p-3 rounded-lg bg-green-50 border border-green-200">
                         <h5 className="font-medium mb-2 text-green-800">Why This Works:</h5>
-
-                        {Array.isArray(currentElement.feedback) ? (
-                          <ul className="list-disc pl-5 text-sm text-gray-700 mt-1 space-y-1">
-                          {currentElement.feedback.map((item: string, i: number) => (
-                            <li key={i}>
-                              <ReactMarkdown
-                                rehypePlugins={[rehypeRaw]} // ← This allows HTML parsing
-                                components={{
-                                  strong: ({ node, ...props }) => (
-                                    <strong 
-                                    className="font-semibold text-gray-900" 
-                                    {...props} />
-                                  ),
-                                }}
-                              >
-                                {item}
-                              </ReactMarkdown>
-                            </li>
-                          ))}
-                        </ul>
-                        
-                        ) : (
-                          <p
-                            className="text-sm text-green-700"
-                            dangerouslySetInnerHTML={{ __html: currentElement.feedback }}
-                          />
-                        )}
+                        {renderFeedbackContent("text-sm text-green-700")}
                       </div>
                     ) : (
                       <div className="space-y-3">
@@ -276,34 +439,7 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
                                   we suggest:
                                 </h5>
                                 <div className="bg-primary/5 p-3 rounded-lg border border-primary/10">
-                                {Array.isArray(currentElement.feedback) ? (
-                                  currentElement.feedback.length === 1 ? (
-                                    // single string in array — treat like a string
-                                    <div className="text-sm text-gray-700 mt-1 space-y-2">
-                                      {currentElement.feedback[0]
-                                        .split(/(?=Issue:|Reflection:|Hint:)/)
-                                        .filter(Boolean)
-                                        .map((line: string, i: number) => (
-                                          <p key={i} dangerouslySetInnerHTML={{ __html: line.trim().replace(/^(Issue:|Reflection:|Hint:)/, '<strong>$1</strong>') }} />
-                                        ))}
-                                    </div>
-                                  ) : (
-                                    <ul className="list-disc pl-5 text-sm text-gray-700 mt-1 space-y-1">
-                                      {currentElement.feedback.map((item: string, i: number) => (
-                                        <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
-                                      ))}
-                                    </ul>
-                                  )
-                                ) : (
-                                  <div className="text-sm text-gray-700 mt-1 space-y-2">
-                                    {currentElement.feedback
-                                      .split(/(?=Issue:|Reflection:|Hint:)/)
-                                      .filter(Boolean)
-                                      .map((line: string, i: number) => (
-                                        <p key={i} dangerouslySetInnerHTML={{ __html: line.trim().replace(/^(Issue:|Reflection:|Hint:)/, '<strong>$1</strong>') }} />
-                                      ))}
-                                  </div>
-                                )}
+                                  {renderFeedbackContent("text-sm text-gray-700")}
                                 </div>
                               </div>
                             </div>

@@ -14,7 +14,9 @@ export async function analyzeArgumentativeStructure(essay: string, prompt: strin
       throw new Error("Failed to analyze essay")
     }
 
-    return await response.json()
+    const result = await response.json()
+    console.log("AI RESPONSE:", result)
+    return result
   } catch (error) {
     console.error("Error analyzing argumentative structure:", error)
     throw error
