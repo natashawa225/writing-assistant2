@@ -550,14 +550,17 @@ ${expectedKeysBlock}
 Rules:
 - If effectiveness is "Effective":
   * Give positive reinforcement and explain what makes it strong.
-  * Suggest one development direction.
+  * Suggest how it could be developed further
 - If "Adequate", "Ineffective", or "Missing":
   * Goal: Help the student notice the issue and reflect on how to improve it.
-  * Write short sections:
-    - Issue
-    - Reflection
-    - Hint (optional)
-  * Keep each section concise.
+  * Write three short sections:
+    - Issue: describe what may be unclear, missing, or underdeveloped. Do NOT rewrite the sentence.
+    - Reflection: Ask guiding questions to help the student think about how to improve it. Do NOT give the corrected version.
+    - Hint: Give a brief, general hint if needed. Do NOT rewrite or give full examples.
+
+Use simple, student-friendly language.
+Keep the tone supportive and encouraging.
+Focus only on the selected element.
 
 Avoid:
 - Rewriting the student’s sentence
