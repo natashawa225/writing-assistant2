@@ -17,112 +17,14 @@ interface ArgumentDiagramProps {
 export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDiagramProps) {
   const [selectedElement, setSelectedElement] = useState<string | null>(null)
   type EvidenceNode = ArgumentElement & { id?: string; parentClaimId?: string }
-  type ClaimNode = ArgumentElement & { id?: string }
-  type VisibleClaim = {
-    claim: ClaimNode
-    originalIndex: number
-    canonicalKeys: Set<string>
-  }
   const CLAIM_TOP = 250
   const EVIDENCE_TOP = 360
   const CLAIM_LEFT_START = 54
   const CLAIM_GAP = 240
   const CLAIM_WIDTH = 170
-  const EVIDENCE_GAP = 148
   const EVIDENCE_WIDTH = 100
-  const MAX_VISIBLE_CLAIMS = 2
-
-  const claims = (analysis.elements.claims ?? []) as ClaimNode[]
-  const allEvidence = (analysis.elements.evidence ?? []) as EvidenceNode[]
-  const toCanonicalClaimKey = (value: string) => value.trim().toLowerCase().replace(/[\s_]+/g, "-")
-  const parseClaimNumber = (value?: string): number | null => {
-    if (!value) return null
-    const match = value.match(/claim[\s_-]*(\d+)/i)
-    if (!match) return null
-    const parsed = Number.parseInt(match[1], 10)
-    return Number.isNaN(parsed) ? null : parsed
-  }
-
-  const visibleClaims = useMemo<VisibleClaim[]>(() => {
-    return claims
-      .map((claim, originalIndex) => {
-        const canonicalKeys = new Set<string>()
-        if (claim.id) canonicalKeys.add(toCanonicalClaimKey(claim.id))
-        canonicalKeys.add(`claim-${originalIndex}`)
-        canonicalKeys.add(`claim-${originalIndex + 1}`)
-        return { claim, originalIndex, canonicalKeys }
-      })
-      .slice(0, MAX_VISIBLE_CLAIMS)
-  }, [claims])
-
-  const evidenceByClaimIndex = useMemo(() => {
-    const map = new Map<number, Array<{ ev: EvidenceNode; globalIndex: number }>>()
-    visibleClaims.forEach((meta) => map.set(meta.originalIndex, []))
-
-    allEvidence.forEach((ev, globalIndex) => {
-      let targetClaimIndex: number | null = null
-      const parent = ev.parentClaimId
-
-      if (parent) {
-        const canonicalParent = toCanonicalClaimKey(parent)
-        const byCanonical = visibleClaims.find((meta) => meta.canonicalKeys.has(canonicalParent))
-        if (byCanonical) {
-          targetClaimIndex = byCanonical.originalIndex
-        } else {
-          const parsed = parseClaimNumber(parent)
-          if (parsed !== null) {
-            const candidates = [parsed - 1, parsed].filter((idx) => idx >= 0)
-            const byNumber = candidates.find((idx) => visibleClaims.some((meta) => meta.originalIndex === idx))
-            if (byNumber !== undefined) {
-              targetClaimIndex = byNumber
-            }
-          }
-        }
-      }
-
-      if (targetClaimIndex === null) {
-        if (visibleClaims.length === 0) return
-        targetClaimIndex = visibleClaims[globalIndex % visibleClaims.length].originalIndex
-      }
-
-      map.get(targetClaimIndex)?.push({ ev, globalIndex })
-    })
-
-    return map
-  }, [visibleClaims, allEvidence])
-
-  const evidenceArrowLines = useMemo(() => {
-    const lines: Array<{ x: number; y1: number; y2: number }> = []
-
-    visibleClaims.forEach((meta, visualIndex) => {
-      const claimLeft = CLAIM_LEFT_START + visualIndex * CLAIM_GAP
-      const claimCenter = claimLeft + CLAIM_WIDTH / 2
-      const evs = evidenceByClaimIndex.get(meta.originalIndex) ?? []
-
-      if (evs.length === 0) return
-
-      if (evs.length === 1) {
-        lines.push({
-          x: claimCenter,
-          y1: EVIDENCE_TOP + 10,
-          y2: CLAIM_TOP + 70,
-        })
-        return
-      }
-
-      evs.forEach((_, localIndex) => {
-        const clusterWidth = (evs.length - 1) * EVIDENCE_GAP
-        const evCenter = claimCenter - clusterWidth / 2 + localIndex * EVIDENCE_GAP
-        lines.push({
-          x: evCenter,
-          y1: EVIDENCE_TOP + 10,
-          y2: CLAIM_TOP + 70,
-        })
-      })
-    })
-
-    return lines
-  }, [visibleClaims, evidenceByClaimIndex])
+  const claims = analysis.elements.claims.slice(0, 2)
+  const evidence = analysis.elements.evidence.slice(0, 2) as EvidenceNode[]
 
   const getElementStyle = (effectiveness: string, found: boolean) => {
     if (!found) {
@@ -200,21 +102,18 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
   }
 
   const displayedElements = useMemo(() => {
-    const visibleEvidence = visibleClaims.flatMap(
-      (meta) => evidenceByClaimIndex.get(meta.originalIndex)?.map(({ ev }) => ev) ?? [],
-    )
     return [
       analysis.elements.lead,
       analysis.elements.position,
-      ...visibleClaims.map((meta) => meta.claim),
+      ...claims,
       analysis.elements.counterclaim,
-      ...visibleEvidence,
+      ...evidence,
       analysis.elements.rebuttal,
       analysis.elements.counterclaim_evidence,
       analysis.elements.rebuttal_evidence,
       analysis.elements.conclusion,
     ]
-  }, [analysis, visibleClaims, evidenceByClaimIndex])
+  }, [analysis, claims, evidence])
 
   const effectivenessCounts = useMemo(() => {
     return displayedElements.reduce(
@@ -266,19 +165,9 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
             <line x1="365" y1="260" x2="365" y2="202" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
             <line x1="580" y1="260" x2="580" y2="202" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
 
-            {/* Evidence to Claims (dynamic) */}
-            {evidenceArrowLines.map((line, index) => (
-              <line
-                key={`ev-claim-arrow-${index}`}
-                x1={line.x}
-                y1={line.y1}
-                x2={line.x}
-                y2={line.y2}
-                stroke="#6b7280"
-                strokeWidth="3"
-                markerEnd="url(#arrowhead)"
-              />
-            ))}
+            {/* Evidence to Claims */}
+            <line x1="139" y1="370" x2="139" y2="320" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
+            <line x1="379" y1="370" x2="379" y2="320" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
 
             {/* Counterclaim to Rebuttal/Evidence */}
             <line x1="540" y1="370" x2="540" y2="320" stroke="#6b7280" strokeWidth="3" markerEnd="url(#arrowhead)" />
@@ -359,38 +248,27 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
               style={{ top: "250px", left: "510px", minWidth: "170px" }}
             />
 
-            {visibleClaims.map((meta, visualIndex) => {
-              const claim = meta.claim
-              const claimLeft = CLAIM_LEFT_START + visualIndex * CLAIM_GAP
-              const claimCenter = claimLeft + CLAIM_WIDTH / 2
-              const evs = evidenceByClaimIndex.get(meta.originalIndex) ?? []
+            {claims.map((claim, index) => {
+              const claimLeft = CLAIM_LEFT_START + index * CLAIM_GAP
+              const evidenceNode = evidence[index]
+              const evidenceLeft = claimLeft + CLAIM_WIDTH / 2 - EVIDENCE_WIDTH / 2
 
               return (
-                <React.Fragment key={claim.id ?? `claim-${meta.originalIndex}`}>
+                <React.Fragment key={claim.id ?? `claim-${index + 1}`}>
                   <DiagramElement
-                    id={`claim-${meta.originalIndex}`}
-                    label={`Claim ${visualIndex + 1}`}
+                    id={`claim-${index}`}
+                    label={`Claim ${index + 1}`}
                     element={claim}
                     style={{ top: `${CLAIM_TOP}px`, left: `${claimLeft}px`, minWidth: `${CLAIM_WIDTH}px` }}
                   />
-
-                  {evs.map(({ ev, globalIndex }, localIndex) => {
-                    const clusterWidth = (evs.length - 1) * EVIDENCE_GAP
-                    const evCenter = claimCenter - clusterWidth / 2 + localIndex * EVIDENCE_GAP
-                    const isClaim1SingleEvidence = visualIndex === 0 && evs.length === 1
-                    const evidenceWidth = isClaim1SingleEvidence ? EVIDENCE_WIDTH : EVIDENCE_WIDTH
-                    const evLeft = evCenter - evidenceWidth / 2
-
-                    return (
-                      <DiagramElement
-                        key={ev.id ?? `evidence-${globalIndex}`}
-                        id={`evidence-${globalIndex}`}
-                        label={`Evidence ${localIndex + 1}`}
-                        element={ev}
-                        style={{ top: `${EVIDENCE_TOP}px`, left: `${evLeft}px`, minWidth: `${evidenceWidth}px` }}
-                      />
-                    )
-                  })}
+                  {evidenceNode && (
+                    <DiagramElement
+                      id={`evidence-${index}`}
+                      label={`Evidence ${index + 1}`}
+                      element={evidenceNode}
+                      style={{ top: `${EVIDENCE_TOP}px`, left: `${evidenceLeft}px`, minWidth: `${EVIDENCE_WIDTH}px` }}
+                    />
+                  )}
                 </React.Fragment>
               )
             })}

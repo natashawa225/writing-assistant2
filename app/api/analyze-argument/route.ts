@@ -149,24 +149,60 @@ function toElement(el: ParsedElement | undefined, id?: string, parentClaimId?: s
 }
 
 function enrichElements(parsed: ParsedXML) {
-  const claimIds = parsed.claims.map((claim, i) => (claim as any).id ?? `claim-${i + 1}`)
-  const defaultClaimId = claimIds[0] ?? "claim-1"
+  const parseIndexedId = (value: string | undefined, prefix: string): number | null => {
+    if (!value) return null
+    const match = value.toLowerCase().match(new RegExp(`${prefix}[\\s_-]*(\\d+)`))
+    if (!match) return null
+    const n = Number.parseInt(match[1], 10)
+    return Number.isNaN(n) ? null : n
+  }
+
+  const claims = [toElement(undefined, "claim-1"), toElement(undefined, "claim-2")]
+  const evidence = [
+    toElement(undefined, "evidence-1", "claim-1"),
+    toElement(undefined, "evidence-2", "claim-2"),
+  ]
+
+  const claimSlotsUsed = new Set<number>()
+  parsed.claims.forEach((claim) => {
+    const fromId = parseIndexedId((claim as any).id, "claim")
+    let slot = fromId !== null && fromId >= 1 && fromId <= 2 ? fromId - 1 : -1
+    if (slot === -1 || claimSlotsUsed.has(slot)) {
+      slot = [0, 1].find((idx) => !claimSlotsUsed.has(idx)) ?? -1
+    }
+    if (slot === -1) return
+    claims[slot] = toElement(claim, `claim-${slot + 1}`)
+    claimSlotsUsed.add(slot)
+  })
+
+  const evidenceSlotsUsed = new Set<number>()
+  parsed.evidence.forEach((ev) => {
+    const fromParent = parseIndexedId((ev as any).parentClaimId, "claim")
+    const fromId = parseIndexedId((ev as any).id, "evidence")
+    let slot =
+      fromParent !== null && fromParent >= 1 && fromParent <= 2
+        ? fromParent - 1
+        : fromId !== null && fromId >= 1 && fromId <= 2
+          ? fromId - 1
+          : -1
+    if (slot === -1 || evidenceSlotsUsed.has(slot)) {
+      slot = [0, 1].find((idx) => !evidenceSlotsUsed.has(idx)) ?? -1
+    }
+    if (slot === -1) return
+    evidence[slot] = toElement(ev, `evidence-${slot + 1}`, `claim-${slot + 1}`)
+    evidenceSlotsUsed.add(slot)
+  })
+
   return {
     elements: {
       lead:                 toElement(parsed.lead, "lead-1"),
       position:             toElement(parsed.position, "position-1"),
-      // Do not pad claims; render only claims returned by parsed XML.
-      claims:               parsed.claims.slice(0,2).map((claim, i) => toElement(claim, claimIds[i])),
+      claims,
       counterclaim:         toElement(parsed.counterclaims[0], "counterclaim-1"),
       counterclaim_evidence:toElement(parsed.counterclaim_evidence[0], "counterclaim-evidence-1"),
       rebuttal:             toElement(parsed.rebuttals[0], "rebuttal-1"),
       rebuttal_evidence:    toElement(parsed.rebuttal_evidence[0], "rebuttal-evidence-1"),
-      // Do not pad evidence; preserve only parsed XML evidence nodes.
-      evidence:             parsed.evidence.slice(0,2).map((ev, i) => {
-        const parsedParent = (ev as any).parentClaimId
-        const fallbackParent = claimIds[i % Math.max(claimIds.length, 1)] ?? defaultClaimId
-        return toElement(ev, (ev as any).id ?? `evidence-${i + 1}`, parsedParent ?? fallbackParent)
-      }),
+      evidence,
       conclusion:           toElement(parsed.conclusion, "conclusion-1"),
     },
   }
@@ -290,14 +326,31 @@ function collectElements(enriched: ReturnType<typeof enrichElements>): ElementEn
   return out
 }
 
-function reconstructStructure(enriched: ReturnType<typeof enrichElements>, processed: any[]) {
+function reconstructStructure(enriched: ReturnType<typeof enrichElements>, processedByPath: Record<string, any>) {
   const result = JSON.parse(JSON.stringify(enriched))
-  let idx = 0
-  for (const name of ["lead","position","counterclaim","counterclaim_evidence","rebuttal","rebuttal_evidence","conclusion"]) {
-    result.elements[name] = processed[idx++]
-  }
-  result.elements.claims.forEach((_: any, i: number) => { result.elements.claims[i] = processed[idx++] })
-  result.elements.evidence.forEach((_: any, i: number) => { result.elements.evidence[i] = processed[idx++] })
+
+  const singleKeys = ["lead","position","counterclaim","counterclaim_evidence","rebuttal","rebuttal_evidence","conclusion"] as const
+  singleKeys.forEach((name) => {
+    const path = `elements.${name}`
+    if (processedByPath[path]) {
+      result.elements[name] = processedByPath[path]
+    }
+  })
+
+  result.elements.claims.forEach((_: any, i: number) => {
+    const path = `elements.claims[${i}]`
+    if (processedByPath[path]) {
+      result.elements.claims[i] = processedByPath[path]
+    }
+  })
+
+  result.elements.evidence.forEach((_: any, i: number) => {
+    const path = `elements.evidence[${i}]`
+    if (processedByPath[path]) {
+      result.elements.evidence[i] = processedByPath[path]
+    }
+  })
+
   return result
 }
 
@@ -624,31 +677,52 @@ Every required key must be present exactly once. Return valid json only.`,
 
 async function batchSuggestionsAndReasonsAll(
   elements: ElementEntry[]
-): Promise<{ suggestions: string[]; reasons: string[] }> {
+): Promise<{ suggestionsByPath: Record<string, string>; reasonsByPath: Record<string, string> }> {
   const needs = elements
     .map((e, i) => ({ ...e, originalIndex: i }))
     .filter(e => e.element.effectiveness !== "Effective")
 
-  const fullSuggestions = new Array(elements.length).fill("")
-  const fullReasons = new Array(elements.length).fill("")
+  const suggestionsByPath = elements.reduce((acc, element) => {
+    acc[element.path] = ""
+    return acc
+  }, {} as Record<string, string>)
+  const reasonsByPath = elements.reduce((acc, element) => {
+    acc[element.path] = ""
+    return acc
+  }, {} as Record<string, string>)
 
   if (needs.length === 0) {
     console.log("   ℹ️ All elements are Effective — skipping suggestions & reasons")
-    return { suggestions: fullSuggestions, reasons: fullReasons }
+    return { suggestionsByPath, reasonsByPath }
   }
 
   const list = needs.map((e, i) => {
     const label = e.index !== undefined ? `${e.name} #${e.index + 1}` : e.name
-    return `${i}. ${label}\n   Original: "${e.element.text}"\n   Effectiveness: ${e.element.effectiveness}`
+    return `${i}. key=${e.path}\n   Label: ${label}\n   Original: "${e.element.text}"\n   Effectiveness: ${e.element.effectiveness}`
   }).join("\n\n")
+  const expectedKeys = needs.map((n) => n.path)
+  const expectedKeysBlock = expectedKeys.map((key) => `- ${key}`).join("\n")
+  const expectedJsonLines = expectedKeys.map((key) => `    "${key}": {"suggestion":"...", "reason":"..."}`).join(",\n")
+  const maxAttempts = 3
 
-  const completion = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    response_format: { type: "json_object" },
-    messages: [
-      {
-        role: "system",
-        content: `You are a supportive writing teacher helping students improve their argumentative essays.
+  const normalizeReason = (reason: unknown) => {
+    if (typeof reason === "string") return reason
+    if (!reason || typeof reason !== "object" || Array.isArray(reason)) return ""
+    const reasonObj = reason as Record<string, unknown>
+    return [reasonObj.rhetorical_function, reasonObj.reader_impact, reasonObj.text_quality]
+      .map((x) => String(x ?? "").trim())
+      .filter(Boolean)
+      .join(" ")
+  }
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `You are a supportive writing teacher helping students improve their argumentative essays.
 
 For EACH element below, provide:
 1. A suggestion: Write **one clear, specific revision that directly improves the sentence or element**. Prefer rewriting the sentence or a concise portion of it, rather than giving a general instruction. Focus on actionable corrections that could appear in the student’s text.
@@ -659,47 +733,74 @@ For EACH element below, provide:
 
 Be specific, natural, and concise. Avoid vague statements.
 
-Example output for one element:
-{
-  "suggestion": "You could add an opening sentence such as 'In many cities today, transportation problems are becoming increasingly serious' before your main point.",
-  "reason": {
-    "rhetorical_function": "A lead introduces the topic and works as a bridge into your argument, helping the reader move smoothly from a general idea to your specific position.",
-    "reader_impact": "Without a lead, the essay may feel too abrupt and the reader may not have enough context to fully engage with your point.",
-    "text_quality": "Adding a lead creates a clearer progression from general to specific ideas, which improves coherence and overall flow."
-  }
-}
+You MUST return every key exactly once.
+Do not skip keys.
+
+Required keys:
+${expectedKeysBlock}
+
 Return JSON:
 {
-  "items": [
-    {"suggestion": "...", "reason": "..."},
-    ...
-  ]
+  "items_by_key": {
+${expectedJsonLines}
+  }
 }
+
 Return valid json only.`,
-      },
-      {
-        role: "user",
-        content: `Elements to improve:\n\n${list}`,
-      },
-    ],
-  })
+        },
+        {
+          role: "user",
+          content: `Elements to improve:\n\n${list}`,
+        },
+      ],
+    })
 
-  const result = JSON.parse(completion.choices[0].message.content || '{"items":[]}')
-  const items: Array<{ suggestion: string; reason: string }> = result.items || []
+    const raw = completion.choices[0].message.content || "{}"
+    console.log(`🧾 Step 2 suggestions raw JSON (attempt ${attempt}/${maxAttempts}):\n`, raw)
+    let result: unknown
+    try {
+      result = JSON.parse(raw)
+    } catch {
+      result = {}
+    }
 
-  needs.forEach((e, i) => {
-    fullSuggestions[e.originalIndex] = items[i]?.suggestion || ""
-    fullReasons[e.originalIndex] = items[i]?.reason || ""
-  })
+    const byKey = (result as Record<string, unknown>)?.items_by_key
+    if (byKey && typeof byKey === "object" && !Array.isArray(byKey)) {
+      Object.entries(byKey as Record<string, unknown>).forEach(([path, value]) => {
+        if (!value || typeof value !== "object" || Array.isArray(value)) return
+        const obj = value as Record<string, unknown>
+        if (typeof obj.suggestion === "string") suggestionsByPath[path] = obj.suggestion
+        reasonsByPath[path] = normalizeReason(obj.reason)
+      })
+    }
 
-  return { suggestions: fullSuggestions, reasons: fullReasons }
+    const legacyItems = (result as Record<string, unknown>)?.items
+    if (Array.isArray(legacyItems)) {
+      legacyItems.forEach((item, index) => {
+        const path = needs[index]?.path
+        if (!path || !item || typeof item !== "object" || Array.isArray(item)) return
+        const obj = item as Record<string, unknown>
+        if (!suggestionsByPath[path] && typeof obj.suggestion === "string") suggestionsByPath[path] = obj.suggestion
+        if (!reasonsByPath[path]) reasonsByPath[path] = normalizeReason(obj.reason)
+      })
+    }
+
+    const missing = expectedKeys.filter((path) => !suggestionsByPath[path] || !reasonsByPath[path])
+    if (missing.length > 0) {
+      console.warn(`⚠️ Step 2 missing suggestion/reason for attempt ${attempt}/${maxAttempts}:`, missing)
+      if (attempt < maxAttempts) continue
+    }
+    break
+  }
+
+  return { suggestionsByPath, reasonsByPath }
 }
 
 // ============================================================================
 // MAIN CHAIN — 2 LLM calls total (after FT model)
 // ============================================================================
 
-async function runFeedbackChain(elements: ElementEntry[], prompt: string): Promise<any[]> {
+async function runFeedbackChain(elements: ElementEntry[], prompt: string): Promise<Record<string, any>> {
   const start = Date.now()
   console.log(`\n🔗 Starting 2-step feedback chain for ${elements.length} elements`)
 
@@ -716,17 +817,20 @@ async function runFeedbackChain(elements: ElementEntry[], prompt: string): Promi
 
   // STEP 2: Suggestions + Reasons for non-Effective (1 call)
   console.log("📍 Step 2/2: Generating suggestions + reasons for non-Effective elements...")
-  const { suggestions, reasons } = await batchSuggestionsAndReasonsAll(elements)
+  const { suggestionsByPath, reasonsByPath } = await batchSuggestionsAndReasonsAll(elements)
   console.log(`✅ Step 2/2 complete (${Date.now() - start}ms)`)
 
   console.log(`\n🎉 Chain complete in ${Date.now() - start}ms`)
 
-  return elements.map((e, i) => ({
-    ...e.element,
-    feedback: normalizeFeedbackEntry(feedbackByKey[e.path]),
-    suggestion: suggestions[i] || "",
-    reason: reasons[i] || "",
-  }))
+  return elements.reduce((acc, e) => {
+    acc[e.path] = {
+      ...e.element,
+      feedback: normalizeFeedbackEntry(feedbackByKey[e.path]),
+      suggestion: suggestionsByPath[e.path] || "",
+      reason: reasonsByPath[e.path] || "",
+    }
+    return acc
+  }, {} as Record<string, any>)
 }
 
 // ============================================================================
@@ -801,8 +905,8 @@ export async function POST(request: NextRequest) {
 
     // ── Run 2-step feedback chain ────────────────────────────────────────────
     const allElements = collectElements(enriched)
-    const processedElements = await runFeedbackChain(allElements, prompt ?? "")
-    const finalResult = reconstructStructure(enriched, processedElements)
+    const processedByPath = await runFeedbackChain(allElements, prompt ?? "")
+    const finalResult = reconstructStructure(enriched, processedByPath)
 
     // ── Validate with Zod ────────────────────────────────────────────────────
     const validated = FeedbackResultSchema.safeParse(finalResult)
