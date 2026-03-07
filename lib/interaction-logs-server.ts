@@ -7,7 +7,7 @@ export type InteractionEventType =
   | "issue_resolved"
   | "final_submission"
 
-export type SessionCondition = "baseline" | "multilevel"
+export type SessionCondition = "multilevel" | "multilevel"
 export type DraftStage = "initial" | "after_edit" | "final"
 export type FeedbackLevel = 1 | 2 | 3
 

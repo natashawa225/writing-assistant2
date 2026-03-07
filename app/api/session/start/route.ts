@@ -4,7 +4,7 @@ import { upsertSession, type SessionCondition } from "@/lib/interaction-logs-ser
 
 const bodySchema = z.object({
   session_id: z.string().uuid(),
-  condition: z.enum(["baseline", "multilevel"]).default("multilevel"),
+  condition: z.enum(["multilevel", "multilevel"]).default("multilevel"),
   student_name: z.string().trim().min(1),
   student_id: z.string().trim().min(1),
 })
