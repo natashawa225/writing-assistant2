@@ -175,7 +175,7 @@ export function ArgumentativeFeedback({ analysis, essay, isAnalyzing, onHighligh
       positive_reinforcement: "Positive Reinforcement",
       development: "Development",
       issue: "Issue",
-      reflection: "Reflection",
+      reflection: "Guidance",
       hint: "Hint",
     }
 

@@ -103,3 +103,7 @@ create unique index if not exists uniq_snapshots_final_per_session
 -- useful for reads
 create index if not exists idx_snapshots_session_stage_ts
   on public.draft_snapshots(session_id, stage, "timestamp" desc);
+
+alter table sessions
+add column student_name text,
+add column student_id text;

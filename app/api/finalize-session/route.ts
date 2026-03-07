@@ -96,27 +96,46 @@ Suggested Focus for Future Revision
             "You are an expert writing tutor. Focus on providing **clear, student-friendly revision insights**. Do NOT discuss internal revision logs or technical feedback data. Only analyze the essay itself. Provide actionable advice students can use to improve their writing."
           },
           {
-            role: "user",       content: `
+            role: "user",       
+            content: `
 
-Generate a \"Revision Insights\" report for a student. Use ONLY the initial and revised drafts provided below.
+Generate a **“Revision Insights” (修订洞察)** report for a student.
+
+IMPORTANT RULES:
+- Write the entire report in **Mandarin Chinese**.
+- Use **third-person narration** (e.g., “该学生…”, “学生在本次修订中…”).
+- Do NOT address the student directly using “你”.
+- Focus on describing **what the student did, what improved, and what the student learned from the revision**.
+- Use a reflective tone appropriate for a **learning history / revision record**.
 
 Structure the report with these sections:
 
-1) Overall Writing Improvement
-- Highlight how the essay improved after revision (clarity, flow, structure).
+1) 整体写作提升（Overall Writing Improvement）
+- 描述修订后文章在**清晰度、结构或连贯性**方面的整体变化。
+- 说明该学生在本次修改中如何改进文章表达或组织。
 
-2) Argument Element Performance
-- Note which claims, evidence, or counterarguments improved or still need work.
+2) 论证要素表现（Argument Element Performance）
+- 分析论文中的**论点、证据、反方观点或反驳**是否得到加强。
+- 说明哪些论证要素有所改进，哪些仍有提升空间。
 
-3) Revision Changes
-- Summarize the main additions or improvements made in this revision.
+3) 本次修订的主要变化（Revision Changes）
+- 总结学生在本次修改中**新增、调整或强化**的内容。
+- 以客观方式描述学生的修改行为，例如：
+  - 增加了新的证据
+  - 调整了论点表达
+  - 改写了部分句子以提高清晰度
 
-4) Next Revision Suggestions
-- Give 2–4 concrete steps for the student’s next revision.
-- Use clear, actionable advice (e.g., "add a rebuttal to the counterargument" instead of "improve argument").
+4) 下一步修改建议（Next Revision Suggestions）
+- 提供 **2–4条具体、可执行的修改建议**。
+- 建议应清晰具体，例如：
+  - “可以增加一个反驳来回应反方观点”
+  - “可以补充具体例子来支持第二个论点”
 
-5) Learning Insight
-- One short reflection on what this revision shows about the student’s developing writing skills.
+5) 学习洞察（Learning Insight）
+- 用 **1–2句话总结本次修订反映出的写作学习进展**。
+- 描述学生在写作发展中的一个学习点，例如：
+  - 该学生开始更有意识地补充证据
+  - 该学生正在逐渐形成更完整的论证结构
 
 Initial Draft:
 ${initialDraft}

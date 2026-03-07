@@ -602,6 +602,14 @@ ${expectedKeysBlock}
 
 Purpose: Help the student understand what is wrong and how to improve in general
 
+Language requirement:
+- The feedback content MUST be written in Simplified Chinese.
+- Keep the section labels exactly as:
+  Issue:
+  Guidance:
+  Example:
+- Do NOT write English explanations.
+
 Feedback style:
 - Use simple, student-friendly language.
 - Use a supportive, teacher-like tone.
@@ -620,16 +628,12 @@ Rules:
   * Write three short sections:
     - Issue: Briefly explain what may be unclear, missing, or underdeveloped.
     - Guidance: Suggest how the student could improve this element in general terms.
-    - Example (optional): Provide a short generic example if helpful. Do NOT rewrite the student’s text.
-
-Use simple, student-friendly language.
-Keep the tone supportive and encouraging.
-Focus only on the selected element.
+    - Example (optional): Give a short, generic illustration of the idea, not a corrected sentence. The example should describe the type of content the student could add, rather than writing the exact sentence.
 
 Avoid:
-- Rewriting the student’s sentence
-- Giving a full corrected version
-- Being overly vague
+- Writing a full sentence that could replace the student’s text
+- Directly correcting the student’s wording
+- Quoting or rewriting the student’s sentence
 
 Return JSON with this exact shape:
 {
