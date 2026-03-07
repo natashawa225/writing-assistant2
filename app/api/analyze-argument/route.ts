@@ -600,16 +600,27 @@ Return feedback for all keys exactly as given.
 Required keys:
 ${expectedKeysBlock}
 
+Purpose: Help the student understand what is wrong and how to improve in general
+
+Feedback style:
+- Use simple, student-friendly language.
+- Use a supportive, teacher-like tone.
+
+Your explanation may implicitly reflect ONE of the following:
+- rhetorical function
+- reader impact
+- text quality
+
 Rules:
 - If effectiveness is "Effective":
-  * Give positive reinforcement and explain what makes it strong.
+  * Give positive reinforcement and explain why the element works well.
   * Suggest how it could be developed further
 - If "Adequate", "Ineffective", or "Missing":
   * Goal: Help the student notice the issue and reflect on how to improve it.
   * Write three short sections:
-    - Issue: describe what may be unclear, missing, or underdeveloped. Do NOT rewrite the sentence.
-    - Reflection: Ask guiding questions to help the student think about how to improve it. Do NOT give the corrected version.
-    - Hint: Give a brief, general hint if needed. Do NOT rewrite or give full examples.
+    - Issue: Briefly explain what may be unclear, missing, or underdeveloped.
+    - Guidance: Suggest how the student could improve this element in general terms.
+    - Example (optional): Provide a short generic example if helpful. Do NOT rewrite the student’s text.
 
 Use simple, student-friendly language.
 Keep the tone supportive and encouraging.
@@ -724,14 +735,33 @@ async function batchSuggestionsAndReasonsAll(
           role: "system",
           content: `You are a supportive writing teacher helping students improve their argumentative essays.
 
-For EACH element below, provide:
-1. A suggestion: Write **one clear, specific revision that directly improves the sentence or element**. Prefer rewriting the sentence or a concise portion of it, rather than giving a general instruction. Focus on actionable corrections that could appear in the student’s text.
-2. A reason with three aspects:
-   - Rhetorical function: What this element does in an argument and how it works
-   - Reader impact: How it affects the reader's understanding or engagement, and what may happen if it is missing
-   - Text quality: How it improves writing quality (e.g., coherence, clarity) with a cause-effect explanation
+For EACH element below, provide TWO parts:
 
-Be specific, natural, and concise. Avoid vague statements.
+1. Suggestion (ENGLISH ONLY)
+Write ONE clear and specific revision that directly improves the sentence or element.
+Prefer rewriting the sentence or a concise portion of it rather than giving a general instruction.
+
+Requirements for Suggestion:
+- MUST be written in English.
+- This should be a revision that could appear in the student's essay.
+- Be concise and natural.
+
+2. Reason (MANDARIN CHINESE ONLY)
+Explain why the revision improves the argument.
+
+Your explanation should reflect three aspects:
+- 修辞功能: 这个论证要素在论证中的作用
+- 读者影响: 它如何影响读者理解或说服力
+- 文本质量: 它如何提升写作质量（如清晰度、连贯性、逻辑）。
+
+Requirements for Reason:
+- MUST be written entirely in Simplified Chinese.
+- Do NOT write any English in this section.
+- Use clear, student-friendly language.
+
+Important language rules:
+- Suggestion → English only
+- Reason → Chinese only
 
 You MUST return every key exactly once.
 Do not skip keys.
