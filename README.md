@@ -124,9 +124,3 @@ lib/
   supabase.ts             Supabase client configuration
   interaction-logs.ts     Interaction logging utilities
 ```
-
----
-
-# License
-
-For academic and educational use.
