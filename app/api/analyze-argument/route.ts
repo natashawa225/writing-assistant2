@@ -687,7 +687,8 @@ Every required key must be present exactly once. Return valid json only.`,
 // ============================================================================
 
 async function batchSuggestionsAndReasonsAll(
-  elements: ElementEntry[]
+  elements: ElementEntry[],
+  prompt: string  // ← add this
 ): Promise<{ suggestionsByPath: Record<string, string>; reasonsByPath: Record<string, string> }> {
   const needs = elements
     .map((e, i) => ({ ...e, originalIndex: i }))
@@ -848,7 +849,7 @@ async function runFeedbackChain(elements: ElementEntry[], prompt: string): Promi
 
   // STEP 2: Suggestions + Reasons for non-Effective (1 call)
   console.log("📍 Step 2/2: Generating suggestions + reasons for non-Effective elements...")
-  const { suggestionsByPath, reasonsByPath } = await batchSuggestionsAndReasonsAll(elements)
+  const { suggestionsByPath, reasonsByPath } = await batchSuggestionsAndReasonsAll(elements, prompt)
   console.log(`✅ Step 2/2 complete (${Date.now() - start}ms)`)
 
   console.log(`\n🎉 Chain complete in ${Date.now() - start}ms`)
