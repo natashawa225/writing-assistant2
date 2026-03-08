@@ -15,6 +15,9 @@ const interactionEvents = [
   "edit_detected",
   "issue_resolved",
   "final_submission",
+  "revision_insights_viewed",
+  "pdf_exported",
+  "revision_insights_read_time",
 ] as const
 
 const bodySchema = z.object({

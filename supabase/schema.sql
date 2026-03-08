@@ -18,7 +18,8 @@ create table if not exists public.issues (
 
   corrected_text text,
   initial_text text,
-  original_text text
+  original_text text,
+  suggested_correction text
 );
 
 -- If an older schema added a check constraint, remove it to match this simplified schema.
@@ -107,3 +108,6 @@ create index if not exists idx_snapshots_session_stage_ts
 alter table sessions
 add column student_name text,
 add column student_id text;
+
+alter table sessions
+add column revision_window_minutes text

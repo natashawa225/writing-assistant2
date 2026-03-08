@@ -6,6 +6,9 @@ export type InteractionEventType =
   | "edit_detected"
   | "issue_resolved"
   | "final_submission"
+  | "revision_insights_viewed"
+  | "pdf_exported"
+  | "revision_insights_read_time"
 
 export type SessionCondition = "multilevel" | "multilevel"
 export type DraftStage = "initial" | "after_edit" | "final"
@@ -18,6 +21,7 @@ export interface SessionRow {
   submitted_at: string | null
   student_name?: string | null
   student_id?: string | null
+  revision_window_minutes?: number | null 
 }
 
 export interface IssueRow {
@@ -28,6 +32,7 @@ export interface IssueRow {
   corrected_text: string | null
   initial_text: string | null
   original_text: string | null
+  suggested_correction: string | null
 }
 
 export interface InteractionLogRow {
@@ -73,6 +78,7 @@ interface InsertIssueInput {
   initial_text?: string | null
   original_text?: string | null
   corrected_text?: string | null
+  suggested_correction?: string | null
 }
 
 function getSupabaseConfig() {
@@ -152,6 +158,35 @@ export async function updateSessionSubmittedAt(sessionId: string): Promise<Sessi
   if (!response.ok) {
     const body = await response.text()
     throw new Error(`Failed to update session submitted_at: ${response.status} ${body}`)
+  }
+
+  const rows = (await response.json()) as SessionRow[]
+  return rows[0]
+}
+
+export async function updateSessionRevisionWindow(
+  sessionId: string,
+  minutes: number
+): Promise<SessionRow> {
+  const { supabaseUrl, serviceRoleKey } = getSupabaseConfig()
+
+  const url = new URL(`${supabaseUrl}/rest/v1/sessions`)
+  url.searchParams.set("id", `eq.${sessionId}`)
+
+  const response = await fetch(url.toString(), {
+    method: "PATCH",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify({ revision_window_minutes: minutes }),
+  })
+
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`Failed to update revision window: ${response.status} ${body}`)
   }
 
   const rows = (await response.json()) as SessionRow[]

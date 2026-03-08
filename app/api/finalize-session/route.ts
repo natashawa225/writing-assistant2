@@ -11,6 +11,7 @@ import {
   insertInteractionLog,
   updateDraftSnapshotById,
   updateSessionReflectiveSummary,
+  updateSessionRevisionWindow,
   updateSessionSubmittedAt,
 } from "@/lib/interaction-logs-server"
 
@@ -154,6 +155,7 @@ ${revisedDraft}
 
     try {
       await updateSessionReflectiveSummary(session_id, summary)
+      await updateSessionRevisionWindow(session_id, revisionData.revisionWindowMinutes)
     } catch (persistError) {
       console.error("Failed to persist reflective_summary", persistError)
     }

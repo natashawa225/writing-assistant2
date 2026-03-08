@@ -604,10 +604,6 @@ Purpose: Help the student understand what is wrong and how to improve in general
 
 Language requirement:
 - The feedback content MUST be written in Simplified Chinese.
-- Keep the section labels exactly as:
-  Issue:
-  Guidance:
-  Example:
 - Do NOT write English explanations.
 
 Feedback style:
@@ -742,6 +738,7 @@ async function batchSuggestionsAndReasonsAll(
 For EACH element below, provide TWO parts:
 
 1. Suggestion (ENGLISH ONLY)
+Essay prompt: """${prompt}"""
 Write ONE clear and specific revision that directly improves the sentence or element.
 Prefer rewriting the sentence or a concise portion of it rather than giving a general instruction.
 

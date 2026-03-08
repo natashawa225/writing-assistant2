@@ -23,6 +23,9 @@ type InteractionEventType =
   | "edit_detected"
   | "issue_resolved"
   | "final_submission"
+  | "revision_insights_viewed"
+  | "pdf_exported"
+  | "revision_insights_read_time"
 
 interface RevisionBehaviorData {
   totalEditsAfterAnalyze: number
@@ -81,10 +84,12 @@ export default function ArgumentativeWritingAssistant() {
   const [revisionData, setRevisionData] = useState<RevisionBehaviorData | null>(null)
   const [issueRegistry, setIssueRegistry] = useState<Record<string, IssueRegistryRow>>({})
   const editDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const insightsOpenedAtRef = useRef<number | null>(null)
   const lastEditLoggedEssayRef = useRef("")
   const [studentName, setStudentName] = useState("")
   const [studentId, setStudentId] = useState("")
   const [hasStartedSession, setHasStartedSession] = useState(false)
+  const hasStartedSessionRef = useRef(false)
   const currentCondition: SessionCondition = "multilevel"
   useEffect(() => {
     const id = getOrCreateSessionId()
@@ -113,10 +118,10 @@ export default function ArgumentativeWritingAssistant() {
       feedbackLevel?: FeedbackLevel
       metadata?: Record<string, unknown>
     }) => {
-      if (!sessionId || !hasStartedSession) return
+      if (!sessionId || !hasStartedSessionRef.current) return
 
       try {
-        await fetch("/api/interaction-log", {
+        const response = await fetch("/api/interaction-log", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -127,14 +132,42 @@ export default function ArgumentativeWritingAssistant() {
             metadata: metadata ?? null,
           }),
         })
+
+        if (!response.ok) {
+          const failure = await response.json().catch(() => null)
+          console.error("Failed to log interaction", {
+            eventType,
+            status: response.status,
+            error: failure?.error ?? "Unknown logging error",
+          })
+        }
       } catch (error) {
         console.error("Failed to log interaction", error)
       }
     },
-    [hasStartedSession, sessionId],
+    [sessionId],
   )
   // PDF export function
   const handleExportPDF = () => {
+    if (insightsOpenedAtRef.current) {
+      const secondsRead = Math.round((Date.now() - insightsOpenedAtRef.current) / 1000)
+      void logInteraction({
+        eventType: "revision_insights_read_time",
+        metadata: {
+          seconds_read: secondsRead,
+          source: "pdf_export",
+        },
+      })
+      insightsOpenedAtRef.current = Date.now()
+    }
+
+    void logInteraction({
+      eventType: "pdf_exported",
+      metadata: {
+        source: "revision_insights_modal",
+        final_word_count: essay.trim().split(/\s+/).length,
+      },
+    })
     const printContent = `
       <!DOCTYPE html>
       <html>
@@ -204,23 +237,23 @@ export default function ArgumentativeWritingAssistant() {
     [hasStartedSession, sessionId],
   )
 
-  useEffect(() => {
-    if (!sessionId || !hasStartedSession || hasLoggedInitialDraft) return
-    if (!essay.trim()) return
+  // useEffect(() => {
+  //   if (!sessionId || !hasStartedSession || hasLoggedInitialDraft) return
+  //   if (!essay.trim()) return
 
-    void Promise.all([
-      logInteraction({
-        eventType: "initial_draft",
-        metadata: { source: "first_non_empty_draft" },
-      }),
-      insertDraftSnapshot({
-        stage: "initial",
-        draftText: essay,
-      }),
-    ]).then(() => {
-      setHasLoggedInitialDraft(true)
-    })
-  }, [essay, hasLoggedInitialDraft, hasStartedSession, insertDraftSnapshot, logInteraction, sessionId])
+  //   void Promise.all([
+  //     logInteraction({
+  //       eventType: "initial_draft",
+  //       metadata: { source: "first_non_empty_draft" },
+  //     }),
+  //     insertDraftSnapshot({
+  //       stage: "initial",
+  //       draftText: essay,
+  //     }),
+  //   ]).then(() => {
+  //     setHasLoggedInitialDraft(true)
+  //   })
+  // }, [essay, hasLoggedInitialDraft, hasStartedSession, insertDraftSnapshot, logInteraction, sessionId])
 
   useEffect(() => {
     if (!sessionId || !hasStartedSession || !analyzeClickedAt || isSubmitted) return
@@ -270,6 +303,7 @@ export default function ArgumentativeWritingAssistant() {
       throw new Error(failure?.error || "Failed to start session")
     }
 
+    hasStartedSessionRef.current = true
     setHasStartedSession(true)
   }, [currentCondition, hasStartedSession, sessionId, studentId, studentName])
 
@@ -284,6 +318,21 @@ export default function ArgumentativeWritingAssistant() {
 
     try {
       await startSessionIfNeeded()
+
+      if (!hasLoggedInitialDraft) {
+        await Promise.all([
+          logInteraction({
+            eventType: "initial_draft",
+            metadata: { source: "first_analyze_click" },
+          }),
+          insertDraftSnapshot({
+            stage: "initial",
+            draftText: firstDraftText,
+          }),
+        ])
+
+        setHasLoggedInitialDraft(true)
+      }
 
       if (!analyzeClickedAt) {
         setAnalyzeClickedAt(new Date().toISOString())
@@ -367,31 +416,74 @@ export default function ArgumentativeWritingAssistant() {
           element_type: string
           initial_text: string | null
           original_text: string | null
+          suggested_correction: string | null
         }> = []
 
-        const pushIssueCandidate = (clientKey: string, elementType: string, text: string | undefined) => {
+        const pushIssueCandidate = (
+          clientKey: string,
+          elementType: string,
+          text: string | undefined,
+          level3Suggestion: string | undefined,
+        ) => {
           const normalizedText = text?.trim() ? text : null
+          const normalizedSuggestion = level3Suggestion?.trim() ? level3Suggestion : null
           issueCandidates.push({
             client_key: clientKey,
             element_type: normalizeElementType(elementType),
             initial_text: normalizedText,
             original_text: normalizedText,
+            suggested_correction: normalizedSuggestion,
           })
         }
 
-        pushIssueCandidate("lead", "lead", argResult.elements.lead.text)
-        pushIssueCandidate("position", "position", argResult.elements.position.text)
+        pushIssueCandidate(
+          "lead",
+          "lead",
+          argResult.elements.lead.text,
+          argResult.elements.lead.suggestion,
+        )
+        pushIssueCandidate(
+          "position",
+          "position",
+          argResult.elements.position.text,
+          argResult.elements.position.suggestion,
+        )
         argResult.elements.claims.slice(0, 2).forEach((claim, index) => {
-          pushIssueCandidate(`claim-${index}`, "claim", claim.text)
+          pushIssueCandidate(`claim-${index}`, "claim", claim.text, claim.suggestion)
         })
-        pushIssueCandidate("counterclaim", "counterclaim", argResult.elements.counterclaim.text)
+        pushIssueCandidate(
+          "counterclaim",
+          "counterclaim",
+          argResult.elements.counterclaim.text,
+          argResult.elements.counterclaim.suggestion,
+        )
         argResult.elements.evidence.slice(0, 2).forEach((evidence, index) => {
-          pushIssueCandidate(`evidence-${index}`, "evidence", evidence.text)
+          pushIssueCandidate(`evidence-${index}`, "evidence", evidence.text, evidence.suggestion)
         })
-        pushIssueCandidate("rebuttal", "rebuttal", argResult.elements.rebuttal.text)
-        pushIssueCandidate("counterclaim_evidence", "counterclaim_evidence", argResult.elements.counterclaim_evidence.text)
-        pushIssueCandidate("rebuttal_evidence", "rebuttal_evidence", argResult.elements.rebuttal_evidence.text)
-        pushIssueCandidate("conclusion", "conclusion", argResult.elements.conclusion.text)
+        pushIssueCandidate(
+          "rebuttal",
+          "rebuttal",
+          argResult.elements.rebuttal.text,
+          argResult.elements.rebuttal.suggestion,
+        )
+        pushIssueCandidate(
+          "counterclaim_evidence",
+          "counterclaim_evidence",
+          argResult.elements.counterclaim_evidence.text,
+          argResult.elements.counterclaim_evidence.suggestion,
+        )
+        pushIssueCandidate(
+          "rebuttal_evidence",
+          "rebuttal_evidence",
+          argResult.elements.rebuttal_evidence.text,
+          argResult.elements.rebuttal_evidence.suggestion,
+        )
+        pushIssueCandidate(
+          "conclusion",
+          "conclusion",
+          argResult.elements.conclusion.text,
+          argResult.elements.conclusion.suggestion,
+        )
 
         const issuesPayload = issueCandidates.map((issue, index) => ({
           ...issue,
@@ -447,6 +539,12 @@ export default function ArgumentativeWritingAssistant() {
     if (!sessionId || !hasStartedSession || !canSubmit || isSubmitting || isSubmitted) return
 
     setIsSubmitting(true)
+    await logInteraction({
+      eventType: "final_submission",
+      metadata: {
+        final_word_count: essay.trim().split(/\s+/).length,
+      },
+    })
 
     try {
       const response = await fetch("/api/finalize-session", {
@@ -468,6 +566,14 @@ export default function ArgumentativeWritingAssistant() {
       setRevisionData((payload.revision_data as RevisionBehaviorData) ?? null)
       setIsSubmitted(true)
       setShowInsightsModal(true)
+      insightsOpenedAtRef.current = Date.now()
+
+      void logInteraction({
+        eventType: "revision_insights_viewed",
+        metadata: {
+          source: "revision_insights_modal",
+        },
+      })
     } catch (error) {
       console.error("Final submission failed", error)
       alert(error instanceof Error ? error.message : "Failed to finalize session. Please try again.")
@@ -679,7 +785,25 @@ export default function ArgumentativeWritingAssistant() {
         />
       </div>
       
-      <Dialog open={showInsightsModal} onOpenChange={setShowInsightsModal}>
+      <Dialog
+        open={showInsightsModal}
+        onOpenChange={(open) => {
+          if (!open && insightsOpenedAtRef.current) {
+            const seconds = Math.round(
+              (Date.now() - insightsOpenedAtRef.current) / 1000
+            )
+
+            void logInteraction({
+              eventType: "revision_insights_read_time",
+              metadata: { seconds_read: seconds, source: "modal_closed" },
+            })
+
+            insightsOpenedAtRef.current = null
+          }
+
+          setShowInsightsModal(open)
+        }}
+      >
         <DialogContent className="sm:max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Revision Insights</DialogTitle>
