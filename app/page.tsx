@@ -417,6 +417,7 @@ export default function ArgumentativeWritingAssistant() {
           initial_text: string | null
           original_text: string | null
           suggested_correction: string | null
+          effectiveness: string | null
         }> = []
 
         const pushIssueCandidate = (
@@ -424,15 +425,18 @@ export default function ArgumentativeWritingAssistant() {
           elementType: string,
           text: string | undefined,
           level3Suggestion: string | undefined,
+          effectiveness: string | undefined,
         ) => {
           const normalizedText = text?.trim() ? text : null
           const normalizedSuggestion = level3Suggestion?.trim() ? level3Suggestion : null
+          const normalizedEffectiveness = effectiveness?.trim() ? effectiveness : "Missing"
           issueCandidates.push({
             client_key: clientKey,
             element_type: normalizeElementType(elementType),
             initial_text: normalizedText,
             original_text: normalizedText,
             suggested_correction: normalizedSuggestion,
+            effectiveness: normalizedEffectiveness,
           })
         }
 
@@ -441,48 +445,55 @@ export default function ArgumentativeWritingAssistant() {
           "lead",
           argResult.elements.lead.text,
           argResult.elements.lead.suggestion,
+          argResult.elements.lead.effectiveness,
         )
         pushIssueCandidate(
           "position",
           "position",
           argResult.elements.position.text,
           argResult.elements.position.suggestion,
+          argResult.elements.position.effectiveness,
         )
         argResult.elements.claims.slice(0, 2).forEach((claim, index) => {
-          pushIssueCandidate(`claim-${index}`, "claim", claim.text, claim.suggestion)
+          pushIssueCandidate(`claim-${index}`, "claim", claim.text, claim.suggestion, claim.effectiveness)
         })
         pushIssueCandidate(
           "counterclaim",
           "counterclaim",
           argResult.elements.counterclaim.text,
           argResult.elements.counterclaim.suggestion,
+          argResult.elements.counterclaim.effectiveness,
         )
         argResult.elements.evidence.slice(0, 2).forEach((evidence, index) => {
-          pushIssueCandidate(`evidence-${index}`, "evidence", evidence.text, evidence.suggestion)
+          pushIssueCandidate(`evidence-${index}`, "evidence", evidence.text, evidence.suggestion, evidence.effectiveness)
         })
         pushIssueCandidate(
           "rebuttal",
           "rebuttal",
           argResult.elements.rebuttal.text,
           argResult.elements.rebuttal.suggestion,
+          argResult.elements.rebuttal.effectiveness,
         )
         pushIssueCandidate(
           "counterclaim_evidence",
           "counterclaim_evidence",
           argResult.elements.counterclaim_evidence.text,
           argResult.elements.counterclaim_evidence.suggestion,
+          argResult.elements.counterclaim_evidence.effectiveness,
         )
         pushIssueCandidate(
           "rebuttal_evidence",
           "rebuttal_evidence",
           argResult.elements.rebuttal_evidence.text,
           argResult.elements.rebuttal_evidence.suggestion,
+          argResult.elements.rebuttal_evidence.effectiveness,
         )
         pushIssueCandidate(
           "conclusion",
           "conclusion",
           argResult.elements.conclusion.text,
           argResult.elements.conclusion.suggestion,
+          argResult.elements.conclusion.effectiveness,
         )
 
         const issuesPayload = issueCandidates.map((issue, index) => ({

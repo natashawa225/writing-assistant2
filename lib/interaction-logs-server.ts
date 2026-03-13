@@ -33,6 +33,7 @@ export interface IssueRow {
   initial_text: string | null
   original_text: string | null
   suggested_correction: string | null
+  effectiveness?: string | null
 }
 
 export interface InteractionLogRow {
@@ -79,6 +80,7 @@ interface InsertIssueInput {
   original_text?: string | null
   corrected_text?: string | null
   suggested_correction?: string | null
+  effectiveness?: string | null
 }
 
 function getSupabaseConfig() {
