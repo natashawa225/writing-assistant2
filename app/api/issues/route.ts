@@ -11,6 +11,7 @@ const issueSchema = z.object({
   corrected_text: z.string().optional().nullable(),
   suggested_correction: z.string().optional().nullable(),
   effectiveness: z.string().optional().nullable(),
+  indirect_feedback: z.string().optional(),
 })
 
 const bodySchema = z.object({
@@ -43,6 +44,7 @@ export async function POST(request: Request) {
       corrected_text: issue.corrected_text ?? null,
       suggested_correction: issue.suggested_correction ?? null,
       effectiveness: issue.effectiveness ?? null,
+      indirect_feedback: issue.indirect_feedback ?? "",
     }))
 
     const rows = await insertIssues(payload)

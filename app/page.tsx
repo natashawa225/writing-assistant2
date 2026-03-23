@@ -418,7 +418,26 @@ export default function ArgumentativeWritingAssistant() {
           original_text: string | null
           suggested_correction: string | null
           effectiveness: string | null
+          indirect_feedback: string
         }> = []
+
+        const normalizeIssueFeedback = (feedback: unknown): string => {
+          if (feedback == null) return ""
+          if (Array.isArray(feedback)) {
+            return feedback
+              .map((item) => (typeof item === "string" ? item.trim() : JSON.stringify(item)))
+              .filter(Boolean)
+              .join(" | ")
+          }
+          if (typeof feedback === "object") {
+            try {
+              return JSON.stringify(feedback)
+            } catch {
+              return ""
+            }
+          }
+          return String(feedback).trim()
+        }
 
         const pushIssueCandidate = (
           clientKey: string,
@@ -426,6 +445,7 @@ export default function ArgumentativeWritingAssistant() {
           text: string | undefined,
           level3Suggestion: string | undefined,
           effectiveness: string | undefined,
+          feedback: unknown,
         ) => {
           const normalizedText = text?.trim() ? text : null
           const normalizedSuggestion = level3Suggestion?.trim() ? level3Suggestion : null
@@ -437,6 +457,7 @@ export default function ArgumentativeWritingAssistant() {
             original_text: normalizedText,
             suggested_correction: normalizedSuggestion,
             effectiveness: normalizedEffectiveness,
+            indirect_feedback: normalizeIssueFeedback(feedback),
           })
         }
 
@@ -446,6 +467,7 @@ export default function ArgumentativeWritingAssistant() {
           argResult.elements.lead.text,
           argResult.elements.lead.suggestion,
           argResult.elements.lead.effectiveness,
+          argResult.elements.lead.feedback,
         )
         pushIssueCandidate(
           "position",
@@ -453,9 +475,10 @@ export default function ArgumentativeWritingAssistant() {
           argResult.elements.position.text,
           argResult.elements.position.suggestion,
           argResult.elements.position.effectiveness,
+          argResult.elements.position.feedback,
         )
         argResult.elements.claims.slice(0, 2).forEach((claim, index) => {
-          pushIssueCandidate(`claim-${index}`, "claim", claim.text, claim.suggestion, claim.effectiveness)
+          pushIssueCandidate(`claim-${index}`, "claim", claim.text, claim.suggestion, claim.effectiveness, claim.feedback)
         })
         pushIssueCandidate(
           "counterclaim",
@@ -463,9 +486,10 @@ export default function ArgumentativeWritingAssistant() {
           argResult.elements.counterclaim.text,
           argResult.elements.counterclaim.suggestion,
           argResult.elements.counterclaim.effectiveness,
+          argResult.elements.counterclaim.feedback,
         )
         argResult.elements.evidence.slice(0, 2).forEach((evidence, index) => {
-          pushIssueCandidate(`evidence-${index}`, "evidence", evidence.text, evidence.suggestion, evidence.effectiveness)
+          pushIssueCandidate(`evidence-${index}`, "evidence", evidence.text, evidence.suggestion, evidence.effectiveness, evidence.feedback)
         })
         pushIssueCandidate(
           "rebuttal",
@@ -473,6 +497,7 @@ export default function ArgumentativeWritingAssistant() {
           argResult.elements.rebuttal.text,
           argResult.elements.rebuttal.suggestion,
           argResult.elements.rebuttal.effectiveness,
+          argResult.elements.rebuttal.feedback,
         )
         pushIssueCandidate(
           "counterclaim_evidence",
@@ -480,6 +505,7 @@ export default function ArgumentativeWritingAssistant() {
           argResult.elements.counterclaim_evidence.text,
           argResult.elements.counterclaim_evidence.suggestion,
           argResult.elements.counterclaim_evidence.effectiveness,
+          argResult.elements.counterclaim_evidence.feedback,
         )
         pushIssueCandidate(
           "rebuttal_evidence",
@@ -487,6 +513,7 @@ export default function ArgumentativeWritingAssistant() {
           argResult.elements.rebuttal_evidence.text,
           argResult.elements.rebuttal_evidence.suggestion,
           argResult.elements.rebuttal_evidence.effectiveness,
+          argResult.elements.rebuttal_evidence.feedback,
         )
         pushIssueCandidate(
           "conclusion",
@@ -494,6 +521,7 @@ export default function ArgumentativeWritingAssistant() {
           argResult.elements.conclusion.text,
           argResult.elements.conclusion.suggestion,
           argResult.elements.conclusion.effectiveness,
+          argResult.elements.conclusion.feedback,
         )
 
         const issuesPayload = issueCandidates.map((issue, index) => ({
