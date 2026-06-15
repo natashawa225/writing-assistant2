@@ -284,7 +284,6 @@ export async function insertInteractionLog(
   }
 
   console.log("🚀 Inserting interaction log")
-  console.log("URL:", `${supabaseUrl}/rest/v1/interaction_logs`)
   console.log("Payload:", payload)
 
   const response = await fetch(

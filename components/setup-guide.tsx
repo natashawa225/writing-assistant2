@@ -17,7 +17,7 @@ export function SetupGuide() {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-blue-800">
             <Server className="h-5 w-5" />
-            如何阅读这张结构图？
+            How to Read the Diagram
           </CardTitle>
           <Button
             variant="ghost"
@@ -26,7 +26,7 @@ export function SetupGuide() {
             className="text-blue-700 hover:text-blue-900"
           >
             {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-            {isExpanded ? "隐藏" : "显示"} 说明
+            {isExpanded ? "Hide" : "Show"} Instructions
           </Button>
         </div>
       </CardHeader>

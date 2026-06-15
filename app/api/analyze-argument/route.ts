@@ -594,42 +594,66 @@ Essay prompt: """${prompt}"""
 
 You MUST generate feedback for every element listed below.
 Do not skip any element.
-Even if an element is Effective or Adequate, provide short constructive feedback.
+Even if an element is Effective or Adequate, provide constructive feedback.
 Return feedback for all keys exactly as given.
 
 Required keys:
 ${expectedKeysBlock}
 
-Purpose: Help the student understand what is wrong and how to improve in general
+Purpose: Help the student understand how this element works in an argumentative essay and how to improve it in a specific, practical way.
 
-Language requirement:
-- The feedback content MUST be written in Simplified Chinese.
-- Do NOT write English explanations.
+Feedback style and target level:
+- The feedback is for IELTS Writing Band 5–6 learners.
+- Use simple, student-friendly language and  a supportive, teacher-like tone.
+- Make the feedback practical, clear, and achievable.
+- Focus on clear reasoning, simple explanations, and simple examples.
 
-Feedback style:
-- Use simple, student-friendly language.
-- Use a supportive, teacher-like tone.
-
-Your explanation may implicitly reflect ONE of the following:
-- rhetorical function
-- reader impact
-- text quality
+Your feedback should primarily focus on the argumentative function of the element. 
+- Argumentative function: whether the element performs its role in the argument.
+For each element, focus on its argumentative function:
+- Lead: whether it attracts the reader and points toward the position.
+- Position: whether it gives a clear stance related to the essay prompt.
+- Claim: whether it gives a clear reason that supports the position.
+- Evidence: whether it supports the claim with a clear reason, explanation, or simple example.
+- Counterclaim: whether it gives a reasonable opposing view.
+- Rebuttal: whether it directly responds to the counterclaim with a reason, solution, or limitation.
+- Concluding summary: whether it restates the position and main claims without adding unrelated ideas.
 
 Rules:
 - If effectiveness is "Effective":
-  * Give positive reinforcement and explain why the element works well.
-  * Suggest how it could be developed further
-- If "Adequate", "Ineffective", or "Missing":
-  * Goal: Help the student notice the issue and reflect on how to improve it.
+  * Give positive reinforcement based on the element’s argumentative function. 
+  * Explain briefly why the element works well.
+  * Suggest how it could be developed further.
+
+- If effectiveness is "Adequate":
+  * The element is present and partly performs its argumentative function.
+  * Focus on how to make it clearer, more specific, better connected, or more convincing.
   * Write three short sections:
-    - Issue: Briefly explain what may be unclear, missing, or underdeveloped.
-    - Guidance: Suggest how the student could improve this element in general terms.
-    - Example (optional): Give a short, generic illustration of the idea, not a corrected sentence. The example should describe the type of content the student could add, rather than writing the exact sentence.
+    - Issue: Explain what is still unclear, general, weak, or underdeveloped.
+    - Guidance: Suggest one practical way to strengthen this element.
+    - Example: Give a short content-level illustration of what could be added or developed.
+
+- If effectiveness is "Ineffective":
+  * The element is present but does not successfully perform its argumentative function.
+  * Focus on helping the student understand what this element should do in the essay.
+  * Write three short sections:
+    - Issue: Explain why this element does not work well for its argumentative function.
+    - Guidance: Suggest one practical way to refocus or rebuild this element.
+    - Example: Give a short content-level illustration of a more suitable direction.
+
+- If effectiveness is "Missing":
+  * The element is absent.
+  * Focus on helping the student understand what needs to be added.
+  * Write three short sections:
+    - Issue: State that this element is missing and explain why it matters.
+    - Guidance: Suggest what type of content the student should add.
+    - Example: Give a short content-level illustration of what could be included.
 
 Avoid:
 - Writing a full sentence that could replace the student’s text
 - Directly correcting the student’s wording
 - Quoting or rewriting the student’s sentence
+- Giving generic advice such as “add more details” without saying what kind of details would help.
 
 Return JSON with this exact shape:
 {
@@ -735,35 +759,49 @@ async function batchSuggestionsAndReasonsAll(
         {
           role: "system",
           content: `You are a supportive writing teacher helping students improve their argumentative essays.
-
 For EACH element below, provide TWO parts:
 
 1. Suggestion (ENGLISH ONLY)
 Essay prompt: """${prompt}"""
-Write ONE clear and specific revision that directly improves the sentence or element.
-Prefer rewriting the sentence or a concise portion of it rather than giving a general instruction.
+Write ONE concise revision that could appear in the student's essay. The revision should improve the element’s argumentative function, not only grammar or vocabulary.
+
+Element focus: - Lead: engage the reader and connect to the position. - Position: state a clear stance related to the prompt. - Claim: give a clear reason supporting the position. - Evidence: support the claim with a clear reason, explanation, or simple example. - Counterclaim: present a reasonable opposing view. - Rebuttal: answer the counterclaim with a reason, solution, or limitation. - Concluding summary: restate the position and main claims without new ideas.
+Revision strategy by effectiveness:
+- If effectiveness is "Effective":
+  * Make only a small improvement.
+  * Do not rewrite the element heavily.
+  * Keep the student’s original idea and structure.
+  * The revision should polish, clarify, or slightly extend the element.
+
+- If effectiveness is "Adequate":
+  * Strengthen the existing element.
+  * Make the idea clearer, more specific, better connected, or more convincing.
+  * Keep the student’s main idea, but improve how well the element performs its argumentative function.
+
+- If effectiveness is "Ineffective":
+  * Rebuild the element more substantially.
+  * Keep the student’s general position if possible.
+  * Make the element perform its correct argumentative function.
+  * The revision may change the sentence structure or add a clearer reason, example, response, or summary.
+
+- If effectiveness is "Missing":
+  * Provide a short sentence or phrase that could fill the missing element.
+  * The revision should add the basic argumentative function that is absent.
+  * Keep the added element short and direct.
 
 Requirements for Suggestion:
 - MUST be written in English.
 - This should be a revision that could appear in the student's essay.
+- Prefer rewriting the sentence or a concise portion of it rather than giving a general instruction.
+- The revision should improve the student’s original writing by one small step, while still being understandable and imitable for IELTS Writing Band 5–6 learners.
 - Be concise and natural.
 
-2. Reason (MANDARIN CHINESE ONLY)
+2. Reason
 Explain why the revision improves the argument.
 
-Your explanation should reflect three aspects:
-- 修辞功能: 这个论证要素在论证中的作用
-- 读者影响: 它如何影响读者理解或说服力
-- 文本质量: 它如何提升写作质量（如清晰度、连贯性、逻辑）。
-
 Requirements for Reason:
-- MUST be written entirely in Simplified Chinese.
-- Do NOT write any English in this section.
 - Use clear, student-friendly language.
-
-Important language rules:
-- Suggestion → English only
-- Reason → Chinese only
+- Mention the argumentative function being improved, such as clearer position, more specific claim, stronger evidence, clearer counterclaim, more direct rebuttal, or better conclusion.
 
 You MUST return every key exactly once.
 Do not skip keys.
@@ -778,7 +816,8 @@ ${expectedJsonLines}
   }
 }
 
-Return valid json only.`,
+Return valid json only.
+`,
         },
         {
           role: "user",

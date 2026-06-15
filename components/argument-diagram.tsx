@@ -140,9 +140,7 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
           Visual Argument Structure
         </CardTitle>
         <p className="text-sm">
-        这张图展示了你的议论文结构，以及各个论证要素的表现情况。
-        不同颜色代表不同程度：
-        图表会在点击“Analyze Essay”后生成。本次写作任务中只需要点击一次进行分析。
+        Interactive diagram showing your essay's argumentative structure based on the Crossley model. Missing elements are greyed out
         </p>
       </CardHeader>
       <CardContent className="p-6">
@@ -337,38 +335,41 @@ export function ArgumentDiagram({ analysis, essay, onElementClick }: ArgumentDia
           <div className="mt-4 p-4 bg-gradient-to-br from-red-50 to-pink-50 border-2 border-red-200 rounded-lg">
             <h4 className="font-medium text-red-800 mb-2 flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
-              可以进一步完善你的论证
+              Your argument can be further improved
             </h4>
             <p className="text-red-700 text-sm mb-2">
-            尝试思考如何让每个论证要素更清晰、有力，以增强的完整性和说服力。
+            Try refining each argumentative element to make it clearer and more convincing, strengthening the overall coherence and persuasiveness.
             </p>
           </div>
         )}
 
         {/* Effectiveness Summary */}
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200 text-center shadow-md">
-              {/* effective */}
-              <h4 className="font-medium text-green-800 mb-1">表现优秀</h4>            
-              <p className="text-3xl font-bold text-green-600">{effectivenessCounts.Effective}</p>
-            <p className="text-xs text-green-700">清晰且论述充分</p>
-          </div>
-          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-lg border-2 border-yellow-200 text-center shadow-md">
-            <h4 className="font-medium text-yellow-800 mb-1">基本达标</h4>
-            <p className="text-3xl font-bold text-yellow-600">{effectivenessCounts.Adequate}</p>
-            <p className="text-xs text-yellow-700">内容合适，但仍有提升空间</p>
-          </div>
-          <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-lg border-2 border-red-200 text-center shadow-md">
-            <h4 className="font-medium text-red-800 mb-1">需要加强</h4>
-            <p className="text-3xl font-bold text-red-600">{effectivenessCounts.Ineffective}</p>
-            <p className="text-xs text-red-700">表达不够清晰和论述较弱</p>
-          </div>
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border-2 border-gray-200 text-center shadow-md">
-            <h4 className="font-medium text-gray-800 mb-1">尚未体现</h4>
-            <p className="text-3xl font-bold text-gray-600">{effectivenessCounts.Missing}</p>
-            <p className="text-xs text-gray-700">文中暂未看到相关内容</p>
-          </div>
-        </div>
+<div className="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+  <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-lg border-2 border-green-200 text-center shadow-md">
+    {/* effective */}
+    <h4 className="font-medium text-green-800 mb-1">Effective</h4>            
+    <p className="text-3xl font-bold text-green-600">{effectivenessCounts.Effective}</p>
+    <p className="text-xs text-green-700">Clear and well-developed</p>
+  </div>
+
+  <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-lg border-2 border-yellow-200 text-center shadow-md">
+    <h4 className="font-medium text-yellow-800 mb-1">Adequate</h4>
+    <p className="text-3xl font-bold text-yellow-600">{effectivenessCounts.Adequate}</p>
+    <p className="text-xs text-yellow-700">Could be improved</p>
+  </div>
+
+  <div className="bg-gradient-to-br from-red-50 to-red-100 p-4 rounded-lg border-2 border-red-200 text-center shadow-md">
+    <h4 className="font-medium text-red-800 mb-1">Ineffective</h4>
+    <p className="text-3xl font-bold text-red-600">{effectivenessCounts.Ineffective}</p>
+    <p className="text-xs text-red-700">Needs Improvement</p>
+  </div>
+
+  <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg border-2 border-gray-200 text-center shadow-md">
+    <h4 className="font-medium text-gray-800 mb-1">Missing</h4>
+    <p className="text-3xl font-bold text-gray-600">{effectivenessCounts.Missing}</p>
+    <p className="text-xs text-gray-700">Not present in the essay</p>
+  </div>
+</div>
       </CardContent>
     </Card>
   )

@@ -758,29 +758,29 @@ export default function ArgumentativeWritingAssistant() {
                 </CardTitle>
                 <div className="flex items-center gap-3">
                   <div className="flex flex-col gap-1">
-                    <label className="text-xs font-medium text-muted-foreground">
-                    姓名 <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      className={`w-40 rounded-md border-2 bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring ${
-                        !studentName.trim() ? "border-red-400" : "border-green-400"
-                      }`}
-                      
-                      placeholder="请输入姓名"
-                      value={studentName}
-                      onChange={(e) => setStudentName(e.target.value)}
-                      disabled={isSubmitted}
-                    />
+                  <label className="text-xs font-medium text-muted-foreground">
+                    Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    className={`w-40 rounded-md border-1 bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring ${
+                      !studentName.trim() ? "border-red-400" : "border-green-400"
+                    }`}
+                    placeholder="Enter your name"
+                    value={studentName}
+                    onChange={(e) => setStudentName(e.target.value)}
+                    disabled={isSubmitted}
+                  />
                   </div>
+
                   <div className="flex flex-col gap-1">
                     <label className="text-xs font-medium text-muted-foreground">
-                    学号 <span className="text-red-500">*</span>
+                      Student ID <span className="text-red-500">*</span>
                     </label>
                     <input
-                      className={`w-45 rounded-md border-2 bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring ${
+                      className={`w-45 rounded-md border-1 bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring ${
                         !studentId.trim() ? "border-red-400" : "border-green-400"
                       }`}
-                      placeholder="请输入学号"
+                      placeholder="Enter your Student ID"
                       value={studentId}
                       onChange={(e) => setStudentId(e.target.value)}
                       disabled={isSubmitted}

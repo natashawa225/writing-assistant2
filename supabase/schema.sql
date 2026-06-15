@@ -2,10 +2,13 @@ create extension if not exists "pgcrypto";
 
 create table if not exists public.sessions (
   id uuid primary key,
+  student_name text,
+  student_id text,
   condition text not null check (condition in ('baseline', 'multilevel')),
   started_at timestamptz not null default now(),
   submitted_at timestamptz,
-  reflective_summary text
+  reflective_summary text,
+  revision_window_minutes text
 );
 
 create table if not exists public.issues (
@@ -19,7 +22,9 @@ create table if not exists public.issues (
   corrected_text text,
   initial_text text,
   original_text text,
-  suggested_correction text
+  suggested_correction text,
+  effectiveness TEXT,
+  indirect_feedback TEXT
 );
 
 -- If an older schema added a check constraint, remove it to match this simplified schema.
@@ -104,10 +109,3 @@ create unique index if not exists uniq_snapshots_final_per_session
 -- useful for reads
 create index if not exists idx_snapshots_session_stage_ts
   on public.draft_snapshots(session_id, stage, "timestamp" desc);
-
-alter table sessions
-add column student_name text,
-add column student_id text;
-
-alter table sessions
-add column revision_window_minutes text
