@@ -631,7 +631,7 @@ Rules:
   * Write three short sections:
     - Issue: Explain what is still unclear, general, weak, or underdeveloped.
     - Guidance: Suggest one practical way to strengthen this element.
-    - Example: Give a short content-level illustration of what could be added or developed.
+    - Example: Give a short content-level illustration of what could be added or developed without writing a replacement for the student. The example should illustrate a direction, idea, or type of information, not provide a complete revised sentence or paragraph.
 
 - If effectiveness is "Ineffective":
   * The element is present but does not successfully perform its argumentative function.
