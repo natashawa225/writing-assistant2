@@ -207,23 +207,24 @@ export function EssayEditor({
 
   useEffect(() => {
     if (!currentHighlight || !highlightRef.current || !textAreaRef.current) return
-    if (visibleHighlights.length === 0) return
+    // if (visibleHighlights.length === 0) return
 
     const container = highlightRef.current
     const editor = textAreaRef.current
 
-    requestAnimationFrame(() => {
-      const target = container.querySelector<HTMLElement>('[data-persistent-highlight="true"]')
-      if (!target) return
+    // Give React a microtask tick to render the DOM elements before querying
+  requestAnimationFrame(() => {
+    const target = container.querySelector<HTMLElement>('[data-persistent-highlight="true"]')
+    if (!target) return
 
-      const nextTop = Math.max(0, target.offsetTop - container.clientHeight * 0.35)
-      container.scrollTop = nextTop
-      editor.scrollTop = nextTop
-    })
+    const nextTop = Math.max(0, target.offsetTop - container.clientHeight * 0.35)
+    container.scrollTop = nextTop
+    editor.scrollTop = nextTop
+  })
   }, [currentHighlight, visibleHighlights])
 
   const renderHighlightedText = () => {
-    if (visibleHighlights.length === 0) return null
+    // if (visibleHighlights.length === 0) return null
 
     const segments: Array<{
       start: number
@@ -267,6 +268,17 @@ export function EssayEditor({
       })
     }
 
+    // If there are absolutely no highlights, this fallback catches it 
+  // and builds a single transparent layer matching the text length perfectly.
+  if (segments.length === 0 && text) {
+    segments.push({
+      start: 0,
+      end: text.length,
+      text: text,
+      highlights: [],
+    })
+  }
+  
     return segments.map((segment, index) => {
       if (segment.highlights.length === 0) {
         // Render transparent text to maintain spacing alignment
