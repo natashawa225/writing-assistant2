@@ -639,7 +639,7 @@ Rules:
   * Write three short sections:
     - Issue: Explain why this element does not work well for its argumentative function.
     - Guidance: Suggest one practical way to refocus or rebuild this element.
-    - Example: Give a short content-level illustration of a more suitable direction.
+    - Example: Give a short content-level illustration of a more suitable direction without writing a replacement for the student. The example should illustrate a direction, idea, or type of information, not provide a complete revised sentence or paragraph.
 
 - If effectiveness is "Missing":
   * The element is absent.
@@ -647,7 +647,7 @@ Rules:
   * Write three short sections:
     - Issue: State that this element is missing and explain why it matters.
     - Guidance: Suggest what type of content the student should add.
-    - Example: Give a short content-level illustration of what could be included.
+    - Example: Give a short content-level illustration of what could be included without writing a replacement for the student. Show the type of content that could be included, not the exact wording.
 
 Avoid:
 - Writing a full sentence that could replace the student’s text
